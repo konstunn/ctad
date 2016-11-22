@@ -13,6 +13,7 @@
 \usepackage{csquotes}
 \usepackage{enumitem}
 \usepackage[textsize=tiny]{todonotes}
+\usepackage{multirow}
 
 
 \setlist[description]{leftmargin=\parindent,labelindent=\parindent}
@@ -104,14 +105,20 @@ $L$-оптимальных оценок по выборочным квантил
 	
 \begin{center}
 
-\begin{tabular}{|l|c|c|c|}
+\begin{tabular}{|p{6cm}|c|c|c|c|c|c|}
 	\hline
-	Параметр засорения $\nu$	&	0	&	0.1	&	0.2	\\	\hline
-	Оценка ММП					&		&		&		\\	\hline	
-	MD-оценка Комогорова		&		& 		&		\\	\hline 
-	MD-оценка $\omega^2$		&		&		&		\\	\hline
-	MD-оценка $\Omega^2$		&		&		&		\\	\hline
-	L-оптимальная оценка		&		&		&		\\	\hline
+	Параметр засорения $\nu$
+		&	\multicolumn{2}{|c|}{0}	&	\multicolumn{2}{|c|}{0.1}	
+		&	\multicolumn{2}{|c|}{0.2}	\\	\hline
+	Параметры распределения & $\theta_0$ & $\theta_1$ & $\theta_0$ 
+		& $\theta_1$ & $\theta_0$ & $\theta_1$ \\ \hline
+	Оценка ММП							&	0.0071 & 1.0229 &	&	&	&	\\	\hline	
+	Оценка ММП \newline по группированным данным	
+													&	&	&	&	&	&	\\	\hline	
+	MD-оценка Комогорова		&	&	&	&	&	&	\\	\hline 
+	MD-оценка $\omega^2$		&	&	&	&	&	&	\\	\hline
+	MD-оценка $\Omega^2$		&	&	&	&	&	&	\\	\hline
+	L-оптимальная оценка		&	&	&	&	&	&	\\	\hline
 \end{tabular}
 \end{center}
 	
