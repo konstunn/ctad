@@ -4,7 +4,7 @@
 \usepackage{cmap}
 
 \usepackage[T2A]{fontenc}
-\usepackage[utf8]{inputenc}
+\usepackage[utf8x]{inputenc}
 \usepackage[russian]{babel}
 
 \usepackage[a4paper,margin=1.5cm,footskip=1cm,left=2cm,right=1.5cm,top=1.5cm
@@ -12,8 +12,17 @@
 \usepackage{textcase}
 \usepackage{csquotes}
 \usepackage{enumitem}
-\usepackage[textsize=tiny]{todonotes}
-\usepackage{multirow}
+
+\usepackage{ucs}                                              %%
+\usepackage{color}                                            %%
+\usepackage{array}                                            %%
+\usepackage{longtable}                                        %%
+\usepackage{calc}                                             %%
+\usepackage{multirow}                                         %%
+\usepackage{hhline}                                           %%
+\usepackage{ifthen}                                           %%
+%%  optionally (for landscape tables embedded in another document): %%
+\usepackage{lscape}                                           %%
 
 
 \setlist[description]{leftmargin=\parindent,labelindent=\parindent}
@@ -102,26 +111,10 @@ $L$-оптимальных оценок по выборочным квантил
 	\item оцениваются параметры распределения $F(x, \theta)$ всеми методами;
 	\item сравниваются значения оценок при разных значениях $\nu$.
 	\end{itemize}
-	
-\begin{center}
 
-\begin{tabular}{|p{6cm}|c|c|c|c|c|c|}
-	\hline
-	Параметр засорения $\nu$
-		&	\multicolumn{2}{|c|}{0}	&	\multicolumn{2}{|c|}{0.1}	
-		&	\multicolumn{2}{|c|}{0.2}	\\	\hline
-	Параметры распределения & $\theta_0$ & $\theta_1$ & $\theta_0$ 
-		& $\theta_1$ & $\theta_0$ & $\theta_1$ \\ \hline
-	Оценка ММП							&	0.0071 & 1.0229 &	&	&	&	\\	\hline	
-	Оценка ММП \newline по группированным данным	
-													&	&	&	&	&	&	\\	\hline	
-	MD-оценка Комогорова		&	&	&	&	&	&	\\	\hline 
-	MD-оценка $\omega^2$		&	&	&	&	&	&	\\	\hline
-	MD-оценка $\Omega^2$		&	&	&	&	&	&	\\	\hline
-	L-оптимальная оценка		&	&	&	&	&	&	\\	\hline
-\end{tabular}
-\end{center}
-	
+	\def\inputGnumericTable{}
+	\input{1est.tex}
+
 \item Отбраковка аномальных наблюдений. Используя параметрическую
 процедуру отбраковки аномальных наблюдений очистить полученные в п.1
 выборки от аномальных наблюдений и проверить, как изменились результаты

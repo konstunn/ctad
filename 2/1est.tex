@@ -15,7 +15,9 @@
 %%  where the table is to be placed. Note also that the including   %%
 %%  file must use the following packages for the table to be        %%
 %%  rendered correctly:                                             %%
-%%    \usepackage[latin1]{inputenc}                                 %%
+%%    \usepackage{ucs}                                              %%
+%%    \usepackage[utf8x]{inputenc}                                  %%
+%%    \usepackage[T2A]{fontenc}    % if cyrillic is used            %%
 %%    \usepackage{color}                                            %%
 %%    \usepackage{array}                                            %%
 %%    \usepackage{longtable}                                        %%
@@ -55,7 +57,9 @@
 	\documentclass[12pt%
 			  %,landscape%
                     ]{report}
-       \usepackage[latin1]{inputenc}
+       \usepackage{ucs}
+       \usepackage[utf8x]{inputenc}
+       \usepackage[T2A]{fontenc}
        \usepackage{fullpage}
        \usepackage{color}
        \usepackage{array}
@@ -123,7 +127,7 @@
 \setlongtables
 
 \setlength\gnumericTableWidth{%
-	159pt+%
+	182pt+%
 	53pt+%
 	53pt+%
 	53pt+%
@@ -149,7 +153,7 @@
 %%                                                                  %%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\ifthenelse{\isundefined{\gnumericColA}}{\newlength{\gnumericColA}}{}\settowidth{\gnumericColA}{\begin{tabular}{@{}p{159pt*\gnumericScale}@{}}x\end{tabular}}
+\ifthenelse{\isundefined{\gnumericColA}}{\newlength{\gnumericColA}}{}\settowidth{\gnumericColA}{\begin{tabular}{@{}p{182pt*\gnumericScale}@{}}x\end{tabular}}
 \ifthenelse{\isundefined{\gnumericColB}}{\newlength{\gnumericColB}}{}\settowidth{\gnumericColB}{\begin{tabular}{@{}p{53pt*\gnumericScale}@{}}x\end{tabular}}
 \ifthenelse{\isundefined{\gnumericColC}}{\newlength{\gnumericColC}}{}\settowidth{\gnumericColC}{\begin{tabular}{@{}p{53pt*\gnumericScale}@{}}x\end{tabular}}
 \ifthenelse{\isundefined{\gnumericColD}}{\newlength{\gnumericColD}}{}\settowidth{\gnumericColD}{\begin{tabular}{@{}p{53pt*\gnumericScale}@{}}x\end{tabular}}
@@ -209,7 +213,7 @@
 
 \hhline{|-|--|--|--}
 	 \multicolumn{1}{|p{\gnumericColA}|}%
-	{\gnumericPB{\raggedright}\gnumbox[l]{???????? ????????? ?}}
+	{\gnumericPB{\raggedright}\gnumbox[l]{Параметр засорения $\nu$}}
 	&\multicolumn{2}{p{	\gnumericColB+%
 	\gnumericColC+%
 	\tabcolsep*2*1}|}%
@@ -217,31 +221,31 @@
 	&\multicolumn{2}{p{	\gnumericColD+%
 	\gnumericColE+%
 	\tabcolsep*2*1}|}%
-	{\gnumericPB{\centering}\gnumbox{0.1}}
+	{\gnumericPB{\centering}\gnumbox{0,1}}
 	&\multicolumn{2}{p{	\gnumericColF+%
 	\gnumericColG+%
 	\tabcolsep*2*1}|}%
-	{\gnumericPB{\centering}\gnumbox{0.2}}
+	{\gnumericPB{\centering}\gnumbox{0,2}}
 \\
 \hhline{|--|--|--|-|}
 	 \multicolumn{1}{|p{\gnumericColA}|}%
-	{\gnumericPB{\raggedright}\gnumbox[l]{????????? ?????????????}}
+	{\gnumericPB{\raggedright}\gnumbox[l]{Параметры распределения}}
 	&\multicolumn{1}{p{\gnumericColB}|}%
-	{\gnumericPB{\centering}\gnumbox{?0}}
+	{\gnumericPB{\centering}\gnumbox{$\theta_0$}}
 	&\multicolumn{1}{p{\gnumericColC}|}%
-	{\gnumericPB{\centering}\gnumbox{?1}}
+	{\gnumericPB{\centering}\gnumbox{$\theta_1$}}
 	&\multicolumn{1}{p{\gnumericColD}|}%
-	{\gnumericPB{\centering}\gnumbox{?0}}
+	{\gnumericPB{\centering}\gnumbox{$\theta_0$}}
 	&\multicolumn{1}{p{\gnumericColE}|}%
-	{\gnumericPB{\centering}\gnumbox{?1}}
+	{\gnumericPB{\centering}\gnumbox{$\theta_1$}}
 	&\multicolumn{1}{p{\gnumericColF}|}%
-	{\gnumericPB{\centering}\gnumbox{?0}}
+	{\gnumericPB{\centering}\gnumbox{$\theta_0$}}
 	&\multicolumn{1}{p{\gnumericColG}|}%
-	{\gnumericPB{\centering}\gnumbox{?1}}
+	{\gnumericPB{\centering}\gnumbox{$\theta_1$}}
 \\
 \hhline{|-------|}
 	 \multicolumn{1}{|p{\gnumericColA}|}%
-	{\gnumericPB{\raggedright}\gnumbox[l]{?????? ???}}
+	{\gnumericPB{\raggedright}\gnumbox[l]{Оценка ММП}}
 	&\multicolumn{1}{p{\gnumericColB}|}%
 	{\gnumericPB{\centering}\gnumbox{0.0071}}
 	&\multicolumn{1}{p{\gnumericColC}|}%
@@ -257,7 +261,7 @@
 \\
 \hhline{|-------|}
 	 \multicolumn{1}{|p{\gnumericColA}|}%
-	{\gnumericPB{\raggedright}?????? ??? ?? ?????????????? ??????}
+	{\gnumericPB{\raggedright}Оценка ММП по группированным данным}
 	&\multicolumn{1}{p{\gnumericColB}|}%
 	{\gnumericPB{\centering}\gnumbox{0.0071}}
 	&\multicolumn{1}{p{\gnumericColC}|}%
@@ -273,7 +277,7 @@
 \\
 \hhline{|-------|}
 	 \multicolumn{1}{|p{\gnumericColA}|}%
-	{\gnumericPB{\raggedright}\gnumbox[l]{MD-?????? ???????????}}
+	{\gnumericPB{\raggedright}\gnumbox[l]{MD-оценка Колмогорова}}
 	&\multicolumn{1}{p{\gnumericColB}|}%
 	{\gnumericPB{\centering}\gnumbox{-0.0218}}
 	&\multicolumn{1}{p{\gnumericColC}|}%
@@ -289,7 +293,7 @@
 \\
 \hhline{|-------|}
 	 \multicolumn{1}{|p{\gnumericColA}|}%
-	{\gnumericPB{\raggedright}\gnumbox[l]{MD-?????? ?2 ??????}}
+	{\gnumericPB{\raggedright}\gnumbox[l]{MD-оценка $\omega^2$ Мизеса}}
 	&\multicolumn{1}{p{\gnumericColB}|}%
 	{\gnumericPB{\centering}\gnumbox{0.0017}}
 	&\multicolumn{1}{p{\gnumericColC}|}%
@@ -305,7 +309,7 @@
 \\
 \hhline{|-------|}
 	 \multicolumn{1}{|p{\gnumericColA}|}%
-	{\gnumericPB{\raggedright}\gnumbox[l]{MD-?????? ?2 ??????}}
+	{\gnumericPB{\raggedright}\gnumbox[l]{MD-оценка $\Omega^2$ Мизеса}}
 	&\multicolumn{1}{p{\gnumericColB}|}%
 	{\gnumericPB{\centering}\gnumbox{-0.0062}}
 	&\multicolumn{1}{p{\gnumericColC}|}%
@@ -321,7 +325,7 @@
 \\
 \hhline{|-------|}
 	 \multicolumn{1}{|p{\gnumericColA}|}%
-	{\gnumericPB{\raggedright}\gnumbox[l]{L-??????????? ??????}}
+	{\gnumericPB{\raggedright}\gnumbox[l]{L-оптимальная оценка}}
 	&\multicolumn{1}{p{\gnumericColB}|}%
 	{\gnumericPB{\centering}\gnumbox{0.0000}}
 	&\multicolumn{1}{p{\gnumericColC}|}%
