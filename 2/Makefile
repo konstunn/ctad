@@ -1,5 +1,5 @@
 
-main.pdf: main.ltx main.aux main.toc
+main.pdf: main.ltx main.aux main.toc 1est.tex
 	pdflatex $<
 
 view: main.pdf
