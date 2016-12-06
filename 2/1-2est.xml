@@ -25,7 +25,7 @@
   </gnm:Attributes>
   <office:document-meta xmlns:office="urn:oasis:names:tc:opendocument:xmlns:office:1.0" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:meta="urn:oasis:names:tc:opendocument:xmlns:meta:1.0" xmlns:ooo="http://openoffice.org/2004/office" office:version="1.2">
     <office:meta>
-      <dc:date>2016-12-06T15:13:18Z</dc:date>
+      <dc:date>2016-12-06T15:19:49Z</dc:date>
       <meta:creation-date>2016-11-23T09:38:29Z</meta:creation-date>
     </office:meta>
   </office:document-meta>
@@ -35,7 +35,7 @@
     <gnm:SheetName gnm:Cols="256" gnm:Rows="65536">Sheet2</gnm:SheetName>
     <gnm:SheetName gnm:Cols="256" gnm:Rows="65536">Sheet3</gnm:SheetName>
   </gnm:SheetNameIndex>
-  <gnm:Geometry Width="667" Height="506"/>
+  <gnm:Geometry Width="787" Height="506"/>
   <gnm:Sheets>
     <gnm:Sheet DisplayFormulas="0" HideZero="0" HideGrid="0" HideColHeader="0" HideRowHeader="0" DisplayOutlines="1" OutlineSymbolsBelow="1" OutlineSymbolsRight="1" Visibility="GNM_SHEET_VISIBILITY_VISIBLE" GridColor="0:0:0">
       <gnm:Name>Sheet1</gnm:Name>
@@ -325,8 +325,8 @@
         <gnm:RowInfo No="3" Unit="24" HardSize="1"/>
         <gnm:RowInfo No="5" Unit="14.25" Count="2"/>
       </gnm:Rows>
-      <gnm:Selections CursorCol="3" CursorRow="16">
-        <gnm:Selection startCol="3" startRow="16" endCol="3" endRow="16"/>
+      <gnm:Selections CursorCol="4" CursorRow="6">
+        <gnm:Selection startCol="4" startRow="6" endCol="4" endRow="6"/>
       </gnm:Selections>
       <gnm:Cells>
         <gnm:Cell Row="0" Col="0" ValueType="60" ValueFormat="@">Параметр засорения ν</gnm:Cell>
@@ -383,11 +383,11 @@
         <gnm:Cell Row="6" Col="1" ValueType="60">-0.0377</gnm:Cell>
         <gnm:Cell Row="6" Col="2" ValueType="60">1.3723</gnm:Cell>
         <gnm:Cell Row="6" Col="3" ValueType="40">-0.017399999999999999</gnm:Cell>
-        <gnm:Cell Row="6" Col="4" ValueType="40">0.21229999999999999</gnm:Cell>
+        <gnm:Cell Row="6" Col="4" ValueType="40">1.2125999999999999</gnm:Cell>
         <gnm:Cell Row="6" Col="5" ValueType="60">-0.1445</gnm:Cell>
         <gnm:Cell Row="6" Col="6" ValueType="60">1.9800</gnm:Cell>
         <gnm:Cell Row="6" Col="7" ValueType="40">-0.024799999999999999</gnm:Cell>
-        <gnm:Cell Row="6" Col="8" ValueType="40">0.33589999999999998</gnm:Cell>
+        <gnm:Cell Row="6" Col="8" ValueType="40">1.3355999999999999</gnm:Cell>
         <gnm:Cell Row="7" Col="0" ValueType="60">L-оптимальная оценка</gnm:Cell>
         <gnm:Cell Row="7" Col="1" ValueType="60">0.0000</gnm:Cell>
         <gnm:Cell Row="7" Col="2" ValueType="60">1.2590</gnm:Cell>
@@ -404,7 +404,7 @@
         <gnm:Merge>F1:G1</gnm:Merge>
         <gnm:Merge>H1:I1</gnm:Merge>
       </gnm:MergedRegions>
-      <gnm:SheetLayout TopLeft="B1"/>
+      <gnm:SheetLayout TopLeft="A1"/>
       <gnm:Solver ModelType="0" ProblemType="0" MaxTime="60" MaxIter="1000" NonNeg="1" Discr="0" AutoScale="0" ProgramR="0"/>
     </gnm:Sheet>
     <gnm:Sheet DisplayFormulas="0" HideZero="0" HideGrid="0" HideColHeader="0" HideRowHeader="0" DisplayOutlines="1" OutlineSymbolsBelow="1" OutlineSymbolsRight="1" Visibility="GNM_SHEET_VISIBILITY_VISIBLE" GridColor="0:0:0">
