@@ -25,7 +25,7 @@
   </gnm:Attributes>
   <office:document-meta xmlns:office="urn:oasis:names:tc:opendocument:xmlns:office:1.0" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:meta="urn:oasis:names:tc:opendocument:xmlns:meta:1.0" xmlns:ooo="http://openoffice.org/2004/office" office:version="1.2">
     <office:meta>
-      <dc:date>2016-12-06T10:55:21Z</dc:date>
+      <dc:date>2016-12-06T11:44:16Z</dc:date>
       <meta:creation-date>2016-11-23T09:38:29Z</meta:creation-date>
     </office:meta>
   </office:document-meta>
@@ -153,8 +153,8 @@
             </gnm:StyleBorder>
           </gnm:Style>
         </gnm:StyleRegion>
-        <gnm:StyleRegion startCol="1" startRow="2" endCol="1" endRow="2">
-          <gnm:Style HAlign="GNM_HALIGN_GENERAL" VAlign="GNM_VALIGN_BOTTOM" WrapText="0" ShrinkToFit="0" Rotation="0" Shade="0" Indent="0" Locked="1" Hidden="0" Fore="0:0:0" Back="FFFF:FFFF:FFFF" PatternColor="0:0:0" Format="General">
+        <gnm:StyleRegion startCol="1" startRow="2" endCol="2" endRow="2">
+          <gnm:Style HAlign="GNM_HALIGN_CENTER" VAlign="GNM_VALIGN_BOTTOM" WrapText="0" ShrinkToFit="0" Rotation="0" Shade="0" Indent="0" Locked="1" Hidden="0" Fore="0:0:0" Back="FFFF:FFFF:FFFF" PatternColor="0:0:0" Format="General">
             <gnm:Font Unit="10" Bold="0" Italic="0" Underline="0" StrikeThrough="0" Script="0">Sans</gnm:Font>
             <gnm:StyleBorder>
               <gnm:Right Style="1" Color="0:0:0"/>
@@ -183,11 +183,6 @@
             </gnm:StyleBorder>
           </gnm:Style>
         </gnm:StyleRegion>
-        <gnm:StyleRegion startCol="2" startRow="2" endCol="3" endRow="2">
-          <gnm:Style HAlign="GNM_HALIGN_GENERAL" VAlign="GNM_VALIGN_BOTTOM" WrapText="0" ShrinkToFit="0" Rotation="0" Shade="0" Indent="0" Locked="1" Hidden="0" Fore="0:0:0" Back="FFFF:FFFF:FFFF" PatternColor="0:0:0" Format="General">
-            <gnm:Font Unit="10" Bold="0" Italic="0" Underline="0" StrikeThrough="0" Script="0">Sans</gnm:Font>
-          </gnm:Style>
-        </gnm:StyleRegion>
         <gnm:StyleRegion startCol="3" startRow="1" endCol="3" endRow="1">
           <gnm:Style HAlign="GNM_HALIGN_CENTER" VAlign="GNM_VALIGN_BOTTOM" WrapText="0" ShrinkToFit="0" Rotation="0" Shade="0" Indent="0" Locked="1" Hidden="0" Fore="0:0:0" Back="FFFF:FFFF:FFFF" PatternColor="0:0:0" Format="General">
             <gnm:Font Unit="10" Bold="0" Italic="0" Underline="0" StrikeThrough="0" Script="0">Liberation Sans1</gnm:Font>
@@ -197,6 +192,11 @@
               <gnm:Left Style="1" Color="0:0:0"/>
               <gnm:Right Style="1" Color="0:0:0"/>
             </gnm:StyleBorder>
+          </gnm:Style>
+        </gnm:StyleRegion>
+        <gnm:StyleRegion startCol="3" startRow="2" endCol="3" endRow="2">
+          <gnm:Style HAlign="GNM_HALIGN_CENTER" VAlign="GNM_VALIGN_BOTTOM" WrapText="0" ShrinkToFit="0" Rotation="0" Shade="0" Indent="0" Locked="1" Hidden="0" Fore="0:0:0" Back="FFFF:FFFF:FFFF" PatternColor="0:0:0" Format="General">
+            <gnm:Font Unit="10" Bold="0" Italic="0" Underline="0" StrikeThrough="0" Script="0">Sans</gnm:Font>
           </gnm:Style>
         </gnm:StyleRegion>
         <gnm:StyleRegion startCol="4" startRow="1" endCol="4" endRow="2">
@@ -229,8 +229,8 @@
         <gnm:RowInfo No="3" Unit="24" HardSize="1"/>
         <gnm:RowInfo No="5" Unit="14.25" Count="2"/>
       </gnm:Rows>
-      <gnm:Selections CursorCol="3" CursorRow="7">
-        <gnm:Selection startCol="3" startRow="7" endCol="3" endRow="7"/>
+      <gnm:Selections CursorCol="3" CursorRow="13">
+        <gnm:Selection startCol="3" startRow="13" endCol="3" endRow="13"/>
       </gnm:Selections>
       <gnm:Cells>
         <gnm:Cell Row="0" Col="0" ValueType="60" ValueFormat="@">Параметр засорения ν</gnm:Cell>
