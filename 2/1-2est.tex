@@ -55,7 +55,7 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 	\documentclass[12pt%
-			  ,landscape%
+			  %,landscape%
                     ]{report}
        \usepackage{ucs}
        \usepackage[utf8x]{inputenc}
@@ -127,17 +127,24 @@
 \setlongtables
 
 \setlength\gnumericTableWidth{%
-	164pt+%
-	53pt+%
-	44pt+%
-	53pt+%
-	65pt+%
-	53pt+%
-	42pt+%
-	53pt+%
-	65pt+%
+	163pt+%
+	39pt+%
+	30pt+%
+	30pt+%
+	39pt+%
+	30pt+%
+	30pt+%
+	39pt+%
+	30pt+%
+	30pt+%
+	39pt+%
+	30pt+%
+	30pt+%
+	39pt+%
+	30pt+%
+	37pt+%
 0pt}
-\def\gumericNumCols{9}
+\def\gumericNumCols{16}
 \setlength\gnumericTableWidthComplete{\gnumericTableWidth+%
          \tabcolsep*\gumericNumCols*2+\arrayrulewidth*\gumericNumCols}
 \ifthenelse{\lengthtest{\gnumericTableWidthComplete > \linewidth}}%
@@ -155,15 +162,22 @@
 %%                                                                  %%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\ifthenelse{\isundefined{\gnumericColA}}{\newlength{\gnumericColA}}{}\settowidth{\gnumericColA}{\begin{tabular}{@{}p{164pt*\gnumericScale}@{}}x\end{tabular}}
-\ifthenelse{\isundefined{\gnumericColB}}{\newlength{\gnumericColB}}{}\settowidth{\gnumericColB}{\begin{tabular}{@{}p{53pt*\gnumericScale}@{}}x\end{tabular}}
-\ifthenelse{\isundefined{\gnumericColC}}{\newlength{\gnumericColC}}{}\settowidth{\gnumericColC}{\begin{tabular}{@{}p{44pt*\gnumericScale}@{}}x\end{tabular}}
-\ifthenelse{\isundefined{\gnumericColD}}{\newlength{\gnumericColD}}{}\settowidth{\gnumericColD}{\begin{tabular}{@{}p{53pt*\gnumericScale}@{}}x\end{tabular}}
-\ifthenelse{\isundefined{\gnumericColE}}{\newlength{\gnumericColE}}{}\settowidth{\gnumericColE}{\begin{tabular}{@{}p{65pt*\gnumericScale}@{}}x\end{tabular}}
-\ifthenelse{\isundefined{\gnumericColF}}{\newlength{\gnumericColF}}{}\settowidth{\gnumericColF}{\begin{tabular}{@{}p{53pt*\gnumericScale}@{}}x\end{tabular}}
-\ifthenelse{\isundefined{\gnumericColG}}{\newlength{\gnumericColG}}{}\settowidth{\gnumericColG}{\begin{tabular}{@{}p{42pt*\gnumericScale}@{}}x\end{tabular}}
-\ifthenelse{\isundefined{\gnumericColH}}{\newlength{\gnumericColH}}{}\settowidth{\gnumericColH}{\begin{tabular}{@{}p{53pt*\gnumericScale}@{}}x\end{tabular}}
-\ifthenelse{\isundefined{\gnumericColI}}{\newlength{\gnumericColI}}{}\settowidth{\gnumericColI}{\begin{tabular}{@{}p{65pt*\gnumericScale}@{}}x\end{tabular}}
+\ifthenelse{\isundefined{\gnumericColA}}{\newlength{\gnumericColA}}{}\settowidth{\gnumericColA}{\begin{tabular}{@{}p{163pt*\gnumericScale}@{}}x\end{tabular}}
+\ifthenelse{\isundefined{\gnumericColB}}{\newlength{\gnumericColB}}{}\settowidth{\gnumericColB}{\begin{tabular}{@{}p{39pt*\gnumericScale}@{}}x\end{tabular}}
+\ifthenelse{\isundefined{\gnumericColC}}{\newlength{\gnumericColC}}{}\settowidth{\gnumericColC}{\begin{tabular}{@{}p{30pt*\gnumericScale}@{}}x\end{tabular}}
+\ifthenelse{\isundefined{\gnumericColD}}{\newlength{\gnumericColD}}{}\settowidth{\gnumericColD}{\begin{tabular}{@{}p{30pt*\gnumericScale}@{}}x\end{tabular}}
+\ifthenelse{\isundefined{\gnumericColE}}{\newlength{\gnumericColE}}{}\settowidth{\gnumericColE}{\begin{tabular}{@{}p{39pt*\gnumericScale}@{}}x\end{tabular}}
+\ifthenelse{\isundefined{\gnumericColF}}{\newlength{\gnumericColF}}{}\settowidth{\gnumericColF}{\begin{tabular}{@{}p{30pt*\gnumericScale}@{}}x\end{tabular}}
+\ifthenelse{\isundefined{\gnumericColG}}{\newlength{\gnumericColG}}{}\settowidth{\gnumericColG}{\begin{tabular}{@{}p{30pt*\gnumericScale}@{}}x\end{tabular}}
+\ifthenelse{\isundefined{\gnumericColH}}{\newlength{\gnumericColH}}{}\settowidth{\gnumericColH}{\begin{tabular}{@{}p{39pt*\gnumericScale}@{}}x\end{tabular}}
+\ifthenelse{\isundefined{\gnumericColI}}{\newlength{\gnumericColI}}{}\settowidth{\gnumericColI}{\begin{tabular}{@{}p{30pt*\gnumericScale}@{}}x\end{tabular}}
+\ifthenelse{\isundefined{\gnumericColJ}}{\newlength{\gnumericColJ}}{}\settowidth{\gnumericColJ}{\begin{tabular}{@{}p{30pt*\gnumericScale}@{}}x\end{tabular}}
+\ifthenelse{\isundefined{\gnumericColK}}{\newlength{\gnumericColK}}{}\settowidth{\gnumericColK}{\begin{tabular}{@{}p{39pt*\gnumericScale}@{}}x\end{tabular}}
+\ifthenelse{\isundefined{\gnumericColL}}{\newlength{\gnumericColL}}{}\settowidth{\gnumericColL}{\begin{tabular}{@{}p{30pt*\gnumericScale}@{}}x\end{tabular}}
+\ifthenelse{\isundefined{\gnumericColM}}{\newlength{\gnumericColM}}{}\settowidth{\gnumericColM}{\begin{tabular}{@{}p{30pt*\gnumericScale}@{}}x\end{tabular}}
+\ifthenelse{\isundefined{\gnumericColN}}{\newlength{\gnumericColN}}{}\settowidth{\gnumericColN}{\begin{tabular}{@{}p{39pt*\gnumericScale}@{}}x\end{tabular}}
+\ifthenelse{\isundefined{\gnumericColO}}{\newlength{\gnumericColO}}{}\settowidth{\gnumericColO}{\begin{tabular}{@{}p{30pt*\gnumericScale}@{}}x\end{tabular}}
+\ifthenelse{\isundefined{\gnumericColP}}{\newlength{\gnumericColP}}{}\settowidth{\gnumericColP}{\begin{tabular}{@{}p{37pt*\gnumericScale}@{}}x\end{tabular}}
 
 \begin{longtable}[c]{%
 	b{\gnumericColA}%
@@ -175,6 +189,13 @@
 	b{\gnumericColG}%
 	b{\gnumericColH}%
 	b{\gnumericColI}%
+	b{\gnumericColJ}%
+	b{\gnumericColK}%
+	b{\gnumericColL}%
+	b{\gnumericColM}%
+	b{\gnumericColN}%
+	b{\gnumericColO}%
+	b{\gnumericColP}%
 	}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -187,7 +208,7 @@
 %%  the first, last or every page. Use \multicolumn if you want.    %%
 
 %%  Header for the first page.                                      %%
-%	\multicolumn{9}{c}{The First Header} \\ \hline 
+%	\multicolumn{16}{c}{The First Header} \\ \hline 
 %	\multicolumn{1}{c}{colTag}	%Column 1
 %	&\multicolumn{1}{c}{colTag}	%Column 2
 %	&\multicolumn{1}{c}{colTag}	%Column 3
@@ -196,12 +217,19 @@
 %	&\multicolumn{1}{c}{colTag}	%Column 6
 %	&\multicolumn{1}{c}{colTag}	%Column 7
 %	&\multicolumn{1}{c}{colTag}	%Column 8
+%	&\multicolumn{1}{c}{colTag}	%Column 9
+%	&\multicolumn{1}{c}{colTag}	%Column 10
+%	&\multicolumn{1}{c}{colTag}	%Column 11
+%	&\multicolumn{1}{c}{colTag}	%Column 12
+%	&\multicolumn{1}{c}{colTag}	%Column 13
+%	&\multicolumn{1}{c}{colTag}	%Column 14
+%	&\multicolumn{1}{c}{colTag}	%Column 15
 %	&\multicolumn{1}{c}{colTag}	\\ \hline %Last column
 %	\endfirsthead
 
 %%  The running header definition.                                  %%
 %	\hline
-%	\multicolumn{9}{l}{\ldots\small\slshape continued} \\ \hline
+%	\multicolumn{16}{l}{\ldots\small\slshape continued} \\ \hline
 %	\multicolumn{1}{c}{colTag}	%Column 1
 %	&\multicolumn{1}{c}{colTag}	%Column 2
 %	&\multicolumn{1}{c}{colTag}	%Column 3
@@ -210,180 +238,294 @@
 %	&\multicolumn{1}{c}{colTag}	%Column 6
 %	&\multicolumn{1}{c}{colTag}	%Column 7
 %	&\multicolumn{1}{c}{colTag}	%Column 8
+%	&\multicolumn{1}{c}{colTag}	%Column 9
+%	&\multicolumn{1}{c}{colTag}	%Column 10
+%	&\multicolumn{1}{c}{colTag}	%Column 11
+%	&\multicolumn{1}{c}{colTag}	%Column 12
+%	&\multicolumn{1}{c}{colTag}	%Column 13
+%	&\multicolumn{1}{c}{colTag}	%Column 14
+%	&\multicolumn{1}{c}{colTag}	%Column 15
 %	&\multicolumn{1}{c}{colTag}	\\ \hline %Last column
 %	\endhead
 
 %%  The running footer definition.                                  %%
 %	\hline
-%	\multicolumn{9}{r}{\small\slshape continued\ldots} \\
+%	\multicolumn{16}{r}{\small\slshape continued\ldots} \\
 %	\endfoot
 
 %%  The ending footer definition.                                   %%
-%	\multicolumn{9}{c}{That's all folks} \\ \hline 
+%	\multicolumn{16}{c}{That's all folks} \\ \hline 
 %	\endlastfoot
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\hhline{|-|--|--|--|--}
-	 \multicolumn{1}{|p{\gnumericColA}|}%
-	{\gnumericPB{\raggedright}\gnumbox[l]{Параметр засорения $\nu$}}
-	&\multicolumn{2}{p{	\gnumericColB+%
+\hhline{|t:=:t:===:t:===:t:===:t:===:t:===:t|}
+	 \multicolumn{1}{||p{\gnumericColA}||}%
+	{\gnumericPB{\raggedright}\gnumbox[l]{Параметр засорения}}
+	&\multicolumn{3}{p{	\gnumericColB+%
 	\gnumericColC+%
-	\tabcolsep*2*1}|}%
-	{\gnumericPB{\centering}\gnumbox{0,1}}
-	&\multicolumn{2}{p{	\gnumericColD+%
-	\gnumericColE+%
-	\tabcolsep*2*1}|}%
-	{\gnumericPB{\centering}\gnumbox{0,1 (с отбраковкой)}}
-	&\multicolumn{2}{p{	\gnumericColF+%
+	\gnumericColD+%
+	\tabcolsep*2*2}||}%
+	{\gnumericPB{\centering}\gnumbox{0}}
+	&\multicolumn{3}{p{	\gnumericColE+%
+	\gnumericColF+%
 	\gnumericColG+%
-	\tabcolsep*2*1}|}%
-	{\gnumericPB{\centering}\gnumbox{0,2}}
-	&\multicolumn{2}{p{	\gnumericColH+%
+	\tabcolsep*2*2}||}%
+	{\gnumericPB{\centering}\gnumbox{0,1}}
+	&\multicolumn{3}{p{	\gnumericColH+%
 	\gnumericColI+%
-	\tabcolsep*2*1}|}%
-	{\gnumericPB{\centering}\gnumbox{0,2 (с отбраковкой)}}
+	\gnumericColJ+%
+	\tabcolsep*2*2}||}%
+	{\gnumericPB{\centering}\gnumbox{0,1 (с отбрак.)}}
+	&\multicolumn{3}{p{	\gnumericColK+%
+	\gnumericColL+%
+	\gnumericColM+%
+	\tabcolsep*2*2}||}%
+	{\gnumericPB{\centering}\gnumbox{0,2}}
+	&\multicolumn{3}{p{	\gnumericColN+%
+	\gnumericColO+%
+	\gnumericColP+%
+	\tabcolsep*2*2}||}%
+	{\gnumericPB{\centering}\gnumbox{0,2 (с отбрак.)}}
 \\
-\hhline{|--|--|--|--|-|}
-	 \multicolumn{1}{|p{\gnumericColA}|}%
+\hhline{||-||-|-|-||-|-|-||-|-|-||-|-|-||-|-|-||}
+	 \multicolumn{1}{||p{\gnumericColA}||}%
 	{\gnumericPB{\raggedright}\gnumbox[l]{Параметры распределения}}
 	&\multicolumn{1}{p{\gnumericColB}|}%
-	{\gnumericPB{\centering}\gnumbox{$\theta_0$}}
+	{\gnumericPB{\centering}\gnumbox{сдвиг}}
 	&\multicolumn{1}{p{\gnumericColC}|}%
-	{\gnumericPB{\centering}\gnumbox{$\theta_1$}}
-	&\multicolumn{1}{p{\gnumericColD}|}%
-	{\gnumericPB{\centering}\gnumbox{$\theta_0$}}
+	{\gnumericPB{\centering}\gnumbox{масш.}}
+	&\multicolumn{1}{p{\gnumericColD}||}%
+	{\gnumericPB{\centering}\gnumbox{p-val}}
 	&\multicolumn{1}{p{\gnumericColE}|}%
-	{\gnumericPB{\centering}\gnumbox{$\theta_1$}}
+	{\gnumericPB{\centering}\gnumbox{сдвиг}}
 	&\multicolumn{1}{p{\gnumericColF}|}%
-	{\gnumericPB{\centering}\gnumbox{$\theta_0$}}
-	&\multicolumn{1}{p{\gnumericColG}|}%
-	{\gnumericPB{\centering}\gnumbox{$\theta_1$}}
+	{\gnumericPB{\centering}\gnumbox{масш.}}
+	&\multicolumn{1}{p{\gnumericColG}||}%
+	{\gnumericPB{\centering}\gnumbox{p-val}}
 	&\multicolumn{1}{p{\gnumericColH}|}%
-	{\gnumericPB{\centering}\gnumbox{$\theta_0$}}
+	{\gnumericPB{\centering}\gnumbox{сдвиг}}
 	&\multicolumn{1}{p{\gnumericColI}|}%
-	{\gnumericPB{\centering}\gnumbox{$\theta_1$}}
+	{\gnumericPB{\centering}\gnumbox{масш.}}
+	&\multicolumn{1}{p{\gnumericColJ}||}%
+	{\gnumericPB{\centering}\gnumbox{p-val}}
+	&\multicolumn{1}{p{\gnumericColK}|}%
+	{\gnumericPB{\centering}\gnumbox{сдвиг}}
+	&\multicolumn{1}{p{\gnumericColL}|}%
+	{\gnumericPB{\centering}\gnumbox{масш.}}
+	&\multicolumn{1}{p{\gnumericColM}||}%
+	{\gnumericPB{\centering}\gnumbox{p-val}}
+	&\multicolumn{1}{p{\gnumericColN}|}%
+	{\gnumericPB{\centering}\gnumbox{сдвиг}}
+	&\multicolumn{1}{p{\gnumericColO}|}%
+	{\gnumericPB{\centering}\gnumbox{масш.}}
+	&\multicolumn{1}{p{\gnumericColP}||}%
+	{\gnumericPB{\centering}\gnumbox{p-val}}
 \\
-\hhline{|---------|}
-	 \multicolumn{1}{|p{\gnumericColA}|}%
+\hhline{|:=::===::===::===::===::===:|}
+	 \multicolumn{1}{||p{\gnumericColA}||}%
 	{\gnumericPB{\raggedright}\gnumbox[l]{Оценка ММП}}
 	&\multicolumn{1}{p{\gnumericColB}|}%
-	{\gnumericPB{\centering}\gnumbox{$0,008$}}
+	{\gnumericPB{\centering}\gnumbox{$0,01$}}
 	&\multicolumn{1}{p{\gnumericColC}|}%
-	{\gnumericPB{\centering}\gnumbox{$2,039$}}
-	&\multicolumn{1}{p{\gnumericColD}|}%
-	{\gnumericPB{\centering}\gnumbox{$0,008$}}
+	{\gnumericPB{\centering}\gnumbox{$1,02$}}
+	&\multicolumn{1}{p{\gnumericColD}||}%
+	{}
 	&\multicolumn{1}{p{\gnumericColE}|}%
-	{\gnumericPB{\centering}\gnumbox{$1,307$}}
+	{\gnumericPB{\centering}\gnumbox{$0,01$}}
 	&\multicolumn{1}{p{\gnumericColF}|}%
-	{\gnumericPB{\centering}\gnumbox{$0,009$}}
-	&\multicolumn{1}{p{\gnumericColG}|}%
-	{\gnumericPB{\centering}\gnumbox{$2,947$}}
+	{\gnumericPB{\centering}\gnumbox{$2,04$}}
+	&\multicolumn{1}{p{\gnumericColG}||}%
+	{}
 	&\multicolumn{1}{p{\gnumericColH}|}%
-	{\gnumericPB{\centering}\gnumbox{$0,009$}}
+	{\gnumericPB{\centering}\gnumbox{$0,01$}}
 	&\multicolumn{1}{p{\gnumericColI}|}%
-	{\gnumericPB{\centering}\gnumbox{$1,519$}}
+	{\gnumericPB{\centering}\gnumbox{$1,31$}}
+	&\multicolumn{1}{p{\gnumericColJ}||}%
+	{}
+	&\multicolumn{1}{p{\gnumericColK}|}%
+	{\gnumericPB{\centering}\gnumbox{$0,01$}}
+	&\multicolumn{1}{p{\gnumericColL}|}%
+	{\gnumericPB{\centering}\gnumbox{$2,95$}}
+	&\multicolumn{1}{p{\gnumericColM}||}%
+	{}
+	&\multicolumn{1}{p{\gnumericColN}|}%
+	{\gnumericPB{\centering}\gnumbox{$0,01$}}
+	&\multicolumn{1}{p{\gnumericColO}|}%
+	{\gnumericPB{\centering}\gnumbox{$1,52$}}
+	&\multicolumn{1}{p{\gnumericColP}||}%
+	{}
 \\
-\hhline{|---------|}
-	 \multicolumn{1}{|p{\gnumericColA}|}%
-	{\gnumericPB{\raggedright}Оценка ММП по группированным данным}
+\hhline{||-||---||---||---||---||---||}
+	 \multicolumn{1}{||p{\gnumericColA}||}%
+	{\gnumericPB{\raggedright}Оценка ММП по групп.}
 	&\multicolumn{1}{p{\gnumericColB}|}%
-	{\gnumericPB{\centering}\gnumbox{$0,008$}}
+	{\gnumericPB{\centering}\gnumbox{$0,01$}}
 	&\multicolumn{1}{p{\gnumericColC}|}%
-	{\gnumericPB{\centering}\gnumbox{$1,643$}}
-	&\multicolumn{1}{p{\gnumericColD}|}%
-	{\gnumericPB{\centering}\gnumbox{$−0,190$}}
+	{\gnumericPB{\centering}\gnumbox{$1,08$}}
+	&\multicolumn{1}{p{\gnumericColD}||}%
+	{}
 	&\multicolumn{1}{p{\gnumericColE}|}%
-	{\gnumericPB{\centering}\gnumbox{$1,478$}}
+	{\gnumericPB{\centering}\gnumbox{$0,01$}}
 	&\multicolumn{1}{p{\gnumericColF}|}%
-	{\gnumericPB{\centering}\gnumbox{$0,009$}}
-	&\multicolumn{1}{p{\gnumericColG}|}%
-	{\gnumericPB{\centering}\gnumbox{$2,478$}}
+	{\gnumericPB{\centering}\gnumbox{$1,64$}}
+	&\multicolumn{1}{p{\gnumericColG}||}%
+	{}
 	&\multicolumn{1}{p{\gnumericColH}|}%
-	{\gnumericPB{\centering}\gnumbox{$−0,122$}}
+	{\gnumericPB{\centering}\gnumbox{$−0,19$}}
 	&\multicolumn{1}{p{\gnumericColI}|}%
-	{\gnumericPB{\centering}\gnumbox{$1,583$}}
+	{\gnumericPB{\centering}\gnumbox{$1,48$}}
+	&\multicolumn{1}{p{\gnumericColJ}||}%
+	{}
+	&\multicolumn{1}{p{\gnumericColK}|}%
+	{\gnumericPB{\centering}\gnumbox{$0,01$}}
+	&\multicolumn{1}{p{\gnumericColL}|}%
+	{\gnumericPB{\centering}\gnumbox{$2,48$}}
+	&\multicolumn{1}{p{\gnumericColM}||}%
+	{}
+	&\multicolumn{1}{p{\gnumericColN}|}%
+	{\gnumericPB{\centering}\gnumbox{$−0,12$}}
+	&\multicolumn{1}{p{\gnumericColO}|}%
+	{\gnumericPB{\centering}\gnumbox{$1,58$}}
+	&\multicolumn{1}{p{\gnumericColP}||}%
+	{}
 \\
-\hhline{|---------|}
-	 \multicolumn{1}{|p{\gnumericColA}|}%
+\hhline{||-||---||---||---||---||---||}
+	 \multicolumn{1}{||p{\gnumericColA}||}%
 	{\gnumericPB{\raggedright}\gnumbox[l]{MD-оценка Колмогорова}}
 	&\multicolumn{1}{p{\gnumericColB}|}%
-	{\gnumericPB{\centering}\gnumbox{$−0,084$}}
+	{\gnumericPB{\centering}\gnumbox{$−0,02$}}
 	&\multicolumn{1}{p{\gnumericColC}|}%
-	{\gnumericPB{\centering}\gnumbox{$1,408$}}
-	&\multicolumn{1}{p{\gnumericColD}|}%
-	{\gnumericPB{\centering}\gnumbox{$−0,040$}}
+	{\gnumericPB{\centering}\gnumbox{$1,08$}}
+	&\multicolumn{1}{p{\gnumericColD}||}%
+	{\gnumericPB{\centering}\gnumbox{$0,77$}}
 	&\multicolumn{1}{p{\gnumericColE}|}%
-	{\gnumericPB{\centering}\gnumbox{$1,212$}}
+	{\gnumericPB{\centering}\gnumbox{$−0,08$}}
 	&\multicolumn{1}{p{\gnumericColF}|}%
-	{\gnumericPB{\centering}\gnumbox{$−0,166$}}
-	&\multicolumn{1}{p{\gnumericColG}|}%
-	{\gnumericPB{\centering}\gnumbox{$1,928$}}
+	{\gnumericPB{\centering}\gnumbox{$1,41$}}
+	&\multicolumn{1}{p{\gnumericColG}||}%
+	{\gnumericPB{\centering}\gnumbox{$0,00$}}
 	&\multicolumn{1}{p{\gnumericColH}|}%
-	{\gnumericPB{\centering}\gnumbox{$−0,068$}}
+	{\gnumericPB{\centering}\gnumbox{$−0,04$}}
 	&\multicolumn{1}{p{\gnumericColI}|}%
-	{\gnumericPB{\centering}\gnumbox{$1,358$}}
+	{\gnumericPB{\centering}\gnumbox{$1,21$}}
+	&\multicolumn{1}{p{\gnumericColJ}||}%
+	{\gnumericPB{\centering}\gnumbox{$0,14$}}
+	&\multicolumn{1}{p{\gnumericColK}|}%
+	{\gnumericPB{\centering}\gnumbox{$−0,17$}}
+	&\multicolumn{1}{p{\gnumericColL}|}%
+	{\gnumericPB{\centering}\gnumbox{$1,93$}}
+	&\multicolumn{1}{p{\gnumericColM}||}%
+	{\gnumericPB{\centering}\gnumbox{$0,00$}}
+	&\multicolumn{1}{p{\gnumericColN}|}%
+	{\gnumericPB{\centering}\gnumbox{$−0,07$}}
+	&\multicolumn{1}{p{\gnumericColO}|}%
+	{\gnumericPB{\centering}\gnumbox{$1,36$}}
+	&\multicolumn{1}{p{\gnumericColP}||}%
+	{\gnumericPB{\centering}\gnumbox{$0,004$}}
 \\
-\hhline{|---------|}
-	 \multicolumn{1}{|p{\gnumericColA}|}%
-	{\gnumericPB{\raggedright}\gnumbox[l]{MD-оценка $\omega^2$ Мизеса}}
+\hhline{||-||---||---||---||---||---||}
+	 \multicolumn{1}{||p{\gnumericColA}||}%
+	{\gnumericPB{\raggedright}\gnumbox[l]{MD-оценка омега мал.}}
 	&\multicolumn{1}{p{\gnumericColB}|}%
-	{\gnumericPB{\centering}\gnumbox{$−0,022$}}
+	{\gnumericPB{\centering}\gnumbox{$0,00$}}
 	&\multicolumn{1}{p{\gnumericColC}|}%
-	{\gnumericPB{\centering}\gnumbox{$1,266$}}
-	&\multicolumn{1}{p{\gnumericColD}|}%
-	{\gnumericPB{\centering}\gnumbox{$−0,013$}}
+	{\gnumericPB{\centering}\gnumbox{$1,04$}}
+	&\multicolumn{1}{p{\gnumericColD}||}%
+	{\gnumericPB{\centering}\gnumbox{$0,80$}}
 	&\multicolumn{1}{p{\gnumericColE}|}%
-	{\gnumericPB{\centering}\gnumbox{$1,184$}}
+	{\gnumericPB{\centering}\gnumbox{$−0,02$}}
 	&\multicolumn{1}{p{\gnumericColF}|}%
-	{\gnumericPB{\centering}\gnumbox{$−0,062$}}
-	&\multicolumn{1}{p{\gnumericColG}|}%
-	{\gnumericPB{\centering}\gnumbox{$1,600$}}
+	{\gnumericPB{\centering}\gnumbox{$1,27$}}
+	&\multicolumn{1}{p{\gnumericColG}||}%
+	{\gnumericPB{\centering}\gnumbox{$0,00$}}
 	&\multicolumn{1}{p{\gnumericColH}|}%
-	{\gnumericPB{\centering}\gnumbox{$−0,029$}}
+	{\gnumericPB{\centering}\gnumbox{$−0,01$}}
 	&\multicolumn{1}{p{\gnumericColI}|}%
-	{\gnumericPB{\centering}\gnumbox{$1,321$}}
+	{\gnumericPB{\centering}\gnumbox{$1,18$}}
+	&\multicolumn{1}{p{\gnumericColJ}||}%
+	{\gnumericPB{\centering}\gnumbox{$0,09$}}
+	&\multicolumn{1}{p{\gnumericColK}|}%
+	{\gnumericPB{\centering}\gnumbox{$−0,06$}}
+	&\multicolumn{1}{p{\gnumericColL}|}%
+	{\gnumericPB{\centering}\gnumbox{$1,60$}}
+	&\multicolumn{1}{p{\gnumericColM}||}%
+	{\gnumericPB{\centering}\gnumbox{$0,00$}}
+	&\multicolumn{1}{p{\gnumericColN}|}%
+	{\gnumericPB{\centering}\gnumbox{$−0,03$}}
+	&\multicolumn{1}{p{\gnumericColO}|}%
+	{\gnumericPB{\centering}\gnumbox{$1,32$}}
+	&\multicolumn{1}{p{\gnumericColP}||}%
+	{\gnumericPB{\centering}\gnumbox{$0,001$}}
 \\
-\hhline{|---------|}
-	 \multicolumn{1}{|p{\gnumericColA}|}%
-	{\gnumericPB{\raggedright}\gnumbox[l]{MD-оценка $\Omega^2$ Мизеса}}
+\hhline{||-||---||---||---||---||---||}
+	 \multicolumn{1}{||p{\gnumericColA}||}%
+	{\gnumericPB{\raggedright}\gnumbox[l]{MD-оценка омега бол.}}
 	&\multicolumn{1}{p{\gnumericColB}|}%
-	{\gnumericPB{\centering}\gnumbox{$−0,038$}}
+	{\gnumericPB{\centering}\gnumbox{$−0,01$}}
 	&\multicolumn{1}{p{\gnumericColC}|}%
-	{\gnumericPB{\centering}\gnumbox{$1,372$}}
-	&\multicolumn{1}{p{\gnumericColD}|}%
-	{\gnumericPB{\centering}\gnumbox{$−0,017$}}
+	{\gnumericPB{\centering}\gnumbox{$1,04$}}
+	&\multicolumn{1}{p{\gnumericColD}||}%
+	{\gnumericPB{\centering}\gnumbox{$0,86$}}
 	&\multicolumn{1}{p{\gnumericColE}|}%
-	{\gnumericPB{\centering}\gnumbox{$1,213$}}
+	{\gnumericPB{\centering}\gnumbox{$−0,04$}}
 	&\multicolumn{1}{p{\gnumericColF}|}%
-	{\gnumericPB{\centering}\gnumbox{$−0,144$}}
-	&\multicolumn{1}{p{\gnumericColG}|}%
-	{\gnumericPB{\centering}\gnumbox{$1,980$}}
+	{\gnumericPB{\centering}\gnumbox{$1,37$}}
+	&\multicolumn{1}{p{\gnumericColG}||}%
+	{\gnumericPB{\centering}\gnumbox{$0,00$}}
 	&\multicolumn{1}{p{\gnumericColH}|}%
-	{\gnumericPB{\centering}\gnumbox{$−0,025$}}
+	{\gnumericPB{\centering}\gnumbox{$−0,02$}}
 	&\multicolumn{1}{p{\gnumericColI}|}%
-	{\gnumericPB{\centering}\gnumbox{$1,336$}}
+	{\gnumericPB{\centering}\gnumbox{$1,21$}}
+	&\multicolumn{1}{p{\gnumericColJ}||}%
+	{\gnumericPB{\centering}\gnumbox{$0,09$}}
+	&\multicolumn{1}{p{\gnumericColK}|}%
+	{\gnumericPB{\centering}\gnumbox{$−0,14$}}
+	&\multicolumn{1}{p{\gnumericColL}|}%
+	{\gnumericPB{\centering}\gnumbox{$1,98$}}
+	&\multicolumn{1}{p{\gnumericColM}||}%
+	{\gnumericPB{\centering}\gnumbox{$0,00$}}
+	&\multicolumn{1}{p{\gnumericColN}|}%
+	{\gnumericPB{\centering}\gnumbox{$−0,02$}}
+	&\multicolumn{1}{p{\gnumericColO}|}%
+	{\gnumericPB{\centering}\gnumbox{$1,34$}}
+	&\multicolumn{1}{p{\gnumericColP}||}%
+	{\gnumericPB{\centering}\gnumbox{$0,000$}}
 \\
-\hhline{|---------|}
-	 \multicolumn{1}{|p{\gnumericColA}|}%
+\hhline{||-||---||---||---||---||---||}
+	 \multicolumn{1}{||p{\gnumericColA}||}%
 	{\gnumericPB{\raggedright}\gnumbox[l]{L-оптимальная оценка}}
 	&\multicolumn{1}{p{\gnumericColB}|}%
-	{\gnumericPB{\centering}\gnumbox{$0,000$}}
+	{\gnumericPB{\centering}\gnumbox{$0,00$}}
 	&\multicolumn{1}{p{\gnumericColC}|}%
-	{\gnumericPB{\centering}\gnumbox{$1,259$}}
-	&\multicolumn{1}{p{\gnumericColD}|}%
-	{\gnumericPB{\centering}\gnumbox{$0,000$}}
+	{\gnumericPB{\centering}\gnumbox{$1,01$}}
+	&\multicolumn{1}{p{\gnumericColD}||}%
+	{}
 	&\multicolumn{1}{p{\gnumericColE}|}%
-	{\gnumericPB{\centering}\gnumbox{$1,137$}}
+	{\gnumericPB{\centering}\gnumbox{$0,00$}}
 	&\multicolumn{1}{p{\gnumericColF}|}%
-	{\gnumericPB{\centering}\gnumbox{$0,000$}}
-	&\multicolumn{1}{p{\gnumericColG}|}%
-	{\gnumericPB{\centering}\gnumbox{$1,784$}}
+	{\gnumericPB{\centering}\gnumbox{$1,26$}}
+	&\multicolumn{1}{p{\gnumericColG}||}%
+	{}
 	&\multicolumn{1}{p{\gnumericColH}|}%
-	{\gnumericPB{\centering}\gnumbox{$0,000$}}
+	{\gnumericPB{\centering}\gnumbox{$0,00$}}
 	&\multicolumn{1}{p{\gnumericColI}|}%
-	{\gnumericPB{\centering}\gnumbox{$1,268$}}
+	{\gnumericPB{\centering}\gnumbox{$1,14$}}
+	&\multicolumn{1}{p{\gnumericColJ}||}%
+	{}
+	&\multicolumn{1}{p{\gnumericColK}|}%
+	{\gnumericPB{\centering}\gnumbox{$0,00$}}
+	&\multicolumn{1}{p{\gnumericColL}|}%
+	{\gnumericPB{\centering}\gnumbox{$1,78$}}
+	&\multicolumn{1}{p{\gnumericColM}||}%
+	{}
+	&\multicolumn{1}{p{\gnumericColN}|}%
+	{\gnumericPB{\centering}\gnumbox{$0,00$}}
+	&\multicolumn{1}{p{\gnumericColO}|}%
+	{\gnumericPB{\centering}\gnumbox{$1,27$}}
+	&\multicolumn{1}{p{\gnumericColP}||}%
+	{}
 \\
-\hhline{|-|-|-|-|-|-|-|-|-|}
+\hhline{|b:=:b:===:b:===:b:===:b:===:b:===:b|}
 \end{longtable}
 
 \ifthenelse{\isundefined{\languageshorthands}}{}{\languageshorthands{\languagename}}
