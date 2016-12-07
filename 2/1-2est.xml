@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <gnm:Workbook xmlns:gnm="http://www.gnumeric.org/v10.dtd" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.gnumeric.org/v9.xsd">
-  <gnm:Version Epoch="1" Major="12" Minor="9" Full="1.12.9"/>
+  <gnm:Version Epoch="1" Major="12" Minor="17" Full="1.12.17"/>
   <gnm:Attributes>
     <gnm:Attribute>
       <gnm:name>WorkbookView::show_horizontal_scrollbar</gnm:name>
@@ -25,7 +25,7 @@
   </gnm:Attributes>
   <office:document-meta xmlns:office="urn:oasis:names:tc:opendocument:xmlns:office:1.0" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:meta="urn:oasis:names:tc:opendocument:xmlns:meta:1.0" xmlns:ooo="http://openoffice.org/2004/office" office:version="1.2">
     <office:meta>
-      <dc:date>2016-12-07T14:53:00Z</dc:date>
+      <dc:date>2016-12-07T15:16:45Z</dc:date>
       <meta:creation-date>2016-11-23T09:38:29Z</meta:creation-date>
     </office:meta>
   </office:document-meta>
@@ -35,7 +35,7 @@
     <gnm:SheetName gnm:Cols="256" gnm:Rows="65536">Sheet2</gnm:SheetName>
     <gnm:SheetName gnm:Cols="256" gnm:Rows="65536">Sheet3</gnm:SheetName>
   </gnm:SheetNameIndex>
-  <gnm:Geometry Width="1278" Height="256"/>
+  <gnm:Geometry Width="1145" Height="224"/>
   <gnm:Sheets>
     <gnm:Sheet DisplayFormulas="0" HideZero="0" HideGrid="0" HideColHeader="0" HideRowHeader="0" DisplayOutlines="1" OutlineSymbolsBelow="1" OutlineSymbolsRight="1" Visibility="GNM_SHEET_VISIBILITY_VISIBLE" GridColor="0:0:0">
       <gnm:Name>Sheet1</gnm:Name>
@@ -145,7 +145,7 @@
             <gnm:Font Unit="10" Bold="0" Italic="0" Underline="0" StrikeThrough="0" Script="0">Sans</gnm:Font>
           </gnm:Style>
         </gnm:StyleRegion>
-        <gnm:StyleRegion startCol="1" startRow="0" endCol="3" endRow="0">
+        <gnm:StyleRegion startCol="1" startRow="0" endCol="14" endRow="0">
           <gnm:Style HAlign="GNM_HALIGN_CENTER" VAlign="GNM_VALIGN_BOTTOM" WrapText="0" ShrinkToFit="0" Rotation="0" Shade="0" Indent="0" Locked="1" Hidden="0" Fore="0:0:0" Back="FFFF:FFFF:FFFF" PatternColor="0:0:0" Format="General">
             <gnm:Font Unit="10" Bold="0" Italic="0" Underline="0" StrikeThrough="0" Script="0">Sans</gnm:Font>
             <gnm:StyleBorder>
@@ -264,16 +264,6 @@
             <gnm:StyleBorder>
               <gnm:Top Style="1" Color="0:0:0"/>
               <gnm:Bottom Style="5" Color="0:0:0"/>
-              <gnm:Left Style="5" Color="0:0:0"/>
-            </gnm:StyleBorder>
-          </gnm:Style>
-        </gnm:StyleRegion>
-        <gnm:StyleRegion startCol="4" startRow="0" endCol="14" endRow="0">
-          <gnm:Style HAlign="GNM_HALIGN_CENTER" VAlign="GNM_VALIGN_BOTTOM" WrapText="0" ShrinkToFit="0" Rotation="0" Shade="0" Indent="0" Locked="1" Hidden="0" Fore="0:0:0" Back="FFFF:FFFF:FFFF" PatternColor="0:0:0" Format="General">
-            <gnm:Font Unit="10" Bold="0" Italic="0" Underline="0" StrikeThrough="0" Script="0">Sans</gnm:Font>
-            <gnm:StyleBorder>
-              <gnm:Top Style="5" Color="0:0:0"/>
-              <gnm:Bottom Style="1" Color="0:0:0"/>
               <gnm:Left Style="5" Color="0:0:0"/>
             </gnm:StyleBorder>
           </gnm:Style>
@@ -815,8 +805,8 @@
         <gnm:RowInfo No="3" Unit="26.25"/>
         <gnm:RowInfo No="4" Unit="13.5" Count="4"/>
       </gnm:Rows>
-      <gnm:Selections CursorCol="9" CursorRow="8">
-        <gnm:Selection startCol="9" startRow="8" endCol="9" endRow="8"/>
+      <gnm:Selections CursorCol="12" CursorRow="7">
+        <gnm:Selection startCol="12" startRow="7" endCol="12" endRow="7"/>
       </gnm:Selections>
       <gnm:Cells>
         <gnm:Cell Row="0" Col="0" ValueType="60" ValueFormat="@">Параметр засорения ν</gnm:Cell>
@@ -869,13 +859,13 @@
         <gnm:Cell Row="4" Col="3" ValueType="40">0.76616006264742531</gnm:Cell>
         <gnm:Cell Row="4" Col="4" ValueType="40">-0.084000000000000005</gnm:Cell>
         <gnm:Cell Row="4" Col="5" ValueType="40">1.4081999999999999</gnm:Cell>
-        <gnm:Cell Row="4" Col="6" ValueType="40">0.14153034542621321</gnm:Cell>
+        <gnm:Cell Row="4" Col="6" ValueType="40">0</gnm:Cell>
         <gnm:Cell Row="4" Col="7" ValueType="40">-0.040399999999999998</gnm:Cell>
         <gnm:Cell Row="4" Col="8" ValueType="40">1.2124999999999999</gnm:Cell>
         <gnm:Cell Row="4" Col="9" ValueType="40">0.14153034542621321</gnm:Cell>
         <gnm:Cell Row="4" Col="10" ValueType="40">-0.1658</gnm:Cell>
         <gnm:Cell Row="4" Col="11" ValueType="40">1.9282999999999999</gnm:Cell>
-        <gnm:Cell Row="4" Col="12" ValueType="40">0.0040535666961735162</gnm:Cell>
+        <gnm:Cell Row="4" Col="12" ValueType="40">0</gnm:Cell>
         <gnm:Cell Row="4" Col="13" ValueType="40">-0.0683</gnm:Cell>
         <gnm:Cell Row="4" Col="14" ValueType="40">1.3583000000000001</gnm:Cell>
         <gnm:Cell Row="4" Col="15" ValueType="40">0.0040535666961735162</gnm:Cell>
@@ -885,13 +875,13 @@
         <gnm:Cell Row="5" Col="3" ValueType="40">0.7975246391055093</gnm:Cell>
         <gnm:Cell Row="5" Col="4" ValueType="40">-0.021700000000000001</gnm:Cell>
         <gnm:Cell Row="5" Col="5" ValueType="40">1.2662</gnm:Cell>
-        <gnm:Cell Row="5" Col="6" ValueType="40">0.087572540168288304</gnm:Cell>
+        <gnm:Cell Row="5" Col="6" ValueType="40">0</gnm:Cell>
         <gnm:Cell Row="5" Col="7" ValueType="40">-0.012800000000000001</gnm:Cell>
         <gnm:Cell Row="5" Col="8" ValueType="40">1.1842999999999999</gnm:Cell>
         <gnm:Cell Row="5" Col="9" ValueType="40">0.087572540168288304</gnm:Cell>
         <gnm:Cell Row="5" Col="10" ValueType="40">-0.0625</gnm:Cell>
         <gnm:Cell Row="5" Col="11" ValueType="40">1.6001000000000001</gnm:Cell>
-        <gnm:Cell Row="5" Col="12" ValueType="40">0.001153218161938474</gnm:Cell>
+        <gnm:Cell Row="5" Col="12" ValueType="40">0</gnm:Cell>
         <gnm:Cell Row="5" Col="13" ValueType="40">-0.028500000000000001</gnm:Cell>
         <gnm:Cell Row="5" Col="14" ValueType="40">1.321</gnm:Cell>
         <gnm:Cell Row="5" Col="15" ValueType="40">0.001153218161938474</gnm:Cell>
@@ -901,7 +891,7 @@
         <gnm:Cell Row="6" Col="3" ValueType="40">0.86448230623865907</gnm:Cell>
         <gnm:Cell Row="6" Col="4" ValueType="40">-0.037699999999999997</gnm:Cell>
         <gnm:Cell Row="6" Col="5" ValueType="40">1.3723000000000001</gnm:Cell>
-        <gnm:Cell Row="6" Col="6" ValueType="40">0.087572540168288304</gnm:Cell>
+        <gnm:Cell Row="6" Col="6" ValueType="40">0</gnm:Cell>
         <gnm:Cell Row="6" Col="7" ValueType="40">-0.017399999999999999</gnm:Cell>
         <gnm:Cell Row="6" Col="8" ValueType="40">1.2125999999999999</gnm:Cell>
         <gnm:Cell Row="6" Col="9" ValueType="40">0.087572540168288304</gnm:Cell>
