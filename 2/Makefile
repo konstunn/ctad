@@ -1,12 +1,9 @@
 
-main.pdf: main.ltx main.aux main.toc 1est.tex 1-2est.tex
+main.pdf: main.ltx main.aux 1est.tex 1-2est.tex
 	pdflatex $<
 
 view: main.pdf
 	xdg-open $< || explorer $< &
-
-%.toc: %.ltx
-	pdflatex $<
 
 %.aux: %.ltx
 	pdflatex $<
