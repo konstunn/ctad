@@ -27,6 +27,7 @@
 \usepackage{caption}
 
 \usepackage{amsmath}
+\usepackage{pgfplots}
 
 
 \setlist[description]{leftmargin=\parindent,labelindent=\parindent}
@@ -168,6 +169,17 @@ f(x, \theta_0) = \frac{1}{\theta_0} e^{-x / \theta_0 }
 неограниченную функцию
 
 \[ \mbox{\emph{IF}}(x, \theta_0) = -\theta_0 + x .\]
+
+\begin{figure}[h]
+\centering
+\begin{tikzpicture}
+\begin{axis}
+\addplot[color=red]{x};
+\end{axis}
+\end{tikzpicture}
+\captionsetup{justification=centering}
+\caption{График функции влияния Хампеля для ОМП по негруппированным наблюдениям, $\theta_0 = 0$}
+\end{figure}
 
 Делаем вывод о том, что ОМП параметра масштаба по негруппированным данным
 экспоненциального закона не является робастной по Хампелю.
