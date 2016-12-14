@@ -1,11 +1,11 @@
 
-main.pdf: main.ltx main.aux 1est.tex 1-2est.tex
+main.pdf: main.tex main.aux 1est.tex 1-2est.tex
 	pdflatex $<
 
 view: main.pdf
 	xdg-open $< || explorer $< &
 
-%.aux: %.ltx
+%.aux: %.tex
 	pdflatex $<
 
 clean:
