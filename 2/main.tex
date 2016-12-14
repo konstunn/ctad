@@ -194,7 +194,17 @@ f(x, \theta_0) = \frac{1}{\theta_0} e^{-x / \theta_0 }
 как:
 
 \begin{equation}
-	\mbox{\emph{IF}}(x; F, \theta) = -\frac{\frac{\partial lnP_i(\theta)}{\partial \theta}}{denominator}
+	\mbox{\emph{IF}}(x; F, \theta) =
+		-\frac
+			{
+				\frac
+					{\partial lnP_i(\theta)}
+					{\partial \theta}
+			}
+			{
+				\sum\limits_{j=1}^{k} \left( \frac{\partial^2 lnP_j(\theta)}{\partial \theta^2} \right) P_j(\theta)
+			}
+			, x_{i-1} < x < x_i
 \end{equation}
 
 \item Исследовать распределения статистик критериев типа Граббса,
