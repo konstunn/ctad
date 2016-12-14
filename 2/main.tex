@@ -173,7 +173,12 @@ f(x, \theta_0) = \frac{1}{\theta_0} e^{-x / \theta_0 }
 \begin{figure}[h]
 \centering
 \begin{tikzpicture}
-\begin{axis}
+\begin{axis}[
+		axis x line = center,
+		axis y line = center,
+		grid = both,
+		minor tick num=1
+]
 \addplot[color=red]{-1+x};
 \end{axis}
 \end{tikzpicture}
