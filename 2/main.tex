@@ -202,18 +202,20 @@ f(x, \theta_0) = \frac{1}{\theta_0} e^{-x / \theta_0 }
 					{\partial \theta}
 			}
 			{
-				\sum\limits_{j=1}^{k} \left( \frac{\partial^2 lnP_j(\theta)}{\partial \theta^2} \right) P_j(\theta)
+				\sum\limits_{j=1}^{k}
+				\left( \frac{\partial^2 lnP_j(\theta)}{\partial \theta^2} \right)
+				P_j(\theta)
 			}
-			, x_{i-1} < x < x_i
+			\ , \ x_{i-1} < x < x_i
 \end{equation}
 
 Для экспоненциального распределения с параметром $\theta = 1$
 
 \begin{equation}
-	\left. \frac {\partial lnP_i(\theta)} {\partial \theta} \right|_{\theta=1} =
+	\left.\frac {\partial lnP_i(\theta)} {\partial \theta} \right\rvert_{\theta=1} =
 	\frac
 	{ x_{i-1} e^{-x_{i-1}} - x_i e^{-x_i} }
-	{ e^{-x_{x-1}} - e^{-x_i} }
+	{ e^{-x_{i-1}} - e^{-x_i} } \ ,
 \end{equation}
 
 \item Исследовать распределения статистик критериев типа Граббса,
