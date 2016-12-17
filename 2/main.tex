@@ -218,6 +218,42 @@ f(x, \theta_0) = \frac{1}{\theta_0} e^{-x / \theta_0 }
 	{ e^{-x_{i-1}} - e^{-x_i} } \ ,
 \end{equation}
 
+а информация Фишера определяется как [1]
+
+\begin{equation}
+	\left.
+	\sum\limits_{j=1}^{k}
+		\left(
+			\frac
+				{ \partial^2 lnP_j(\theta) }
+				{ \partial \theta^2 }
+		\right)
+	P_j(\theta) \right|_{\theta=1}
+	=
+	\sum\limits_{j=1}^{k}
+	\frac
+	{ \left( x_j e^{-x_j} - x_{j-1} e^{-x_{j-1}} \right)^2 }
+	{ e^{-x_{j-1}} - e^{x_j} } \ .
+\end{equation}
+
+Тогда
+
+\begin{equation}
+	\left.\mbox{\emph{IF}}(x; F, \theta)\right\rvert_{\theta=1} = 
+	\frac
+	{
+		\frac
+		{ x_{i-1} e^{-x_{i-1}} - x_i e^{-x_i} }
+		{ e^{-x_{i-1}} - e^{-x_i} } 
+	}
+	{
+		\sum\limits_{j=1}^{k}
+		\frac
+		{ \left( x_j e^{-x_j} - x_{j-1} e^{-x_{j-1}} \right)^2 }
+		{ e^{-x_{j-1}} - e^{x_j} }
+	} \ , \ x_{i-1} < x < x_i
+\end{equation}
+
 \item Исследовать распределения статистик критериев типа Граббса,
 предназначенных для анализа на аномальность сразу нескольких наблюдений
 (по заданию преподавателя) в предположении о принадлежности выборки
@@ -225,6 +261,7 @@ f(x, \theta_0) = \frac{1}{\theta_0} e^{-x / \theta_0 }
 критериев типа Граббса, найти приближенные значения процентных точек. Для
 вариантов 1-5 применить критерий Граббса для отбраковки аномальных
 наблюдений по выборкам с засорением, полученным в п.1.
+
 \end{enumerate}
 
 \section*{Заключение}
