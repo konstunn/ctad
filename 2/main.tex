@@ -29,6 +29,8 @@
 \usepackage{amsmath}
 \usepackage{pgfplots}
 
+\usepackage{float}
+
 
 \setlist[description]{leftmargin=\parindent,labelindent=\parindent}
 
@@ -190,6 +192,8 @@ f(x, \theta_0) = \frac{1}{\theta_0} e^{-x / \theta_0 }
 Делаем вывод о том, что ОМП параметра масштаба по негруппированным данным
 экспоненциального закона не является робастной по Хампелю.
 
+\newpage
+
 Функция влияния ОМП по \emph{группированным} данным в общем случае определяется
 как:
 
@@ -262,12 +266,19 @@ f(x, \theta_0) = \frac{1}{\theta_0} e^{-x / \theta_0 }
 вариантов 1-5 применить критерий Граббса для отбраковки аномальных
 наблюдений по выборкам с засорением, полученным в п.1.
 
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.75\textwidth]{grabbs}
+\caption{Функции распределения статистик критерия типа Граббса при разных
+	конфигурациях наблюдений, проверяемых на аномальность.}
+\end{figure}
+
 \end{enumerate}
 
-\section*{Заключение}
-\addcontentsline{toc}{section}{Заключение}
+%\section*{Заключение}
+%\addcontentsline{toc}{section}{Заключение}
 
-Заключение.
+%Заключение.
 
 \section*{Список источников}
 \addcontentsline{toc}{section}{Список источников}
