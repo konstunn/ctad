@@ -3,7 +3,7 @@ main.pdf: main.tex main.aux
 	pdflatex $<
 
 view: main.pdf
-	xdg-open $< || explorer $< &
+	xdg-open $< > /dev/null 2>&1 &
 
 %.aux: %.tex
 	pdflatex $<
