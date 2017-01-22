@@ -21,8 +21,8 @@ p <- pcauchy(x_i, location=0, scale=1)
 expected <- zoo::rollapply(p, width=2, function(x) x[2] - x[1])
 
 # group sample
-f <- cut(x, x_i, include.lowest=TRUE)
-groups <- split(x, f)
+factors <- cut(x, x_i, include.lowest=TRUE)
+groups <- split(x, factors)
 
 # calculate observed probabilities
 counts <- lapply(groups, FUN=length)
