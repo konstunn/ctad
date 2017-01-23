@@ -32,9 +32,11 @@ factors <- cut(x, x_i, include.lowest=TRUE)
 groups <- split(x, factors)
 
 # calculate observed probabilities (frequencies)
-counts <- lapply(groups, FUN=length)
-observed <- lapply(counts, function(x) x / n)
+observed <- lapply(groups, FUN=length)
 observed <- as.numeric(observed)
 
-# calculate chi square test statistic
+print(chisq.test(observed, p=expected))
+
+# calculate chi square test statistic by hand
+expected <- expected * n
 print(sum((observed-expected)^2 / expected))
