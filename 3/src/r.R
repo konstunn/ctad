@@ -1,3 +1,6 @@
+#!/usr/bin/Rscript --vanilla
+
+N <- 16600
 
 # sample size
 n <- 100
@@ -6,7 +9,8 @@ n <- 100
 # TODO: customize according to H
 # H0: sample is from Cauchy distribution
 # H1: sample is from Normal distribution
-x <- rcauchy(n) # here we set H0 true
+X <- rcauchy(n*N) # here we set H0 true
+X <- split(X , ceiling(seq_along(X)/n))
 
 # number of intervals for grouping (number of bins)
 k <- 5
@@ -28,15 +32,16 @@ x_i <- qcauchy(P, location=location, scale=scale)
 expected <- rep(dP, k)
 
 # perform sample grouping (binning)
-factors <- cut(x, x_i, include.lowest=TRUE)
-groups <- split(x, factors)
+factors <- lapply(X, cut, x_i, include.lowest=TRUE)
+groups <- Map(split, X, factors)
 
 # calculate observed probabilities (frequencies)
-observed <- lapply(groups, FUN=length)
-observed <- as.numeric(observed)
+nestlen <- function(x) lapply(x, length)
+observed <- lapply(groups, nestlen)
+observed <- matrix(unlist(observed), ncol=k, byrow=TRUE)
 
-print(chisq.test(observed, p=expected))
+# calculate chisq test statistic values
+machisq.test <- function(o, p) chisq.test(o, p=p)$statistic
+chisq <- apply(observed, 1, machisq.test, p=expected)
 
-# calculate chi square test statistic by hand
-expected <- expected * n
-print(sum((observed-expected)^2 / expected))
+
