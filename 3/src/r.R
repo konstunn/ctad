@@ -44,4 +44,8 @@ observed <- matrix(unlist(observed), ncol=k, byrow=TRUE)
 machisq.test <- function(o, p) chisq.test(o, p=p)$statistic
 chisq <- apply(observed, 1, machisq.test, p=expected)
 
+df <- data.frame(chisq)
+library(ggplot2)
+p <- ggplot() + geom_density(aes(chisq), data=df)
+print(p)
 
