@@ -5,9 +5,16 @@ n <- 2*10^2		# sample size
 
 Htype <- 'simple'	# hypotheses type: 'simple' or 'complex'
 
+# number of intervals for grouping (number of bins)
+k <- 5
+
+# Cauchy parameters in case of testing simple hypothesis
+location=0
+scale=1
+
 print("Random number samples generating...")
 # Generate sample
-# TODO: customize according to H
+# TODO: customize this according whether H0 or H1 is true
 # H0: sample is from Cauchy distribution
 # H1: sample is from Normal distribution
 print("Generating big sample...")
@@ -15,18 +22,11 @@ X <- rcauchy(n*N) # here we set H0 true
 print("Splitting big sample into list of samples...")
 X <- split(X , ceiling(seq_along(X)/n))
 
-# number of intervals for grouping (number of bins)
-k <- 5
-
-# TODO: customize this according to H
+# TODO: customize this according to H0 (now it's Cauchy)
 # optimal probabilities vector elements step for asymptotically optimal
-# grouping of sample from Cauchy distribution (we assume H0 is true)
+# grouping of sample from Cauchy distribution
 dP <- 1/k
 P <- seq(from=0, to=1, by=dP)
-
-# Cauchy parameters in case of testing simple hypothesis
-location=0
-scale=1
 
 library(fitdistrplus)
 library(plyr)
@@ -41,7 +41,7 @@ if (Htype == 'simple') {
 	estimates <- llply(X, lmledist, 'cauchy', .progress='text')
 } else stop("Invalid Htype value: must be 'simple' or 'complex'")
 
-# TODO: customize this according to H
+# TODO: customize this according to H0 (now it's Cauchy)
 # calculate groups (bins) break points (i.e. quantiles)
 lqcauchy <- function(e, p) qcauchy(p, e[1], e[2])
 x_i <- llply(estimates, lqcauchy, p=P)
