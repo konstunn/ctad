@@ -16,6 +16,7 @@ X <- split(X , ceiling(seq_along(X)/n))
 # number of intervals for grouping (number of bins)
 k <- 5
 
+# TODO: customize this according to H
 # optimal probabilities vector elements step for asymptotically optimal
 # grouping of sample from Cauchy distribution (we assume H0 is true)
 dP <- 1/k
@@ -26,16 +27,25 @@ P <- seq(from=0, to=1, by=dP)
 location=0 # Here we test
 scale=1    # simple hypothesis
 
+library(fitdistrplus)
+lmledist <- function(x, d) mledist(x, d)$estimate
+print("Estimating parameters...'")
+library(plyr)
+# TODO: if testing simple hypotheses, fill estimates with list of elements
+# of 0 and 1
+estimates <- llply(X, lmledist, 'cauchy', .progress='text')
+
+# TODO: customize this according to H
 # calculate groups (bins) break points (i.e. quantiles)
-x_i <- qcauchy(P, location=location, scale=scale)
+lqcauchy <- function(e, p) qcauchy(p, e[1], e[2])
+x_i <- llply(estimates, lqcauchy, p=P)
 
 # expected probabilities (frequencies)
 expected <- rep(dP, k)
 
 # perform sample grouping (binning)
 print("Cutting...")
-library(plyr)
-factors <- llply(X, cut, x_i, include.lowest=TRUE, .progress='text')
+factors <- Map(cut, X, x_i)
 print("Splitting...")
 groups <- Map(split, X, factors)
 
