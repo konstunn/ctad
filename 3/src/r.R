@@ -3,6 +3,8 @@
 N <- 2*10^4		# number of samples
 n <- 2*10^2		# sample size
 
+Htype <- 'simple'	# hypotheses type: 'simple' or 'complex'
+
 print("Random number samples generating...")
 # Generate sample
 # TODO: customize according to H
@@ -22,18 +24,22 @@ k <- 5
 dP <- 1/k
 P <- seq(from=0, to=1, by=dP)
 
-# TODO: for testing composite hypothesis first estimate distribution parameters 
-# from x, assuming x is from Cauchy distribution (we assume H0 is true)
-location=0 # Here we test
-scale=1    # simple hypothesis
+# Cauchy parameters in case of testing simple hypothesis
+location=0
+scale=1
 
 library(fitdistrplus)
-lmledist <- function(x, d) mledist(x, d)$estimate
-print("Estimating parameters...'")
 library(plyr)
-# TODO: if testing simple hypotheses, fill estimates with list of elements
-# of 0 and 1
-estimates <- llply(X, lmledist, 'cauchy', .progress='text')
+
+if (Htype == 'simple') {
+	print("Simple hypothesis.")
+	estimates <- c(rep(c(location,scale), N))
+	estimates <- split(estimates, ceiling(seq_along(estimates)/2))
+} else if (Htype == 'complex') {
+	print("Estimating parameters...'")
+	lmledist <- function(x, d) mledist(x, d)$estimate
+	estimates <- llply(X, lmledist, 'cauchy', .progress='text')
+} else stop("Invalid Htype value: must be 'simple' or 'complex'")
 
 # TODO: customize this according to H
 # calculate groups (bins) break points (i.e. quantiles)
