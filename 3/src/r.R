@@ -12,62 +12,59 @@ k <- 5
 location=0
 scale=1
 
-print("Random number samples generating...")
-# Generate sample
-# TODO: customize this according whether H0 or H1 is true
-# H0: sample is from Cauchy distribution
-# H1: sample is from Normal distribution
-print("Generating big sample...")
-X <- rcauchy(n*N) # here we set H0 true
-print("Splitting big sample into list of samples...")
-X <- split(X , ceiling(seq_along(X)/n))
+chisq.mod <- function(n=100, N=16600, Htype, k, location=0, scale=1) {
+	print("Random number samples generating...")
+	print("Generating big sample...")
+	# Generate sample
+	# TODO: customize this according whether H0 or H1 is true
+	# H0: sample is from Cauchy distribution
+	# H1: sample is from Normal distribution
+	X <- rcauchy(n*N) # here we set H0 true
+	print("Splitting big sample into list of samples...")
+	X <- split(X , ceiling(seq_along(X)/n))
 
-# TODO: customize this according to H0 (now it's Cauchy)
-# optimal probabilities vector elements step for asymptotically optimal
-# grouping of sample from Cauchy distribution
-dP <- 1/k
-P <- seq(from=0, to=1, by=dP)
+	# TODO: customize this according to H0 (now it's Cauchy)
+	# optimal probabilities vector elements step for asymptotically optimal
+	# grouping of sample from Cauchy distribution
+	dP <- 1/k
+	P <- seq(from=0, to=1, by=dP)
 
-library(fitdistrplus)
-library(plyr)
+	library(fitdistrplus)
+	library(plyr)
 
-if (Htype == 'simple') {
-	print("Simple hypothesis.")
-	estimates <- c(rep(c(location,scale), N))
-	estimates <- split(estimates, ceiling(seq_along(estimates)/2))
-} else if (Htype == 'complex') {
-	print("Estimating parameters...'")
-	lmledist <- function(x, d) mledist(x, d)$estimate
-	estimates <- llply(X, lmledist, 'cauchy', .progress='text')
-} else stop("Invalid Htype value: must be 'simple' or 'complex'")
+	if (Htype == 'simple') {
+		print("Simple hypothesis.")
+		estimates <- c(rep(c(location,scale), N))
+		estimates <- split(estimates, ceiling(seq_along(estimates)/2))
+	} else if (Htype == 'complex') {
+		print("Estimating parameters...'")
+		lmledist <- function(x, d) mledist(x, d)$estimate
+		estimates <- llply(X, lmledist, 'cauchy', .progress='text')
+	} else stop("Invalid Htype value: must be 'simple' or 'complex'")
 
-# TODO: customize this according to H0 (now it's Cauchy)
-# calculate groups (bins) break points (i.e. quantiles)
-lqcauchy <- function(e, p) qcauchy(p, e[1], e[2])
-x_i <- llply(estimates, lqcauchy, p=P)
+	# TODO: customize this according to H0 (now it's Cauchy)
+	# calculate groups (bins) break points (i.e. quantiles)
+	lqcauchy <- function(e, p) qcauchy(p, e[1], e[2])
+	x_i <- llply(estimates, lqcauchy, p=P)
 
-# expected probabilities (frequencies)
-expected <- rep(dP, k)
+	# expected probabilities (frequencies)
+	expected <- rep(dP, k)
 
-# perform sample grouping (binning)
-print("Cutting...")
-factors <- Map(cut, X, x_i)
-print("Splitting...")
-groups <- Map(split, X, factors)
+	# perform sample grouping (binning)
+	print("Cutting...")
+	factors <- Map(cut, X, x_i)
+	print("Splitting...")
+	groups <- Map(split, X, factors)
 
-# calculate observed probabilities (frequencies)
-print("Calculating observed probs...")
-llen <- function(x) lapply(x, length)
-observed <- llply(groups, llen, .progress='text')
-observed <- matrix(unlist(observed), ncol=k, byrow=TRUE)
+	# calculate observed probabilities (frequencies)
+	print("Calculating observed probs...")
+	llen <- function(x) lapply(x, length)
+	observed <- llply(groups, llen, .progress='text')
+	observed <- matrix(unlist(observed), ncol=k, byrow=TRUE)
 
-# calculate chisq test statistic values
-print("Calculating test statistic array...")
-lchisq.test <- function(o, p) chisq.test(o, p=p)$statistic
-chisq <- apply(observed, 1, lchisq.test, p=expected)
-
-df <- data.frame(chisq)
-library(ggplot2)
-p <- ggplot() + geom_density(aes(chisq), data=df)
-print(p)
-
+	# calculate chisq test statistic values
+	print("Calculating test statistic array...")
+	lchisq.test <- function(o, p) chisq.test(o, p=p)$statistic
+	chisq <- apply(observed, 1, lchisq.test, p=expected)
+	return(chisq)
+}
