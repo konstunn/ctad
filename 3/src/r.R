@@ -41,14 +41,14 @@ groups <- Map(split, X, factors)
 
 # calculate observed probabilities (frequencies)
 print("Calculating observed probs...")
-nestlen <- function(x) lapply(x, length)
-observed <- llply(groups, nestlen, .progress='text')
+llen <- function(x) lapply(x, length)
+observed <- llply(groups, llen, .progress='text')
 observed <- matrix(unlist(observed), ncol=k, byrow=TRUE)
 
 # calculate chisq test statistic values
 print("Calculating test statistic array...")
-machisq.test <- function(o, p) chisq.test(o, p=p)$statistic
-chisq <- apply(observed, 1, machisq.test, p=expected)
+lchisq.test <- function(o, p) chisq.test(o, p=p)$statistic
+chisq <- apply(observed, 1, lchisq.test, p=expected)
 
 df <- data.frame(chisq)
 library(ggplot2)
