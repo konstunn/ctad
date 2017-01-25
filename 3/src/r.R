@@ -1,9 +1,7 @@
 #!/usr/bin/Rscript --vanilla
 
-N <- 16600
-
-# sample size
-n <- 100
+N <- 2*10^4		# number of samples
+n <- 2*10^2		# sample size
 
 # Generate sample
 # TODO: customize according to H
