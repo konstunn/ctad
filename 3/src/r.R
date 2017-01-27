@@ -12,7 +12,8 @@ k <- 5
 location=0
 scale=1
 
-chisq.mod <- function(n=100, N=16600, Htype, k, location=0, scale=1) {
+chisq.mod <- function(n=100, N=16600, Htype, trueH, k)
+{
 	print("Random number samples generating...")
 	print("Generating big sample...")
 	# Generate sample
@@ -34,7 +35,7 @@ chisq.mod <- function(n=100, N=16600, Htype, k, location=0, scale=1) {
 
 	if (Htype == 'simple') {
 		print("Simple hypothesis.")
-		estimates <- c(rep(c(location,scale), N))
+		estimates <- c(rep(c(location=0,scale=1), N))
 		estimates <- split(estimates, ceiling(seq_along(estimates)/2))
 	} else if (Htype == 'complex') {
 		print("Estimating parameters...'")
