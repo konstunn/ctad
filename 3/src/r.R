@@ -2,14 +2,14 @@
 
 chisq.mod <- function(n=100, N=16600, Htype, trueH, k)
 {
-	print("Random number samples generating...")
-	print("Generating big sample...")
+	message("Random number samples generating...")
+	message("Generating big sample...")
 	# Generate sample
 	# TODO: customize this according whether H0 or H1 is true
 	# H0: sample is from Cauchy distribution
 	# H1: sample is from Normal distribution
 	X <- do.call(trueH, args=list(n=n*N))
-	print("Splitting big sample into list of samples...")
+	message("Splitting big sample into list of samples...")
 	X <- split(X , ceiling(seq_along(X)/n))
 
 	# TODO: customize this according to H0 (now it's Cauchy)
@@ -22,11 +22,11 @@ chisq.mod <- function(n=100, N=16600, Htype, trueH, k)
 	library(plyr)
 
 	if (Htype == 'simple') {
-		print("Simple hypothesis.")
+		message("Simple hypothesis.")
 		estimates <- c(rep(c(location=0,scale=1), N))
 		estimates <- split(estimates, ceiling(seq_along(estimates)/2))
 	} else if (Htype == 'complex') {
-		print("Estimating parameters...'")
+		message("Estimating parameters...'")
 		lmledist <- function(x, d) mledist(x, d)$estimate
 		estimates <- llply(X, lmledist, 'cauchy', .progress='text')
 	} else stop("Invalid Htype value: must be 'simple' or 'complex'")
@@ -40,19 +40,19 @@ chisq.mod <- function(n=100, N=16600, Htype, trueH, k)
 	expected <- rep(dP, k)
 
 	# perform sample grouping (binning)
-	print("Cutting...")
+	message("Cutting...")
 	factors <- Map(cut, X, x_i)
-	print("Splitting...")
+	message("Splitting...")
 	groups <- Map(split, X, factors)
 
 	# calculate observed probabilities (frequencies)
-	print("Calculating observed probs...")
+	message("Calculating observed probs...")
 	llen <- function(x) lapply(x, length)
 	observed <- llply(groups, llen, .progress='text')
 	observed <- matrix(unlist(observed), ncol=k, byrow=TRUE)
 
 	# calculate chisq test statistic values
-	print("Calculating test statistic array...")
+	message("Calculating test statistic array...")
 	lchisq.test <- function(o, p) chisq.test(o, p=p)$statistic
 	chisq <- apply(observed, 1, lchisq.test, p=expected)
 	return(chisq)
