@@ -2,6 +2,7 @@
 
 chisq.mod <- function(n=100, N=16600, Htype, trueH, k)
 {
+	sink(stderr())
 	message("Random number samples generating...")
 	message("Generating big sample...")
 	# Generate sample
@@ -52,5 +53,6 @@ chisq.mod <- function(n=100, N=16600, Htype, trueH, k)
 	message("Calculating test statistic array...")
 	lchisq.test <- function(o, p) chisq.test(o, p=p)$statistic
 	chisq <- apply(observed, 1, lchisq.test, p=expected)
+	sink()
 	return(chisq)
 }
