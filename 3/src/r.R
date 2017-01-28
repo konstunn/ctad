@@ -55,5 +55,6 @@ chisq.mod <- function(n=100, N=16600, Htype, trueH, k)
 	lchisq.test <- function(o, p) chisq.test(o, p=p)$statistic
 	chisq <- apply(observed, 1, lchisq.test, p=expected)
 	sink()
-	return(chisq)
+	return(data.frame(chisq=chisq, k=rep(k,N), n=rep(n,N), N=rep(N,N),
+					  trueH=rep(trueH,N), Htype=rep(Htype,N)))
 }
