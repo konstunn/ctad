@@ -1,17 +1,5 @@
 #!/usr/bin/Rscript --vanilla
 
-N <- 2*10^4		# number of samples
-n <- 2*10^2		# sample size
-
-Htype <- 'simple'	# hypotheses type: 'simple' or 'complex'
-
-# number of intervals for grouping (number of bins)
-k <- 5
-
-# Cauchy parameters in case of testing simple hypothesis
-location=0
-scale=1
-
 chisq.mod <- function(n=100, N=16600, Htype, trueH, k)
 {
 	print("Random number samples generating...")
