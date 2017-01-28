@@ -92,6 +92,37 @@
 	$H_0$: Коши \\
 	$H_1$: Нормальное \\
 
+<<cache=FALSE, echo=FALSE, message=FALSE>>=
+opts_chunk$set(autodep=TRUE, cache=TRUE, message=FALSE, echo=FALSE)
+options(scipen=5)
+dep_auto()
+@
+
+<<code=readLines('src/r.R')>>=
+@
+
+<<fig.pos='H'>>=
+n <- 100
+N <- 16600
+
+df <- chisq.mod(n=n, N=N, trueH='cauchy', Htype='simple', k=5)
+
+df1 <- chisq.mod(n=n, N=N, trueH='cauchy', Htype='complex', k=5)
+
+dfm <- merge(df, df1, all=TRUE)
+@
+
+	Количество выборок $N = \Sexpr{N}$. \\
+	Объем выборок $n = \Sexpr{n}$.
+
+<<fig.pos='H', fig.cap=caption, fig.height=4>>=
+
+caption <- 'Плотность распределения статистики $\\chi^2$'
+
+library(ggplot2)
+ggplot(dfm, aes(chisq, linetype=Htype)) + geom_density()
+@
+
 	\item Идентифицировать построенные законы распределения (найти
 		аналитические модели, наиболее хорошо описывающие эмпирические
 		распределения).
