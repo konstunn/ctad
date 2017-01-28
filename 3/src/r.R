@@ -5,9 +5,6 @@ chisq.mod <- function(n=100, N=16600, Htype, trueH, k)
 	message("Random number samples generating...")
 	message("Generating big sample...")
 	# Generate sample
-	# TODO: customize this according whether H0 or H1 is true
-	# H0: sample is from Cauchy distribution
-	# H1: sample is from Normal distribution
 	X <- do.call(trueH, args=list(n=n*N))
 	message("Splitting big sample into list of samples...")
 	X <- split(X , ceiling(seq_along(X)/n))
