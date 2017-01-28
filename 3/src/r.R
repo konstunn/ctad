@@ -3,10 +3,11 @@
 chisq.mod <- function(n=100, N=16600, Htype, trueH, k)
 {
 	sink(stderr())
+	true_H <- paste('r', trueH, sep='')
 	message("Random number samples generating...")
 	message("Generating big sample...")
 	# Generate sample
-	X <- do.call(trueH, args=list(n=n*N))
+	X <- do.call(true_H, args=list(n=n*N))
 	message("Splitting big sample into list of samples...")
 	X <- split(X , ceiling(seq_along(X)/n))
 
