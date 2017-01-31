@@ -1,6 +1,8 @@
 
 R_OPTS=--vanilla
 
+.PHONY: main.tex
+
 main.pdf: main.tex Makefile
 	latexmk -pdf $<
 
