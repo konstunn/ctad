@@ -99,44 +99,412 @@
 	$H_0$: Коши \\
 	$H_1$: Нормальное \\\\ \gobblepars
 
-<<cache=FALSE, echo=FALSE, message=FALSE>>=
-opts_chunk$set(autodep=TRUE, cache=TRUE, message=FALSE, echo=FALSE)
+<<setup, cache=FALSE, echo=FALSE, message=FALSE>>=
+opts_chunk$set(autodep=TRUE, cache=TRUE, message=FALSE, echo=FALSE,
+							 fig.pos='H', fig.lp='fig:', fig.height=2.5)
 options(scipen=5)
 dep_auto()
+library(ggplot2)
+theme_set(theme_minimal())
 @
 
-<<code=readLines('src/r.R')>>=
+<<stat-mod-src, code=readLines('src/r.R')>>=
 @
 
-<<fig.pos='H'>>=
+<<stat-mod>>=
 n <- 100
 N <- 16600
-
-df <- chisq.mod(n=n, N=N, trueH='cauchy', Htype='simple', k=5)
-
-df1 <- chisq.mod(n=n, N=N, trueH='cauchy', Htype='complex', k=5)
-
-dfm <- merge(df, df1, all=TRUE)
+k <- 5
+dfs <- chisq.statmod.gof2cauchy(n=n, N=N, trueH='cauchy', Htype='simple', k=k)
+dfc <- chisq.statmod.gof2cauchy(n=n, N=N, trueH='cauchy', Htype='complex', k=k)
+dfm <- merge(dfs, dfc, all=TRUE)
 @
 
 	Количество выборок $N = \Sexpr{N}$. \\
-	Объем выборок $n = \Sexpr{n}$.
+	Объем выборок $n = \Sexpr{n}$. \\
+	Число интервалов группирования $k = \Sexpr{k}$.
 
-<<fig.pos='H', fig.cap=caption, fig.height=4>>=
-
-caption <- 'Плотность распределения статистики $\\chi^2$'
-
-library(ggplot2)
-ggplot(dfm, aes(chisq, linetype=Htype)) + geom_density()
+<<emp-dchisq-plot, fig.cap=caption>>=
+caption <- 'Плотности эмпирических распределений статистики $\\chi^2$.'
+ggplot(dfm, aes(x, linetype=Htype)) +
+	geom_density() +
+	scale_linetype('Hypothesis')
 @
+
+	На рис. \ref{fig:emp-dchisq-plot} есть визуальное сходство данных распределений с
+		распределением $\chi^2$, что согласуется с соответствующим теоретическим
+		положением.
+
+\newpage
+
+	При простой гипотезе статистика $\chi^2$ распределена как $\chi^2_{k-1}$,
+		где $k$ - число интервалов группирования.
+
+<<simple-plot-cdf, fig.cap=caption>>=
+caption <- 'Эмпирическое и теоретическое распределения статистики'
+ggplot(dfs, aes(x, linetype='Empirical (simple H)')) +
+	stat_ecdf() +
+	stat_function(aes(x, linetype='Theoretical, df=k-1'), fun=pchisq,
+								args=list(df=k-1)) + scale_linetype('Distribution')
+@
+
+<<simple-plot-den, fig.cap=caption>>=
+caption <- 'Эмпирическое и теоретическое плотности распределений статистики'
+ggplot(dfs, aes(x, linetype='Empirical (simple H)')) +
+	geom_density() +
+	stat_function(aes(x, linetype='Theoretical, df=k-1'), fun=dchisq,
+								args=list(df=k-1)) + scale_linetype('Distribution')
+
+@
+
+	Действительно, на рис. \ref{fig:simple-plot-cdf} видно, что распределения
+	хорошо согласуются --- почти сливаются на графике.
+
+	Результаты проверки согласия с помощью статистических критериев представлены
+	далее.
+
+<<simple-gof-theo-chisq, warning=FALSE>>=
+library(goftest)
+ks <- ks.test(dfs$x, 'pchisq', df=k-1, ncp=0)
+ad <- ad.test(dfs$x, 'pchisq', df=k-1, ncp=0)
+cvm <- cvm.test(dfs$x, 'pchisq', df=k-1, ncp=0)
+@
+
+	Проверка согласия
+	Критерий Колмогорова: p-value = $\Sexpr{ks$p.value}$ \\
+	Критерий Андерсона-Дарлинга: p-value = $\Sexpr{ad$p.value}$ \\
+	Критерий Крамера-Мизеса-Смирнова: p-value = $\Sexpr{cvm$p.value}$
+
+\newpage
+
+	При сложной гипотезе распределение статистики лежит между $\chi^2_{k-1}$ и
+		$\chi^2_{k-m-1}$ при оценивании $m$ параметров методом максимального
+		правдоподобие по негруппированным данным.
+
+<<complex-pplot, fig.cap=caption>>=
+caption <- 'Эмпирическое и теоретическое распределения статистики'
+ggplot(dfc, aes(x, linetype='Empirical (complex H)')) +
+	stat_ecdf() +
+	stat_function(aes(x, linetype='Theoretical, df=k-m-1'), fun=pchisq,
+								args=list(df=k-2-1, ncp=0)) +
+	stat_function(aes(x, linetype='Theoretical, df=k-1'), fun=pchisq,
+								args=list(df=k-1, ncp=0)) +
+	scale_linetype('')
+@
+
+<<complex-dplot, fig.cap=caption>>=
+caption <- 'Эмпирическое и теоретическое плотности распределений статистики'
+ggplot(dfc, aes(x, linetype='Empirical (complex H)')) +
+	geom_density() +
+	stat_function(aes(x, linetype='Theoretical, df=k-m-1'), fun=dchisq,
+								args=list(df=k-2-1, ncp=0)) +
+	stat_function(aes(x, linetype='Theoretical, df=k-1'), fun=dchisq,
+								args=list(df=k-1, ncp=0)) +
+	scale_linetype('')
+@
+
+	Действительно, как видно из рис. \ref{fig:complex-pplot},
+	распределение статистики лежит между упомянутыми теоретическими
+	распределениями.
+
+<<complex-gof-theo-chisq, warning=FALSE>>=
+ks <- ks.test(dfc$x, 'pchisq', df=k-2-1)
+ad <- ad.test(dfc$x, 'pchisq', df=k-2-1)
+cvm <- cvm.test(dfc$x, 'pchisq', df=k-2-1)
+@
+
+	Результаты проверки согласия $G(S|H_0)$ ($H_0$ --- сложная)
+	с $\chi^2_{k-m-1}$.
+
+	Критерий Колмогорова: p-value = $\Sexpr{ks$p.value}$ \\
+	Критерий Андерсона-Дарлинга: p-value = $\Sexpr{ad$p.value}$ \\
+	Критерий Крамера-Мизеса-Смирнова: p-value = $\Sexpr{cvm$p.value}$
+
+
+	\newpage
 
 	\item Идентифицировать построенные законы распределения (найти
 		аналитические модели, наиболее хорошо описывающие эмпирические
 		распределения).
 
+	Известно, что распределение $\chi^2$ является частным случаем
+	Гамма распределения. Проверим сложную гипотезу о согласии.
+	Далее представлены результаты проверки гипотез о согласии эмпирических
+		распределений с семейством распределений Гамма.
+
+\subsubsection{Простая гипотеза}
+
+<<simple-gamma-mlfit>>=
+gamma.fit <- fitdist(dfs$x, 'gamma', lower=c(0,0), start=list(scale=1,shape=1))
+@
+
+<<simple-gamma-gof-mlfit, warning=FALSE>>=
+attach(gamma.fit)
+ks <- ks.test(dfs$x, 'pgamma', scale=estimate[1], shape=estimate[2])
+ad <- ad.test(dfs$x, 'pgamma', scale=estimate[1], shape=estimate[2])
+cvm <- cvm.test(dfs$x, 'pgamma', scale=estimate[1], shape=estimate[2])
+detach(gamma.fit)
+@
+
+	Гамма \\
+	Оценки параметров методом МП по негруппированным данным \\
+	Параметр масштаба: $\Sexpr{gamma.fit$estimate[1]}$ \\
+	Параметр формы: $\Sexpr{gamma.fit$estimate[2]}$
+
+	Проверка согласия \\
+	Критерий Колмогорова: p-value = $\Sexpr{ks$p.value}$ \\
+	Критерий Андерсона-Дарлинга: p-value = $\Sexpr{ad$p.value}$ \\
+	Критерий Крамера-Мизеса-Смирнова: p-value = $\Sexpr{cvm$p.value}$
+
+<<simple-gamma-mlfit-plot, fig.cap=caption, cache=FALSE>>=
+opts_chunk$set(fig.height=2)
+caption <- 'Эмпирическое распределение статистики и Гамма-распределение.'
+attach(gamma.fit)
+ggplot(dfs, aes(x, linetype='Empirical (simple H)')) +
+	stat_ecdf() +
+	stat_function(aes(x, linetype='Gamma, ML-fit'), fun=pgamma,
+								args=list(scale=estimate[1], shape=estimate[2])) +
+	scale_linetype('Distribution')
+detach(gamma.fit)
+
+<<simple-gamma-mlfit-dplot, fig.cap=caption>>=
+attach(gamma.fit)
+ggplot(dfs, aes(x, linetype='Empirical (simple H)')) +
+	geom_density() +
+	stat_function(aes(x, linetype='Gamma, ML-fit'), fun=dgamma,
+								args=list(scale=estimate[1], shape=estimate[2])) +
+	scale_linetype('Distribution')
+detach(gamma.fit)
+@
+
+<<simple-gamma-ksfit>>=
+gamma.fit <- fitdist(dfs$x, 'gamma', method='mge', gof='KS',
+										 start=list(scale=1,shape=1), lower=c(0,0))
+@
+
+<<simple-gamma-gof-ksfit, warning=FALSE>>=
+attach(gamma.fit)
+ks <- ks.test(dfs$x, 'pgamma', scale=estimate[1], shape=estimate[2])
+ad <- ad.test(dfs$x, 'pgamma', scale=estimate[1], shape=estimate[2])
+cvm <- cvm.test(dfs$x, 'pgamma', scale=estimate[1], shape=estimate[2])
+detach(gamma.fit)
+@
+
+	Гамма \\
+	Оценивание параметров методом минимального расстояния Колмогорова \\
+	Параметр масштаба: $\Sexpr{gamma.fit$estimate[1]}$ \\
+	Параметр формы: $\Sexpr{gamma.fit$estimate[2]}$
+
+	Проверка согласия \\
+	Критерий Колмогорова: p-value = $\Sexpr{ks$p.value}$ \\
+	Критерий Андерсона-Дарлинга: p-value = $\Sexpr{ad$p.value}$ \\
+	Критерий Крамера-Мизеса-Смирнова: p-value = $\Sexpr{cvm$p.value}$
+
+<<simple-gamma-ksfit-plot, fig.cap=caption>>=
+attach(gamma.fit)
+ggplot(dfs, aes(x, linetype='Empirical (simple H)')) +
+	stat_ecdf() +
+	stat_function(aes(x, linetype='Gamma, MD-KS-fit'), fun=pgamma,
+								args=list(scale=estimate[1], shape=estimate[2])) +
+	scale_linetype('Distribution')
+detach(gamma.fit)
+@
+
+<<simple-gamma-ksfit-dplot, fig.cap=caption>>=
+attach(gamma.fit)
+ggplot(dfs, aes(x, linetype='Empirical (simple H)')) +
+	geom_density() +
+	stat_function(aes(x, linetype='Gamma, MD-KS-fit'), fun=dgamma,
+								args=list(scale=estimate[1], shape=estimate[2])) +
+	scale_linetype('Distribution')
+detach(gamma.fit)
+@
+
+<<simple-gamma-cvmfit>>=
+gamma.fit <- fitdist(dfs$x, 'gamma', method='mge', gof='CvM', lower=c(0,0),
+										 start=list(scale=1,shape=1))
+@
+
+<<simple-gamma-gof-cvmfit, warning=FALSE>>=
+attach(gamma.fit)
+ks <- ks.test(dfs$x, 'pgamma', scale=estimate[1], shape=estimate[2])
+ad <- ad.test(dfs$x, 'pgamma', scale=estimate[1], shape=estimate[2])
+cvm <- cvm.test(dfs$x, 'pgamma', scale=estimate[1], shape=estimate[2])
+detach(gamma.fit)
+@
+
+\newpage
+
+	Гамма \\
+	Оценивание параметров методом MD-Крамера-Мизеса-Смирнова \\
+	Параметр масштаба: $\Sexpr{gamma.fit$estimate[1]}$ \\
+	Параметр формы: $\Sexpr{gamma.fit$estimate[2]}$
+
+	Проверка согласия \\
+	Критерий Колмогорова: p-value = $\Sexpr{ks$p.value}$ \\
+	Критерий Андерсона-Дарлинга: p-value = $\Sexpr{ad$p.value}$ \\
+	Критерий Крамера-Мизеса-Смирнова: p-value = $\Sexpr{cvm$p.value}$
+
+<<simple-gamma-cvmfit-plot, fig.cap=caption>>=
+caption <- 'Эмпирическое распределение статистики и Гамма-распределение.'
+attach(gamma.fit)
+ggplot(dfs, aes(x, linetype='Empirical (simple H)')) +
+	stat_ecdf() +
+	stat_function(aes(x, linetype='Gamma, MD-CvM-fit'), fun=pgamma,
+								args=list(scale=estimate[1], shape=estimate[2])) +
+	scale_linetype('Distribution')
+detach(gamma.fit)
+@
+
+<<simple-gamma-cvmfit-dplot, fig.cap=caption>>=
+attach(gamma.fit)
+ggplot(dfs, aes(x, linetype='Empirical (simple H)')) +
+	geom_density() +
+	stat_function(aes(x, linetype='Gamma, MD-CvM-fit'), fun=dgamma,
+								args=list(scale=estimate[1], shape=estimate[2])) +
+	scale_linetype('Distribution')
+detach(gamma.fit)
+@
+
+\newpage
+
+\subsubsection{Сложная гипотеза}
+
+<<complex-gamma-mlfit>>=
+gamma.fit <- fitdist(dfc$x, 'gamma', lower=c(0,0), start=list(scale=1,shape=1))
+@
+
+<<complex-gamma-gof-mlfit, warning=FALSE>>=
+attach(gamma.fit)
+ks <- ks.test(dfc$x, 'pgamma', scale=estimate[1], shape=estimate[2])
+ad <- ad.test(dfc$x, 'pgamma', scale=estimate[1], shape=estimate[2])
+cvm <- cvm.test(dfc$x, 'pgamma', scale=estimate[1], shape=estimate[2])
+detach(gamma.fit)
+@
+
+	Гамма \\
+	Оценивание параметров методом МП по негруппированным данным \\
+	Параметр масштаба: $\Sexpr{gamma.fit$estimate[1]}$ \\
+	Параметр формы: $\Sexpr{gamma.fit$estimate[2]}$
+
+	Проверка согласия \\
+	Критерий Колмогорова: p-value = $\Sexpr{ks$p.value}$ \\
+	Критерий Андерсона-Дарлинга: p-value = $\Sexpr{ad$p.value}$ \\
+	Критерий Крамера-Мизеса-Смирнова: p-value = $\Sexpr{cvm$p.value}$
+
+<<complex-gamma-mlfit-plot, fig.cap=caption>>=
+caption <- 'Эмпирическое распределение статистики и Гамма-распределение.'
+attach(gamma.fit)
+ggplot(dfs, aes(x, linetype='Empirical (complex H)')) +
+	stat_ecdf() +
+	stat_function(aes(x, linetype='Gamma, ML-fit'), fun=pgamma,
+								args=list(scale=estimate[1], shape=estimate[2])) +
+	scale_linetype('Distribution')
+detach(gamma.fit)
+@
+
+<<complex-gamma-mlfit-dplot, fig.cap=caption>>=
+attach(gamma.fit)
+ggplot(dfs, aes(x, linetype='Empirical (complex H)')) +
+	geom_density() +
+	stat_function(aes(x, linetype='Gamma, ML-fit'), fun=dgamma,
+								args=list(scale=estimate[1], shape=estimate[2])) +
+	scale_linetype('Distribution')
+detach(gamma.fit)
+@
+
+<<complex-gamma-ksfit>>=
+gamma.fit <- fitdist(dfc$x, 'gamma', method='mge', gof='KS', lower=c(0,0), 
+										 start=list(scale=1,shape=1))
+@
+
+<<complex-gamma-gof-ksfit, warning=FALSE>>=
+attach(gamma.fit)
+ks <- ks.test(dfc$x, 'pgamma', scale=estimate[1], shape=estimate[2])
+ad <- ad.test(dfc$x, 'pgamma', scale=estimate[1], shape=estimate[2])
+cvm <- cvm.test(dfc$x, 'pgamma', scale=estimate[1], shape=estimate[2])
+detach(gamma.fit)
+@
+
+\newpage
+
+	Гамма \\
+	Оценивание параметров методом минимального расстояния Колмогорова \\
+	Параметр масштаба: $\Sexpr{gamma.fit$estimate[1]}$ \\
+	Параметр формы: $\Sexpr{gamma.fit$estimate[2]}$
+
+	Проверка согласия \\
+	Критерий Колмогорова: p-value = $\Sexpr{ks$p.value}$ \\
+	Критерий Андерсона-Дарлинга: p-value = $\Sexpr{ad$p.value}$ \\
+	Критерий Крамера-Мизеса-Смирнова: p-value = $\Sexpr{cvm$p.value}$
+
+<<complex-gamma-ksfit-pplot, fig.cap=caption>>=
+attach(gamma.fit)
+ggplot(dfs, aes(x, linetype='Empirical (complex H)')) +
+	stat_ecdf() +
+	stat_function(aes(x, linetype='Gamma, KS-fit'), fun=pgamma,
+								args=list(scale=estimate[1], shape=estimate[2])) +
+	scale_linetype('Distribution')
+@
+
+<<complex-gamma-ksfit-dplot, fig.cap=caption>>=
+ggplot(dfs, aes(x, linetype='Empirical (complex H)')) +
+	geom_density() +
+	stat_function(aes(x, linetype='Gamma, KS-fit'), fun=dgamma,
+								args=list(scale=estimate[1], shape=estimate[2])) +
+	scale_linetype('Distribution')
+detach(gamma.fit)
+@
+
+<<complex-gamma-cvmfit>>=
+gamma.fit <- fitdist(dfc$x, 'gamma', method='mge', gof='CvM', lower=c(0,0),
+										 start=list(scale=1,shape=1))
+@
+
+<<complex-gamma-gof-cvmfit, warning=FALSE>>=
+attach(gamma.fit)
+ks <- ks.test(dfc$x, 'pgamma', rate=estimate[1], shape=estimate[2])
+ad <- ad.test(dfc$x, 'pgamma', scale=estimate[1], shape=estimate[2])
+cvm <- cvm.test(dfc$x, 'pgamma', scale=estimate[1], shape=estimate[2])
+detach(gamma.fit)
+@
+
+\newpage
+
+	Гамма \\
+	Оценивание параметров методом MD-Крамера-Мизеса-Смирнова \\
+	Параметр масштаба: $\Sexpr{gamma.fit$estimate[1]}$ \\
+	Параметр формы: $\Sexpr{gamma.fit$estimate[2]}$
+
+	Проверка согласия \\
+	Критерий Колмогорова: p-value = $\Sexpr{ks$p.value}$ \\
+	Критерий Андерсона-Дарлинга: p-value = $\Sexpr{ad$p.value}$ \\
+	Критерий Крамера-Мизеса-Смирнова: p-value = $\Sexpr{cvm$p.value}$
+
+<<complex-gamma-cvmfit-plots, fig.cap=caption>>=
+attach(gamma.fit)
+ggplot(dfs, aes(x, linetype='Empirical (complex H)')) +
+	stat_ecdf() +
+	stat_function(aes(x, linetype='Gamma, CvM-fit'), fun=pgamma,
+								args=list(scale=estimate[1], shape=estimate[2])) +
+	scale_linetype('Distribution')
+
+ggplot(dfs, aes(x, linetype='Empirical (complex H)')) +
+	geom_density() +
+	stat_function(aes(x, linetype='Gamma, CvM-fit'), fun=dgamma,
+								args=list(scale=estimate[1], shape=estimate[2])) +
+	scale_linetype('Distribution')
+detach(gamma.fit)
+@
+
+\newpage
+
 	\item Повторить п.1, моделируя выборку по закону, соответствующему
 		гипотезе $H_1$, а оценивая по этой выборке параметры закона,
 		соответствующего гипотезе $H_0$.
+
+<<trueH1>>=
+@
 
 	Наибольший интерес представляет способность критериев согласия
 	различать близкие конкурирующие законы, то есть мощность критериев
@@ -178,14 +546,20 @@ ggplot(dfm, aes(chisq, linetype=Htype)) + geom_density()
 
 Заключение.
 
-\section*{Список источников}
-\addcontentsline{toc}{section}{Список источников}
+\newpage
 
-1. Статистический анализ данных, моделирование и исследование вероятностных
-закономерностей. Компьютерный подход : монография / Б.Ю. Лемешко, С.Б. Лемешко,
-\mbox{С.Н. Постовалов}, Е.В Чимитова. --- Новосибирск : Изд-во НГТУ, 2011. ---
-888 с.
-(серия <<\mbox{Монографии НГТУ}>>).
+\begin{thebibliography}{9}
+
+\bibitem{lemeshko-mono} Статистический анализ данных, моделирование и
+	исследование вероятностных закономерностей.
+		Компьютерный подход : монография / \mbox{Б.Ю. Лемешко}, С.Б. Лемешко,
+	\mbox{С.Н. Постовалов}, Е.В Чимитова. --- \mbox{Новосибирск} : Изд-во НГТУ,
+		2011. --- 888 с. (серия <<\mbox{Монографии НГТУ}>>).
+
+\bibitem{knitr1} Yihui Xie (2016). knitr: A General-Purpose Package for Dynamic
+	Report Generation in R. R package version 1.15.1.
+
+\end{thebibliography}
 
 \end{document}
 
