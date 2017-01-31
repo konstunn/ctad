@@ -3,6 +3,7 @@
 chisq.statmod.gof2cauchy <- function(n=100, N=16600, Htype, trueH, k)
 {
 	sink(stderr())
+	message(deparse(sys.calls()[[sys.nframe()]]))
 	true_H <- paste('r', trueH, sep='')
 	message("Random number samples generating...")
 	message("Generating big sample...")
