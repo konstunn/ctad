@@ -88,9 +88,16 @@
 		гипотезе (а) (по выборке не оцениваются параметры), для сложной гипотезы
 		(б) (по выборке оцениваются все параметры).
 
+	\makeatletter
+	\newcommand\gobblepars{%
+		\@ifnextchar\par%
+			{\expandafter\gobblepars\@gobble}%
+			{}}
+	\makeatother
+
 	Вариант 12: \\
 	$H_0$: Коши \\
-	$H_1$: Нормальное \\
+	$H_1$: Нормальное \\\\ \gobblepars
 
 <<cache=FALSE, echo=FALSE, message=FALSE>>=
 opts_chunk$set(autodep=TRUE, cache=TRUE, message=FALSE, echo=FALSE)
