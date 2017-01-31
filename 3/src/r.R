@@ -1,6 +1,6 @@
 #!/usr/bin/Rscript --vanilla
 
-chisq.mod <- function(n=100, N=16600, Htype, trueH, k)
+chisq.statmod.gof2cauchy <- function(n=100, N=16600, Htype, trueH, k)
 {
 	sink(stderr())
 	true_H <- paste('r', trueH, sep='')
