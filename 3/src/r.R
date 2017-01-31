@@ -27,6 +27,7 @@ chisq.statmod.gof2cauchy <- function(n=100, N=16600, Htype, trueH, k)
 		estimates <- c(rep(c(location=0,scale=1), N))
 		estimates <- split(estimates, ceiling(seq_along(estimates)/2))
 	} else if (Htype == 'complex') {
+		message("Complex hypothesis.")
 		message("Estimating parameters...'")
 		lmledist <- function(x, d) mledist(x, d)$estimate
 		estimates <- llply(X, lmledist, 'cauchy', .progress='text')
