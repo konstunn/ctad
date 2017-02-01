@@ -13,7 +13,7 @@
 \usepackage{csquotes}
 \usepackage{enumitem}
 
-\usepackage[labelsep=period]{caption}
+\usepackage[labelsep=period,justification=centering]{caption}
 
 \usepackage{amsmath}
 \usepackage{pgfplots}
