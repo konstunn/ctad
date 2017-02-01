@@ -108,7 +108,7 @@ library(ggplot2)
 theme_set(theme_minimal())
 @
 
-<<stat-mod-src, code=readLines('src/r.R')>>=
+<<stat-mod-src, code=readLines('src/chisq.statmod.gof2cauchy.R')>>=
 @
 
 <<stat-mod>>=
