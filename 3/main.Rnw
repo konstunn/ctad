@@ -232,7 +232,7 @@ cvm <- cvm.test(dfc$x, 'pchisq', df=k-2-1)
 	Далее представлены результаты проверки гипотез о согласии эмпирических
 		распределений с семейством распределений Гамма.
 
-\subsubsection{Простая гипотеза}
+\subsubsection{При проверке простой гипотезы}
 
 <<simple-gamma-mlfit>>=
 gamma.fit <- fitdist(dfs$x, 'gamma', lower=c(0,0), start=list(scale=1,shape=1))
@@ -368,7 +368,7 @@ detach(gamma.fit)
 
 \newpage
 
-\subsubsection{Сложная гипотеза}
+\subsubsection{При проверке сложной гипотезы}
 
 <<complex-gamma-mlfit>>=
 gamma.fit <- fitdist(dfc$x, 'gamma', lower=c(0,0), start=list(scale=1,shape=1))
@@ -504,7 +504,39 @@ detach(gamma.fit)
 		соответствующего гипотезе $H_0$.
 
 <<trueH1>>=
+dfh1 <- chisq.statmod.gof2cauchy(n=n, N=N, trueH='norm', Htype='complex', k=k)
 @
+
+<<trueH1-simple>>=
+dfh1s <- chisq.statmod.gof2cauchy(n=n, N=N, trueH='norm', Htype='simple', k=k)
+@
+
+	График плотности распределения смоделированной выборки
+	представлен на рис. \ref{fig:complex-h0-h1}.
+
+<<complex-h0-h1, fig.cap=caption, fig.height=3, warning=FALSE>>=
+caption <- 'Плотности распределений статистики при проверки \\emph{сложной}
+гипотезы при справедливости гипотез $H_0$ и $H_1$.'
+ggplot() +
+	geom_density(aes(x, fill='true H0 (Cauchy)'), alpha=.6, dfc) +
+	geom_density(aes(x, fill='true H1 (Normal)'), alpha=.6, dfh1) +
+	scale_fill_manual(values=c('red','blue'), name='Distributions') +
+	xlim(0,15)
+@
+
+<<simple-h1-h0, fig.cap=caption, fig.height=3, warning=FALSE>>=
+caption <- 'Плотности распределений статистики при проверки \\emph{простой}
+гипотезы при справедливости гипотез $H_0$ и $H_1$.'
+ggplot() +
+	geom_density(aes(x, fill='true H0'), alpha=.6, dfs) +
+	geom_density(aes(x, fill='true H1'), alpha=.6, dfh1s) +
+	scale_fill_manual(values=c('red','blue'), name='Distributions') +
+	xlim(0,50)
+@
+
+	\newpage
+
+	\textit{Указания}
 
 	Наибольший интерес представляет способность критериев согласия
 	различать близкие конкурирующие законы, то есть мощность критериев
@@ -536,9 +568,23 @@ detach(gamma.fit)
 	критерия для проверки простой и сложной гипотез как функции вида
 	$(1-\beta)(\alpha)$.
 
+	\subsubsection{Для простой гипотезы}
+
+<<>>=
+#
+@
+
+
+	\subsubsection{Для сложной гипотезы}
+
 	\item Повторяя пункты 3--4, исследовать влияние количества интервалов,
 		способа группирования (равновероятное и асимптотически оптимальное) на
 		мощность критерия.
+
+	Для закона распределения Коши асимптотически оптимальный и равновероятный
+	способы группирования совпадают \cite{lemeshko}. Поэтому проводить
+	исследование зависимости мощности критерий от способа группирования не имеет
+	смысла.
 
 \end{enumerate}
 
