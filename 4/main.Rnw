@@ -1,0 +1,103 @@
+
+\documentclass[a4paper,14pt]{extarticle}
+
+\usepackage{cmap}
+
+\usepackage[T2A]{fontenc}
+\usepackage[utf8x]{inputenc}
+\usepackage[russian]{babel}
+
+\usepackage[a4paper,margin=1.5cm,footskip=1cm,left=2cm,right=1.5cm,top=1.5cm
+	,bottom=2.0cm]{geometry}
+\usepackage{textcase}
+\usepackage{csquotes}
+\usepackage{enumitem}
+
+\usepackage[labelsep=period,justification=centering]{caption}
+
+\usepackage{amsmath}
+\usepackage{pgfplots}
+
+\usepackage{float}
+
+\usepackage{indentfirst}
+
+\setlist[description]{leftmargin=\parindent,labelindent=\parindent}
+
+\begin{document}
+
+\setcounter{secnumdepth}{0}
+
+\begin{titlepage}
+
+	\begin{center}
+		Новосибирский государственный технический университет
+		
+		Факультет прикладной математики и информатики
+		
+		Кафедра теоретической и прикладной информатики
+		
+		\vspace{250pt}
+		
+		\textbf{\LARGE{Лабораторная работа № 4}}
+		\medbreak
+		\large{<<Исследование распределения статистики и мощности критерия
+		Рао-Робсона-Никулина>>} \\
+		\medbreak
+		\small{по дисциплине \\
+		\medbreak
+		<<Компьютерные технологии анализа данных и исследования 
+	статистических~закономерностей>>}
+		\vspace{100pt}
+	\end{center}
+
+	\begin{flushleft}
+		\begin{tabbing}
+			Группа:\qquad\qquad \= ПММ-61\\
+			Студент:            \> Горбунов К. К.\\
+			Преподаватель:      \> проф. Лемешко Б. Ю.\\
+			Вариант:            \> 12 \\
+		\end{tabbing}
+	\end{flushleft}
+
+	\begin{center}
+		\vspace{\fill}
+		Новосибирск, 2016 г.
+	\end{center}
+
+\end{titlepage}
+
+\newpage
+
+\section{Цель работы}
+
+Исследовать влияние способов группирования на предельные
+распределения статистики критерия согласия типа $\chi^2$ Никулина при простых и
+сложных гипотезах (при использовании для вычисления оценок метода
+максимального правдоподобия по негруппированным данным). Сравнение
+мощности критерия Никулина с мощностью критерия $\chi^2$ Пирсона.
+Исследовать мощности критерия Никулина в зависимости от числа интервалов
+группирования.
+
+\section{Ход работы}
+
+
+\section*{Заключение}
+
+
+\begin{thebibliography}{9}
+
+\bibitem{lemeshko} Статистический анализ данных, моделирование и
+	исследование вероятностных закономерностей.
+		Компьютерный подход : монография / \mbox{Б.Ю. Лемешко}, С.Б. Лемешко,
+	\mbox{С.Н. Постовалов}, Е.В Чимитова. --- \mbox{Новосибирск} : Изд-во НГТУ,
+		2011. --- 888 с. (серия <<\mbox{Монографии НГТУ}>>).
+
+\bibitem{knitr16} Yihui Xie (2016). knitr: A General-Purpose Package for Dynamic
+	Report Generation in R. R package version 1.15.1.
+
+\end{thebibliography}
+
+\end{document}
+
+# vim: ts=2 sw=2
