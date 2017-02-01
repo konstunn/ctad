@@ -20,6 +20,8 @@
 
 \usepackage{float}
 
+\usepackage{indentfirst}
+
 \setlist[description]{leftmargin=\parindent,labelindent=\parindent}
 
 \begin{document}
