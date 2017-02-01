@@ -141,7 +141,7 @@ ggplot(dfm, aes(x, linetype=Htype)) +
 		где $k$ - число интервалов группирования \cite{lemeshko}.
 
 <<simple-plot-cdf, fig.cap=caption>>=
-caption <- 'Эмпирическое и теоретическое распределения статистики'
+caption <- 'Эмпирическое и теоретическое распределения статистики.'
 ggplot(dfs, aes(x, linetype='Empirical (simple H)')) +
 	stat_ecdf() +
 	stat_function(aes(x, linetype='Theoretical, df=k-1'), fun=pchisq,
@@ -149,7 +149,7 @@ ggplot(dfs, aes(x, linetype='Empirical (simple H)')) +
 @
 
 <<simple-plot-den, fig.cap=caption>>=
-caption <- 'Эмпирическое и теоретическое плотности распределений статистики'
+caption <- 'Эмпирическое и теоретическое плотности распределений статистики.'
 ggplot(dfs, aes(x, linetype='Empirical (simple H)')) +
 	geom_density() +
 	stat_function(aes(x, linetype='Theoretical, df=k-1'), fun=dchisq,
@@ -182,7 +182,7 @@ cvm <- cvm.test(dfs$x, 'pchisq', df=k-1, ncp=0)
 	максимального правдоподобия по негруппированным данным \cite{lemeshko}.
 
 <<complex-pplot, fig.cap=caption>>=
-caption <- 'Эмпирическое и теоретическое распределения статистики'
+caption <- 'Эмпирическое и теоретическое распределения статистики.'
 ggplot(dfc, aes(x, linetype='Empirical (complex H)')) +
 	stat_ecdf() +
 	stat_function(aes(x, linetype='Theoretical, df=k-m-1'), fun=pchisq,
@@ -193,7 +193,7 @@ ggplot(dfc, aes(x, linetype='Empirical (complex H)')) +
 @
 
 <<complex-dplot, fig.cap=caption>>=
-caption <- 'Эмпирическое и теоретическое плотности распределений статистики'
+caption <- 'Эмпирическое и теоретическое плотности распределений статистики.'
 ggplot(dfc, aes(x, linetype='Empirical (complex H)')) +
 	geom_density() +
 	stat_function(aes(x, linetype='Theoretical, df=k-m-1'), fun=dchisq,
