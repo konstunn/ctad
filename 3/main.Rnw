@@ -652,9 +652,10 @@ dfpwrs <- ldply(.data=lsts, .fun=power, alpha=alpha)
 caption <- 'Зависимость мощности критерия от уровня значимости при разном
 числе интервалов группирования при проверки \\emph{простой}
 гипотезы.'
-ggplot(data=dfpwrs, mapping=aes(x=alpha, y=power, colour=factor(k))) + 
-	geom_smooth(size=.5, se=F) +
-	scale_x_log10() + scale_colour_discrete(name='Number of intervals')
+ggplot(data=dfpwrs, mapping=aes(x=alpha, y=power, linetype=factor(k))) + 
+	geom_smooth(size=.5, se=F, colour='black') +
+	scale_x_log10() +
+	scale_linetype(name='Number of intervals')
 @
 
 <<calc-power-complex>>=
@@ -668,9 +669,10 @@ caption <- 'Зависимость мощности критерия от уро
 числе интервалов группирования при проверки \\emph{сложной}
 гипотезы.'
 
-ggplot(data=dfpwrc, mapping=aes(x=alpha, y=power, colour=factor(k))) + 
-	geom_smooth(size=.5, se=F) +
-	scale_x_log10() + scale_colour_discrete(name='Number of intervals')
+ggplot(data=dfpwrc, mapping=aes(x=alpha, y=power, linetype=factor(k))) + 
+	geom_smooth(size=.5, se=F, colour='black') +
+	scale_x_log10() +
+	scale_linetype('Number of intervals')
 @
 
 
