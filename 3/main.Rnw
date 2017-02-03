@@ -467,7 +467,7 @@ gamma.fit <- fitdist(dfc$x, 'gamma', method='mge', gof='CvM', lower=c(0,0),
 
 <<complex-gamma-gof-cvmfit, warning=FALSE>>=
 attach(gamma.fit)
-ks <- ks.test(dfc$x, 'pgamma', rate=estimate[1], shape=estimate[2])
+ks <- ks.test(dfc$x, 'pgamma', scale=estimate[1], shape=estimate[2])
 ad <- ad.test(dfc$x, 'pgamma', scale=estimate[1], shape=estimate[2])
 cvm <- cvm.test(dfc$x, 'pgamma', scale=estimate[1], shape=estimate[2])
 detach(gamma.fit)
