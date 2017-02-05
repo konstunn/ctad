@@ -90,11 +90,14 @@
 \bibitem{lemeshko} Статистический анализ данных, моделирование и
 	исследование вероятностных закономерностей.
 		Компьютерный подход : монография / \mbox{Б.Ю. Лемешко}, С.Б. Лемешко,
-	\mbox{С.Н. Постовалов}, Е.В Чимитова. --- \mbox{Новосибирск} : Изд-во НГТУ,
+	\mbox{С.Н. Постовалов}, Е.В. Чимитова. --- \mbox{Новосибирск} : Изд-во НГТУ,
 		2011. --- 888 с. (серия <<\mbox{Монографии НГТУ}>>).
 
 \bibitem{knitr16} Yihui Xie (2016). knitr: A General-Purpose Package for Dynamic
 	Report Generation in R. R package version 1.15.1.
+
+\bibitem{vnb} Voinov V., Nikulin M., Balaskrishnan N. Chi-Squared Goodness of
+	Fit Tests with Applications, Academic Press.
 
 \end{thebibliography}
 
