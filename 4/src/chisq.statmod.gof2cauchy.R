@@ -38,7 +38,7 @@ chisq.statmod.gof2cauchy <- function(n=100, N=16600, Htype, trueH, k)
 	lqcauchy <- function(e, p) qcauchy(p, e[1], e[2])
 	x_i <- llply(estimates, lqcauchy, p=P)
 
-	# expected probabilities (frequencies)
+	# expected probabilities
 	expected <- rep(dP, k)
 
 	# perform sample grouping (binning)
@@ -47,7 +47,7 @@ chisq.statmod.gof2cauchy <- function(n=100, N=16600, Htype, trueH, k)
 	message("Splitting...")
 	groups <- Map(split, X, factors)
 
-	# calculate observed probabilities (frequencies)
+	# calculate observed probabilities (counts)
 	message("Calculating observed probs...")
 	llen <- function(x) lapply(x, length)
 	observed <- llply(groups, llen, .progress='text')
