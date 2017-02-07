@@ -36,14 +36,14 @@ chisq.statmod.gof2cauchy <- function(n=100, N=16600, Htype, trueH, k)
 	# TODO: customize this according to H0 (now it's Cauchy)
 	# calculate groups (bins) break points (i.e. quantiles)
 	lqcauchy <- function(e, p) qcauchy(p, e[1], e[2])
-	x_i <- llply(estimates, lqcauchy, p=P)
+	breaks <- llply(estimates, lqcauchy, p=P)
 
 	# expected probabilities
 	expected <- rep(dP, k)
 
 	# perform sample grouping (binning)
 	message("Cutting...")
-	factors <- Map(cut, X, x_i)
+	factors <- Map(cut, X, breaks)
 	message("Splitting...")
 	groups <- Map(split, X, factors)
 
