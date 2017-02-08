@@ -36,9 +36,10 @@ Y2 <- function(n_j, p_j, theta, x_j, X) {
 	x <- function(t) qcauchy(P, t[1], t[2])
 
 	tjacobxt <- t(jacobian(x, theta))
+	Jlen <- length(tjacobxt[1,])
 
-	DXI <- tjacobxt[1:2, 2:(r+1)]
-	DXII <- tjacobxt[1:2, 1:r]
+	DXI <- tjacobxt[1:2, 2:Jlen]
+	DXII <- tjacobxt[1:2, 1:(Jlen-1)]
 
 	WI  <- FI  * DXI
 	WII <- FII * DXII
