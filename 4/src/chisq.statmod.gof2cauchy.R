@@ -1,8 +1,9 @@
 #!/usr/bin/Rscript --vanilla
 
+# Nikulin-Rao-Robson (NRR) adjustment calculation
 Y2 <- function(n_j, p_j, theta, x_j, X) {
-	f <- function(x, t=theta) dcauchy(x, t[1], t[2])
-	loglik <- function(theta) sum(log(f(X, theta)))
+	f <- function(x, t) dcauchy(x, t[1], t[2])
+	loglik <- function(t) sum(log(f(X, t)))
 	library(numDeriv)
 	J <- -hessian(loglik, theta)
 
@@ -11,43 +12,54 @@ Y2 <- function(n_j, p_j, theta, x_j, X) {
 	dP <- 1/r
 	P <- seq(0, 1, dP)
 
+	# to avoid NAs
+	P[1] <- pcauchy(min(X), theta[1], theta[2])
+	P[length(P)] <- pcauchy(max(X), theta[1], theta[2])
+
+	x <- function(t) qcauchy(P, t[1], t[2])
+
+	# to avoid NAs
 	x_j[1] <- min(X)
 	x_j[length(x_j)] <- max(X)
 
-	tj <- (x_j[2:(r+1)] - theta[1]) / theta[2]
-	tj_1 <- (x_j[1:r] - theta[2]) / theta[2]
+	xj   <- x_j[2:(r+1)]
+	xj_1 <- x_j[1:r]
 
-	W1 <- 1/theta[2] * (-f(tj) + f(tj_1))
-	W2 <- 1/theta[2] * (-tj*f(tj) + tj_1*f(tj_1))
-	W <- rbind(W1, W2)
+	fxj   <- f(xj, theta)
+	fxj_1 <- f(xj_1, theta)
 
-	a1 <- sum(W1 * n_j / p_j)
-	a2 <- sum(W2 * n_j / p_j)
+	FI  <- rbind(fxj, fxj)
+	FII <- rbind(fxj_1, fxj_1)
+
+	tjacobxt <- t(jacobian(x, theta))
+
+	DXI <- tjacobxt[1:2, 2:(r+1)]
+	DXII <- tjacobxt[1:2, 1:r]
+
+	WI  <- FI  * DXI
+	WII <- FII * DXII
+
+	W <- -WI + WII
+
+	Pm <- rbind(p_j, p_j)
+
+	Wdp <- W / Pm
+	Jg <- Wdp %*% t(W)
+
+	a1 <- sum(W[1,] * n_j / p_j)
+	a2 <- sum(W[2,] * n_j / p_j)
+
 	a <- rbind(a1, a2)
 
-	#Jg11 <- sum(W1*W1/p_j)
-	Jg11 <- sum(1 / (theta[2]**2 * p_j) * (-f(tj)+f(tj_1)**2))
-
-	#Jg12 <- sum(W1*W2/p_j)
-	Jg12 <- sum(1 / (theta[2]**2 * p_j) *
-				(-f(tj)+f(tj_1)) * (-tj*f(tj)+tj_1*f(tj_1))**2)
-
-	#Jg21 <- sum(W2*W1/p_j)
-	Jg21 <- Jg12
-
-	#Jg22 <- sum(W2*W2/p_j)
-	Jg22 <- sum(1 / (theta[2]**2 * p_j) * (-tj*f(tj)+tj_1*f(tj_1))**2)
-
-	Jg1 <- cbind(Jg11, Jg12)
-	Jg2 <- cbind(Jg21, Jg22)
-	Jg <- rbind(Jg1, Jg2)
-
 	n <- length(X)
-	rez <- (t(a) %*% solve(J-Jg) %*% a) / n
 
+	A <- solve(J - Jg)
+
+	rez <- (t(a) %*% A %*% a) / n
 	return(rez)
 }
 
+# NRR test statistic calculation
 chisq.nrr.statmod <- function(n=100, N=16600, Htype, trueH, k)
 {
 	sink(stderr())
@@ -108,9 +120,9 @@ chisq.nrr.statmod <- function(n=100, N=16600, Htype, trueH, k)
 	chisq <- apply(observed, 1, lchisq.test, p=expected)
 	observed <- as.list(data.frame(t(observed)))
 	if (Htype == 'complex') {
-		Y2 <- mapply(Y2, n_j=observed, theta=estimates,
+		Y_2 <- mapply(Y2, n_j=observed, theta=estimates,
 						x_j=breaks, X=X, MoreArgs=list(p_j=expected))
-		chisq <- chisq + Y2
+		chisq <- chisq + Y_2
 	}
 	sink()
 	return(data.frame(x=chisq, k=rep(k,N), n=rep(n,N), N=rep(N,N),
