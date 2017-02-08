@@ -120,10 +120,13 @@ chisq.statmod <- function(n=100, N=16600, Htype, trueH, k, NRR=TRUE)
 	chisq <- apply(observed, 1, lchisq.test, p=expected)
 	observed <- as.list(data.frame(t(observed)))
 	if (Htype == 'complex' && NRR == TRUE) {
+		message("Calculating NRR adjustments...")
 		Y_2 <- mapply(Y2, n_j=observed, theta=estimates,
 						x_j=breaks, X=X, MoreArgs=list(p_j=expected))
+		message("Calculation overall...")
 		chisq <- chisq + Y_2
 	}
+	message("Done.")
 	sink()
 	return(data.frame(x=chisq, k=rep(k,N), n=rep(n,N), N=rep(N,N),
 					  trueH=rep(trueH,N), Htype=rep(Htype,N)))
