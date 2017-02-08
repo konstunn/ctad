@@ -12,6 +12,10 @@ Y2 <- function(n_j, p_j, theta, x_j, X) {
 	dP <- 1/r
 	P <- seq(0, 1, dP)
 
+	trunc <- function(x) x[2:(length(x)-1)]
+	ltrunc <- function(x) x[2:length(x)]
+	rtrunc <- function(x) x[1:(length(x)-1)]
+
 	# to avoid NAs
 	P[1] <- pcauchy(min(X), theta[1], theta[2])
 	P[length(P)] <- pcauchy(max(X), theta[1], theta[2])
@@ -20,8 +24,8 @@ Y2 <- function(n_j, p_j, theta, x_j, X) {
 	x_j[1] <- min(X)
 	x_j[length(x_j)] <- max(X)
 
-	xj   <- x_j[2:(r+1)]
-	xj_1 <- x_j[1:r]
+	xj   <- ltrunc(x_j)
+	xj_1 <- rtrunc(x_j)
 
 	fxj   <- f(xj, theta)
 	fxj_1 <- f(xj_1, theta)
