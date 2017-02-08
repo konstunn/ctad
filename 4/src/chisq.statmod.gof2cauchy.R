@@ -60,7 +60,7 @@ Y2 <- function(n_j, p_j, theta, x_j, X) {
 }
 
 # NRR test statistic calculation
-chisq.nrr.statmod <- function(n=100, N=16600, Htype, trueH, k)
+chisq.statmod <- function(n=100, N=16600, Htype, trueH, k, NRR=TRUE)
 {
 	sink(stderr())
 	message("")
@@ -119,7 +119,7 @@ chisq.nrr.statmod <- function(n=100, N=16600, Htype, trueH, k)
 	lchisq.test <- function(o, p) chisq.test(o, p=p)$statistic
 	chisq <- apply(observed, 1, lchisq.test, p=expected)
 	observed <- as.list(data.frame(t(observed)))
-	if (Htype == 'complex') {
+	if (Htype == 'complex' && NRR == TRUE) {
 		Y_2 <- mapply(Y2, n_j=observed, theta=estimates,
 						x_j=breaks, X=X, MoreArgs=list(p_j=expected))
 		chisq <- chisq + Y_2
