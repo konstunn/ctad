@@ -16,8 +16,6 @@ Y2 <- function(n_j, p_j, theta, x_j, X) {
 	P[1] <- pcauchy(min(X), theta[1], theta[2])
 	P[length(P)] <- pcauchy(max(X), theta[1], theta[2])
 
-	x <- function(t) qcauchy(P, t[1], t[2])
-
 	# to avoid NAs
 	x_j[1] <- min(X)
 	x_j[length(x_j)] <- max(X)
@@ -30,6 +28,8 @@ Y2 <- function(n_j, p_j, theta, x_j, X) {
 
 	FI  <- rbind(fxj, fxj)
 	FII <- rbind(fxj_1, fxj_1)
+
+	x <- function(t) qcauchy(P, t[1], t[2])
 
 	tjacobxt <- t(jacobian(x, theta))
 
