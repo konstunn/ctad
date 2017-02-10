@@ -75,7 +75,7 @@
 
 Исследовать влияние способов группирования на предельные
 распределения статистики критерия согласия типа $\chi^2$ Никулина при простых и
-сложных гипотезах (при оценивании параметров методо максимального правдоподобия
+сложных гипотезах (при оценивании параметров методом максимального правдоподобия
 по негруппированным данным). Сравнение мощности критерия Никулина с мощностью
 критерия $\chi^2$ Пирсона. Исследовать мощности критерия Никулина в зависимости
 от числа интервалов группирования. \\
@@ -84,6 +84,10 @@
 $H_0$: Коши \\
 $H_1$: Нормальное
 
+Параметры моделирования:
+Количество выборок: 16600 \\
+Объем выборок: 100
+
 \section{Ход работы}
 
 \begin{enumerate}
@@ -91,21 +95,202 @@ $H_1$: Нормальное
 		при справедливой нулевой гипотезе $G(Y^2_n|H_0)$ соответствует
 		распределению $\chi^2_{k-1}$.
 
+<<setup, cache=FALSE, echo=FALSE, message=FALSE>>=
+opts_chunk$set(autodep=TRUE, cache=TRUE, message=FALSE, echo=FALSE,
+							 fig.pos='H', fig.lp='fig:', fig.height=1.5)
+options(scipen=5)
+dep_auto()
+library(ggplot2)
+theme_set(theme_minimal())
+@
+
+<<stat-mod-src, code=readLines('src/chisq.statmod.gof2cauchy.R')>>=
+@
+
+	Далее на рис. \ref{fig:Y2-chi-pplot5} представлен график соответствующих
+		функций распределений.
+
+<<Y2-chi-pplot5, fig.cap=caption>>=
+caption='Распределение статистики Никулина при числе интевалов группирования
+$k=5$ и распределение $\\chi^2_{k-1}$.'
+
+df <- read.table('data/h0aog5.dat', skip=2, col.names='x')
+
+ggplot(df, aes(x)) +
+	stat_ecdf(aes(linetype='Nikulin Chi-squared, k=5',
+								colour='Nikulin Chi-squared, k=5')) +
+	stat_function(aes(x, linetype='Chi-squared, df=4',
+										colour='Chi-squared, df=4'), fun=pchisq, args=list(df=4)) +
+	scale_linetype('Distribution') +
+	scale_colour_manual(name='Distribution', values=c('orange','black'))
+@
+
+<<Y2-chi-pplot9, fig.cap=caption>>=
+caption='Распределение статистики Никулина при числе интевалов группирования
+$k=9$ и распределение $\\chi^2_{k-1}$.'
+
+df <- read.table('data/h0aog9.dat', skip=2, col.names='x')
+
+ggplot(df, aes(x)) +
+	stat_ecdf(aes(linetype='Nikulin Chi-squared, k=9',
+								colour='Nikulin Chi-squared, k=9')) +
+	stat_function(aes(x, linetype='Chi-squared, df=8',
+										colour='Chi-squared, df=8'), fun=pchisq, args=list(df=8)) +
+	scale_linetype('Distribution') +
+	scale_colour_manual(name='Distribution', values=c('orange','black'))
+@
+
+
+<<Y2-chi-pplot15, fig.cap=caption>>=
+caption='Распределение статистики Никулина при числе интевалов группирования
+$k=15$ и распределение $\\chi^2_{k-1}$.'
+
+df <- read.table('data/h0aog15.dat', skip=2, col.names='x')
+
+ggplot(df, aes(x)) +
+	stat_ecdf(aes(linetype='Nikulin Chi-squared, k=15',
+								colour='Nikulin Chi-squared, k=15')) +
+	stat_function(aes(x, linetype='Chi-squared, df=14',
+										colour='Chi-squared, df=14'), fun=pchisq,
+								args=list(df=14)) +
+	scale_linetype('Distribution') +
+	scale_colour_manual(name='Distribution', values=c('orange','black'))
+@
+
+	Эмпирическое распределение визуально хорошо согласуется с теоретическим.
+
 	\item Исследовать влияние способа группирования на распределение статистики
 		Никулина.
+
+	Поскольку для распределени Коши асимптотически оптимальный способ
+		группирования совпадает с равновероятным способом, то проводить сравнительный 
+		анализ не имеет смысла.
 
 	\item Построить оперативные характеристики критерия для простой и сложной
 		гипотез как функции вида $(1-\beta)(\alpha)$. Сравнить мощность критерия
 		Никулина с мощностью критерия Пирсона.
 
+<<read-data-function>>=
+read.data <- function(N, trueH, Htype, k) {
+	dir <- 'data/'
+
+	if (Htype == 'simple')
+		dir <- paste(dir, 'simpleH/', sep='')
+
+	if (trueH == 'cauchy')
+		h <- 'h0'
+	else
+		h <- 'h1'
+
+	for (i in k) {
+		file <- paste(dir, h,'aog', i, '.dat', sep='')
+		message(file)
+		dft <- read.table(file, skip=2, col.names='x')
+
+		dft <- data.frame(x=dft$x, k=rep(i,N), trueH=rep(trueH,N),
+											Htype=rep(Htype,N))
+
+		df <- merge(df, dft, all=TRUE)
+	}
+	return(df)
+}
+@
+
+<<read-data-simple>>=
+N <- 16600
+Htype <- 'simple'
+
+dfs <- read.data(N, 'cauchy', Htype, seq(5,15,2))
+
+dft <- read.data(N, 'norm', Htype, seq(5,15,2))
+dfs <- merge(dfs, dft, all=TRUE)
+@
+
+<<alpha-power-function>>=
+power <- function(dfin, alpha)
+{
+	dfnull <- subset(dfin, trueH=='cauchy')
+	dfalt <- subset(dfin, trueH=='norm')
+	q <- quantile(dfnull$x, probs=1-alpha)
+	F1 <- ecdf(dfalt$x)
+	percentile <- F1(q)
+	df <- data.frame(alpha=alpha, power=1-percentile, k=unique(dfin$k),
+									 Htype=unique(dfin$Htype))
+	return(df)
+}
+alpha <- seq(0, 0.05, 1e-4)
+@
+
+<<simple-h1-h0, fig.cap=caption, fig.height=3, warning=FALSE>>=
+df5s <- subset(dfs, k==5)
+
+caption <- 'Плотности распределений статистики при проверке \\emph{простой}
+гипотезы при справедливости гипотез $H_0$ и $H_1$. k = 5'
+df5sh0 <- subset(df5s, trueH=='cauchy')
+df5sh1 <- subset(df5s, trueH=='norm')
+ggplot() +
+	geom_density(aes(x, fill='true H0 (Cauchy)'), alpha=.6, df5sh0) +
+	geom_density(aes(x, fill='true H1 (Normal)'), alpha=.6, df5sh1) +
+	scale_fill_manual(values=c('red','blue'), name='Distributions') +
+	xlim(0, 50)
+@
+
+<<read-data-complex>>=
+Htype <- 'complex'
+
+dfc <- read.data(N, 'cauchy', Htype, seq(5,15,2))
+
+dft <- read.data(N, 'norm', Htype, seq(5,15,2))
+dfc <- merge(dfc, dft, all=TRUE)
+@
+
+<<complex-den-plot, fig.height=3, fig.cap=caption, warning=FALSE>>=
+df5c <- subset(dfc, k==5)
+
+caption <- 'Плотности распределений статистики при проверке \\emph{сложной}
+гипотезы при справедливости гипотез $H_0$ и $H_1$. k = 5'
+df5ch0 <- subset(df5c, trueH=='cauchy')
+df5ch1 <- subset(df5c, trueH=='norm')
+ggplot() +
+	geom_density(aes(x, fill='true H0 (Cauchy)'), bw=.7, alpha=.6, df5ch0) +
+	geom_density(aes(x, fill='true H1 (Normal)'), bw=.7, alpha=.6, df5ch1) +
+	scale_fill_manual(values=c('red','blue'), name='Distributions') +
+	xlim(0, 25)
+@
+
+<<pears-simple-power>>=
+kv <- 5
+df <- chisq.statmod.gof2cauchy(100, 16600, 'simple', 'cauchy', kv)
+dft <- chisq.statmod.gof2cauchy(100, 16600, 'simple', 'norm', kv)
+df <- merge(df, dft, all=TRUE)
+@
+
+<<calc-power-nik-pears-simple, cache=FALSE>>=
+dfpns <- power(subset(dfs, k==kv), alpha)
+dfpps <- power(df, alpha)
+@
+
+<<power-plot-nik-pears-simple, fig.cap=caption, fig.height=3, warning=FALSE>>=
+caption <- 'Оперативные характеристики критериев Пирсона и Никулина, k=5.'
+ggplot() +
+	geom_smooth(aes(x=alpha, y=power, linetype='Pearson, k=5'), size=.5, 
+							se=F, dfpps, colour='black') +
+	geom_smooth(aes(x=alpha, y=power, linetype='Nikulin, k=5'), size=.5, 
+							se=F, dfpns, colour='black') +
+	scale_x_log10()
+@
+
 	\item Исследовать мощность критерия Никулина в зависимости от числа
 		интервалов и выполнить сравнение с аналогичными исследованиями по критерию
 		Пирсона.
+
+	Далее на рис. \ldots в виде графиков приведены результаты
+	сравнительного анализа мощности критериев Пирсона и Никулина.
+
 \end{enumerate}
 
 \section*{Заключение}
 
-Заключение.
 
 \begin{thebibliography}{9}
 
