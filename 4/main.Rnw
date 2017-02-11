@@ -82,9 +82,9 @@
 
 \noindent Вариант 12: \\
 $H_0$: Коши \\
-$H_1$: Нормальное
+$H_1$: Нормальное \\
 
-Параметры моделирования:
+\noindent Параметры моделирования: \\
 Количество выборок: 16600 \\
 Объем выборок: 100
 
@@ -114,9 +114,9 @@ theme_set(theme_minimal())
 caption='Распределение статистики Никулина при числе интевалов группирования
 $k=5$ и распределение $\\chi^2_{k-1}$.'
 
-df <- read.table('data/h0aog5.dat', skip=2, col.names='x')
+dfnikh05 <- read.table('data/h0aog5.dat', skip=2, col.names='x')
 
-ggplot(df, aes(x)) +
+ggplot(dfnikh05, aes(x)) +
 	stat_ecdf(aes(linetype='Nikulin Chi-squared, k=5',
 								colour='Nikulin Chi-squared, k=5')) +
 	stat_function(aes(x, linetype='Chi-squared, df=4',
@@ -129,9 +129,9 @@ ggplot(df, aes(x)) +
 caption='Распределение статистики Никулина при числе интевалов группирования
 $k=9$ и распределение $\\chi^2_{k-1}$.'
 
-df <- read.table('data/h0aog9.dat', skip=2, col.names='x')
+dfnikh09 <- read.table('data/h0aog9.dat', skip=2, col.names='x')
 
-ggplot(df, aes(x)) +
+ggplot(dfnikh09, aes(x)) +
 	stat_ecdf(aes(linetype='Nikulin Chi-squared, k=9',
 								colour='Nikulin Chi-squared, k=9')) +
 	stat_function(aes(x, linetype='Chi-squared, df=8',
@@ -145,9 +145,9 @@ ggplot(df, aes(x)) +
 caption='Распределение статистики Никулина при числе интевалов группирования
 $k=15$ и распределение $\\chi^2_{k-1}$.'
 
-df <- read.table('data/h0aog15.dat', skip=2, col.names='x')
+dfnikh015 <- read.table('data/h0aog15.dat', skip=2, col.names='x')
 
-ggplot(df, aes(x)) +
+ggplot(dfnikh015, aes(x)) +
 	stat_ecdf(aes(linetype='Nikulin Chi-squared, k=15',
 								colour='Nikulin Chi-squared, k=15')) +
 	stat_function(aes(x, linetype='Chi-squared, df=14',
@@ -221,7 +221,7 @@ power <- function(dfin, alpha)
 alpha <- seq(0, 0.05, 1e-4)
 @
 
-<<simple-h1-h0, fig.cap=caption, fig.height=3, warning=FALSE>>=
+<<simple-h1-h0, fig.cap=caption, fig.height=2, warning=FALSE>>=
 df5s <- subset(dfs, k==5)
 
 caption <- 'Плотности распределений статистики при проверке \\emph{простой}
@@ -244,7 +244,7 @@ dft <- read.data(N, 'norm', Htype, seq(5,15,2))
 dfc <- merge(dfc, dft, all=TRUE)
 @
 
-<<complex-den-plot, fig.height=3, fig.cap=caption, warning=FALSE>>=
+<<complex-den-plot, fig.height=2, fig.cap=caption, warning=FALSE>>=
 df5c <- subset(dfc, k==5)
 
 caption <- 'Плотности распределений статистики при проверке \\emph{сложной}
@@ -258,26 +258,49 @@ ggplot() +
 	xlim(0, 25)
 @
 
-<<pears-simple-power>>=
+<<pears-simple-mod>>=
 kv <- 5
-df <- chisq.statmod.gof2cauchy(100, 16600, 'simple', 'cauchy', kv)
+dfspears5 <- chisq.statmod.gof2cauchy(100, 16600, 'simple', 'cauchy', kv)
 dft <- chisq.statmod.gof2cauchy(100, 16600, 'simple', 'norm', kv)
-df <- merge(df, dft, all=TRUE)
+dfspears5 <- merge(dfspears5, dft, all=TRUE)
 @
 
-<<calc-power-nik-pears-simple, cache=FALSE>>=
+<<calc-power-nik-pears-simple, cache=TRUE>>=
 dfpns <- power(subset(dfs, k==kv), alpha)
-dfpps <- power(df, alpha)
+dfpps <- power(dfspears5, alpha)
 @
 
-<<power-plot-nik-pears-simple, fig.cap=caption, fig.height=3, warning=FALSE>>=
-caption <- 'Оперативные характеристики критериев Пирсона и Никулина, k=5.'
+<<power-plot-nik-pears-simple, fig.cap=caption, fig.height=2, warning=FALSE>>=
+caption <- 'Оперативные характеристики критериев Пирсона и Никулина при
+проверке \\emph{простой} гипотезы, число интервалов группирования k=5.'
 ggplot() +
 	geom_smooth(aes(x=alpha, y=power, linetype='Pearson, k=5'), size=.5, 
 							se=F, dfpps, colour='black') +
 	geom_smooth(aes(x=alpha, y=power, linetype='Nikulin, k=5'), size=.5, 
 							se=F, dfpns, colour='black') +
-	scale_x_log10()
+	scale_linetype("Criterion")
+@
+
+<<pears-complex-mod>>=
+df <- chisq.statmod.gof2cauchy(100, 16600, 'complex', 'cauchy', kv)
+dft <- chisq.statmod.gof2cauchy(100, 16600, 'complex', 'norm', kv)
+df <- merge(df, dft, all=TRUE)
+@
+
+<<calc-pow-nik-pears-complex>>=
+dfpnc <- power(subset(dfc, k==kv), alpha)
+dfppc <- power(df, alpha)
+@
+
+<<power-plot-nik-pears-complex, warning=FALSE, fig.height=2, fig.cap=caption>>=
+caption <- 'Оперативные характеристики критериев Пирсона и Никулина при
+проверке \\emph{сложной} гипотезы, число интервалов группирования k=5.'
+ggplot() +
+	geom_smooth(aes(x=alpha, y=power, linetype='Pearson, k=5'), size=.5, 
+							se=F, dfppc, colour='black') +
+	geom_smooth(aes(x=alpha, y=power, linetype='Nikulin, k=5'), size=.5, 
+							se=F, dfpnc, colour='black') +
+	scale_linetype("Criterion")
 @
 
 	\item Исследовать мощность критерия Никулина в зависимости от числа
@@ -287,6 +310,30 @@ ggplot() +
 	Далее на рис. \ldots в виде графиков приведены результаты
 	сравнительного анализа мощности критериев Пирсона и Никулина.
 
+<<calc-power-nik-k>>=
+library(plyr)
+lsts <- split(dfc, dfc$k)
+dfpwrc <- ldply(.data=lsts, .fun=power, alpha=alpha)
+@
+
+<<power-plot-nik-k, fig.cap=caption, fig.height=3>>=
+caption <- 'Зависимость мощности критерия Никулина от задаваемого уровня
+значимости при разном числе интервалов группирования при проверке
+\\emph{сложной} гипотезы.'
+cbPalette <- c("#999999", "#E69F00", "#56B4E9", "#009E73", "#F0E442",
+								"#0072B2", "#D55E00", "#CC79A7")
+cbPalette <- rev(cbPalette)
+
+ggplot(data=dfpwrc, mapping=aes(x=alpha, y=power, linetype=factor(k),
+																colour=factor(k))) +
+	geom_smooth(size=.5, se=F) +
+	scale_linetype(name='Number of intervals') +
+	scale_colour_manual(name='Number of intervals', values=cbPalette)
+@
+
+<<pears-mod>>=
+@
+	
 \end{enumerate}
 
 \section*{Заключение}
