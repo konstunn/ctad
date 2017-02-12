@@ -1,0 +1,124 @@
+
+\documentclass[a4paper,14pt]{extarticle}
+
+\usepackage{cmap}
+
+\usepackage[T2A]{fontenc}
+\usepackage[utf8x]{inputenc}
+\usepackage[russian]{babel}
+
+\usepackage[a4paper,margin=1.5cm,footskip=1cm,left=2cm,right=1.5cm,top=1.5cm
+	,bottom=2.0cm]{geometry}
+\usepackage{textcase}
+\usepackage{csquotes}
+\usepackage{enumitem}
+
+\usepackage[labelsep=period,justification=centering]{caption}
+
+\usepackage{amsmath}
+\usepackage{pgfplots}
+
+\usepackage{float}
+
+\usepackage{indentfirst}
+
+\setlist[description]{leftmargin=\parindent,labelindent=\parindent}
+
+\begin{document}
+
+\setcounter{secnumdepth}{0}
+
+\begin{titlepage}
+
+	\begin{center}
+		Новосибирский государственный технический университет
+		
+		Факультет прикладной математики и информатики
+		
+		Кафедра теоретической и прикладной информатики
+		
+		\vspace{250pt}
+		
+		\textbf{\LARGE{Лабораторная работа № 5}}
+		\medbreak
+		\large{<<Экспериментальное исследование предельных
+		распределений статистик непараметрических критериев согласия. Часть 1.>>} \\
+		\medbreak
+		\small{по дисциплине \\
+		\medbreak
+		<<Компьютерные технологии анализа данных и исследования 
+	статистических~закономерностей>>}
+		\vspace{100pt}
+	\end{center}
+
+	\begin{flushleft}
+		\begin{tabbing}
+			Группа:\qquad\qquad \= ПММ-61\\
+			Студент:            \> Горбунов К. К.\\
+			Преподаватель:      \> проф. Лемешко Б. Ю.\\
+			Вариант:            \> 12 \\
+		\end{tabbing}
+	\end{flushleft}
+
+	\begin{center}
+		\vspace{\fill}
+		Новосибирск, 2016 г.
+	\end{center}
+
+\end{titlepage}
+
+\newpage
+
+\renewenvironment{knitrout}{\setlength{\topsep}{0mm}}{}
+
+\section{Цель работы}
+
+Исследование распределений статистик непараметрических
+критериев согласия при проверке простых и различных сложных гипотез. В
+первой части исследуются распределения статистик критериев согласия
+Колмогорова, Смирнова, $\omega^2$ Крамера–Мизеса–Смирнова и $\Omega^2$ Андерсона–
+Дарлинга. \\
+
+\noindent Вариант 12: \\
+$H_0$: Коши \\
+$H_1$: Нормальное \\
+
+\noindent Параметры моделирования: \\
+Количество выборок: 16600 \\
+Объем выборок: 100
+
+\section{Ход работы}
+
+\begin{enumerate}
+	\item item
+
+<<setup, cache=FALSE, echo=FALSE, message=FALSE, warning=FALSE>>=
+opts_chunk$set(autodep=TRUE, cache=TRUE, message=FALSE, echo=FALSE,
+							 fig.pos='H', fig.lp='fig:', fig.height=1.5)
+options(scipen=5)
+dep_auto()
+library(ggplot2)
+library(plyr)
+theme_set(theme_minimal())
+@
+
+\end{enumerate}
+
+\section{Заключение}
+
+\begin{thebibliography}{9}
+
+\bibitem{lemeshko} Статистический анализ данных, моделирование и
+	исследование вероятностных закономерностей.
+		Компьютерный подход : монография / \mbox{Б.Ю. Лемешко}, С.Б. Лемешко,
+	\mbox{С.Н. Постовалов}, Е.В. Чимитова. --- \mbox{Новосибирск} : Изд-во НГТУ,
+		2011. --- 888 с. (серия <<\mbox{Монографии НГТУ}>>).
+
+\bibitem{knitr16} Yihui Xie (2016). knitr: A General-Purpose Package for Dynamic
+	Report Generation in R. R package version 1.15.1.
+
+\end{thebibliography}
+
+\end{document}
+
+# vim: ts=2 sw=2
