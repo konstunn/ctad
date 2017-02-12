@@ -101,6 +101,7 @@ opts_chunk$set(autodep=TRUE, cache=TRUE, message=FALSE, echo=FALSE,
 options(scipen=5)
 dep_auto()
 library(ggplot2)
+library(plyr)
 theme_set(theme_minimal())
 @
 
@@ -311,7 +312,6 @@ ggplot() +
 	сравнительного анализа мощности критериев Пирсона и Никулина.
 
 <<calc-power-nik-k>>=
-library(plyr)
 lsts <- split(dfc, dfc$k)
 dfpwrc <- ldply(.data=lsts, .fun=power, alpha=alpha)
 @
