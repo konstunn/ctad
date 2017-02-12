@@ -313,7 +313,11 @@ ggplot() +
 
 <<calc-power-nik-k>>=
 lsts <- split(dfc, dfc$k)
-dfpwrc <- ldply(.data=lsts, .fun=power, alpha=alpha)
+dfnpwrc <- ldply(.data=lsts, .fun=power, alpha=alpha)
+
+lsts <- split(dfs, dfs$k)
+dfnpwrs <- ldply(.data=lsts, .fun=power, alpha=alpha)
+
 @
 
 <<power-plot-nik-k, fig.cap=caption, fig.height=3>>=
@@ -324,7 +328,7 @@ cbPalette <- c("#999999", "#E69F00", "#56B4E9", "#009E73", "#F0E442",
 								"#0072B2", "#D55E00", "#CC79A7")
 cbPalette <- rev(cbPalette)
 
-ggplot(data=dfpwrc, mapping=aes(x=alpha, y=power, linetype=factor(k),
+ggplot(data=dfnpwrc, mapping=aes(x=alpha, y=power, linetype=factor(k),
 																colour=factor(k))) +
 	geom_smooth(size=.5, se=F) +
 	scale_linetype(name='Number of intervals') +
