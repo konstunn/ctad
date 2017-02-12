@@ -317,7 +317,6 @@ dfnpwrc <- ldply(.data=lsts, .fun=power, alpha=alpha)
 
 lsts <- split(dfs, dfs$k)
 dfnpwrs <- ldply(.data=lsts, .fun=power, alpha=alpha)
-
 @
 
 <<power-plot-nik-k, fig.cap=caption, fig.height=3>>=
@@ -336,12 +335,104 @@ ggplot(data=dfnpwrc, mapping=aes(x=alpha, y=power, linetype=factor(k),
 @
 
 <<pears-mod>>=
+n <- 100
+N <- 16600
+dft <- dft[0,]
+for (ki in seq(5,15,2)) {
+	str <- sprintf("ki = %d\n", ki)
+
+	message(str)
+	dfh0c <- chisq.statmod.gof2cauchy(n=n, N=N, Htype='complex', trueH='cauchy',
+																		k=ki)
+	message(str)
+	dfh1c <- chisq.statmod.gof2cauchy(n=n, N=N, Htype='complex', trueH='norm',
+																		k=ki)
+
+	dft <- merge(dft, dfh0c, all=TRUE)
+	dft <- merge(dft, dfh1c, all=TRUE)
+}
+dfcpears <- dft
+@
+
+<<pears-mod-simple>>=
+dft <- dft[0,]
+for (ki in seq(5,15,2)) {
+	str <- sprintf("ki = %d\n", ki)
+
+	message(str)
+	dfh0s <- chisq.statmod.gof2cauchy(n=n, N=N, Htype='simple', trueH='cauchy',
+																		k=ki)
+	message(str)
+	dfh1s <- chisq.statmod.gof2cauchy(n=n, N=N, Htype='simple', trueH='norm',
+																		k=ki)
+
+	dft <- merge(dft, dfh0s, all=TRUE)
+	dft <- merge(dft, dfh1s, all=TRUE)
+}
+dfspears <- dft
+@
+
+<<calc-power-pears-k>>=
+lsts <- split(dfspears, dfspears$k)
+dfppwrs <- ldply(.data=lsts, .fun=power, alpha=alpha)
+
+lsts <- split(dfcpears, dfcpears$k)
+dfppwrc <- ldply(.data=lsts, .fun=power, alpha=alpha)
+@
+
+<<power-plot-pears-k, fig.cap=caption, fig.height=3>>=
+caption <- 'Зависимость мощности критерия Пирсона от задаваемого уровня
+значимости при разном числе интервалов группирования при проверке
+\\emph{сложной} гипотезы.'
+
+ggplot(data=dfppwrc, mapping=aes(x=alpha, y=power, linetype=factor(k),
+																colour=factor(k))) +
+	geom_smooth(size=.5, se=F) +
+	scale_linetype(name='Number of intervals') +
+	scale_colour_manual(name='Number of intervals', values=cbPalette)
+@
+
+В таком представлении видно, что мощность критериев Пирсона и Никулина
+одинакова.
+
+Рассмотрим другое представление.
+
+<<plot-nik-pears-simple-k-pwr, fig.height=2, fig.cap=caption, warning=FALSE>>=
+caption <- 'Оперативные характеристики критериев Пирсона и Никулина при
+	проверке \\emph{простой} гипотезы.'
+for (i in seq(5,15,2)) {
+	dfn <- subset(dfnpwrs, k==i)
+	dfp <- subset(dfppwrs, k==i)
+	p <- ggplot() +
+		geom_smooth(aes(x=alpha, y=power, linetype=paste('Pearson, k=', i, sep='')),
+								size=.5, se=F, dfp, colour='black') +
+		geom_smooth(aes(x=alpha, y=power, linetype=paste('Nikulin, k=', i, sep='')),
+								size=.5, se=F, dfn, colour='black') +
+		scale_x_log10() +
+		scale_linetype("Criterion")
+	print(p)
+}
+@
+
+<<plot-nik-pears-complex-k-pwr, fig.height=2, fig.cap=caption, warning=FALSE>>=
+caption <- 'Оперативные характеристики критериев Пирсона и Никулина при
+	проверке \\emph{сложной} гипотезы.'
+for (i in seq(5,15,2)) {
+	dfn <- subset(dfnpwrc, k==i)
+	dfp <- subset(dfppwrc, k==i)
+	p <- ggplot() +
+		geom_smooth(aes(x=alpha, y=power, linetype=paste('Pearson, k=', i, sep='')),
+								size=.5, se=F, dfp, colour='black') +
+		geom_smooth(aes(x=alpha, y=power, linetype=paste('Nikulin, k=', i, sep='')),
+								size=.5, se=F, dfn, colour='black') +
+		scale_linetype("Criterion")
+	print(p)
+}
 @
 	
 \end{enumerate}
 
-\section*{Заключение}
-
+\newpage
 
 \begin{thebibliography}{9}
 
