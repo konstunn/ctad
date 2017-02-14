@@ -108,6 +108,71 @@ n <- 100
 		согласия при простой гипотезе $H_0$. Сравнить полученное эмпирическое
 		распределение с предельным распределением классической статистики.
 
+	Далее представлены сравнительные графики эмпирических и теоретических
+		распределений.
+
+<<kolm-simple-prep>>=
+dfh0s <- read.table('data/kolm/kolh0s.dat', skip=2, col.names='x')
+
+dft <- dfh0s
+dft$x <- sort(dft$x)
+dft$x <- dft$x / 10
+dft$y <- sapply(dft$x, function(x) pkolm(x, 100))
+dft$x <- dft$x * 10
+@
+
+<<kolm-simple-plot, warning=FALSE, fig.cap=caption>>=
+caption <- 'Эмпирическое и теоретическое распределения статистики Колмогорова.'
+ggplot() +
+	geom_line(data=dft, aes(x=x,y=y, linetype='Theoretical Kolmogorov'), size=1) +
+	stat_ecdf(data=dfh0s, aes(x=x, linetype='Empirical Kolmogorov')) +
+	xlim(0.4,1.5) +
+	scale_linetype('Distribution')
+@
+
+<<smirn-simple-prep, fig.cap=caption, warning=FALSE>>=
+caption <- 'Эмпирическое и теоретическое распределения статистики Смирнова'
+dfh0s <- read.table('data/smirn/smirh0s.dat', skip=2, col.names='x')
+ggplot() +
+	stat_ecdf(data=dfh0s, mapping=aes(x=x, linetype='Empirical Smirnov',
+																		colour='Empirical Smirnov'), size=1) +
+	stat_function(data=dfh0s,
+								mapping=aes(x=x, linetype='Chi-Squared, df=2',
+														colour='Chi-Squared, df=2'), fun=pchisq,
+								args=list(df=2)) +
+	scale_linetype('Distribution') +
+	scale_colour_manual(name='Distribution', values=c('black', 'red')) +
+	xlim(0, 10)
+@
+
+<<cvm-simple-plot, fig.cap=caption>>=
+library(codadiags)
+caption <-'Эмпирическое и теоретическое распределения статистики
+Крамера-Мизеса-Смирнова.'
+dft <- read.table('data/cvm/omsh0s.dat', skip=2, col.names='x')
+ggplot() +
+	stat_ecdf(aes(x=x, linetype='Empirical CvM', colour='Empirical CvM'), dft) +
+	stat_function(data=dft, mapping=aes(x=x, linetype='Theoretical CvM',
+																			colour='Theoretical CvM'), size=1,
+								fun=cvm.cdf) +
+	scale_linetype('Distribution') +
+	scale_colour_manual(name='Distribution', values=c('black', 'red'))
+@
+
+<<ad-simple-plot, fig.cap=caption>>=
+library(goftest)
+caption <-'Эмпирическое и теоретическое распределения статистики
+Андерсона-Дарлинга.'
+dft <- read.table('data/ad/ombh0s.dat', skip=2, col.names='x')
+ggplot() +
+	stat_ecdf(aes(x=x, linetype='Empirical AD', colour='Empirical AD'), dft) +
+	stat_function(data=dft, aes(x=x, linetype='Theoretical AD',
+															colour='Theoretical AD'), fun=pAD, size=1) +
+	scale_linetype('Distribution') +
+	scale_colour_manual(name='Distribution', values=c('black', 'red'))
+@
+
+
 	\item Смоделировать распределение статистики S для этого же критерия
 		согласия при сложной гипотезе $H_0$. Попытаться идентифицировать полученное
 		эмпирическое распределение.
@@ -117,8 +182,9 @@ n <- 100
 		гипотезе $H_1$.
 
 	\item Построить оперативные характеристики критерия для простой и сложных
-		гипотез как функции вида $(1-\beta)(\alpha)$. Сравнить мощность непараметрических
-		критериев с мощностью критериев $\chi^2$ Пирсона и Рао-Робсона-Никулина.
+		гипотез как функции вида $(1-\beta)(\alpha)$. Сравнить мощность
+		непараметрических критериев с мощностью критериев $\chi^2$ Пирсона и
+		Рао-Робсона-Никулина.
 
 \end{enumerate}
 
