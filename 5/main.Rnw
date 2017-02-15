@@ -277,7 +277,98 @@ ggplot() +
 		согласия при проверке простой и сложной гипотез $H_0$ при справедливой
 		гипотезе $H_1$.
 
+\subsubsection{Простая гипотеза}
 
+<<simple-h1-h0-dens, fig.cap=caption, fig.height=2, warning=FALSE>>=
+caption <- 'Условные плотности распределений статистики Колмогорова при
+проверке \\emph{простой} гипотезы при справедливости гипотез $H_0$ и $H_1$.'
+dfh0 <- read.table('data/kolm/kolh0s.dat', skip=2, col.names='x')
+dfh1 <- read.table('data/kolm/kolh1s.dat', skip=2, col.names='x')
+ggplot() +
+	geom_density(aes(x, fill='true H0 (Cauchy)'), alpha=.6, dfh0) +
+	geom_density(aes(x, fill='true H1 (Normal)'), alpha=.6, dfh1) +
+	scale_fill_manual(values=c('red','blue'), name='Distributions')
+@
+
+<<simple-h1-h0-smirn-dens, fig.cap=caption, fig.height=2, warning=FALSE>>=
+caption <- 'Условные плотности распределений статистики Смирнова при
+проверке \\emph{простой} гипотезы при справедливости гипотез $H_0$ и $H_1$.'
+dfh0 <- read.table('data/smirn/smirh0s.dat', skip=2, col.names='x')
+dfh1 <- read.table('data/smirn/smirh1s.dat', skip=2, col.names='x')
+ggplot() +
+	geom_density(aes(x, fill='true H0 (Cauchy)'), alpha=.6, dfh0) +
+	geom_density(aes(x, fill='true H1 (Normal)'), alpha=.6, dfh1) +
+	scale_fill_manual(values=c('red','blue'), name='Distributions')
+@
+
+<<simple-h1-h0-cvm-dens, fig.cap=caption, fig.height=2, warning=FALSE>>=
+caption <- 'Условные плотности распределений статистики Крамера-Мизеса-Смирнова
+при проверке \\emph{простой} гипотезы при справедливости гипотез $H_0$ и $H_1$.'
+dfh0 <- read.table('data/cvm/omsh0s.dat', skip=2, col.names='x')
+dfh1 <- read.table('data/cvm/omsh1s.dat', skip=2, col.names='x')
+ggplot() +
+	geom_density(aes(x, fill='true H0 (Cauchy)'), alpha=.6, dfh0) +
+	geom_density(aes(x, fill='true H1 (Normal)'), alpha=.6, dfh1) +
+	scale_fill_manual(values=c('red','blue'), name='Distributions')
+@
+
+<<simple-h1-h0-ad-dens, fig.cap=caption, fig.height=2, warning=FALSE>>=
+caption <- 'Условные плотности распределений статистики Андерсона-Дарлинга 
+при проверке \\emph{простой} гипотезы при справедливости гипотез $H_0$ и $H_1$.'
+dfh0 <- read.table('data/ad/ombh0s.dat', skip=2, col.names='x')
+dfh1 <- read.table('data/ad/ombh1s.dat', skip=2, col.names='x')
+ggplot() +
+	geom_density(aes(x, fill='true H0 (Cauchy)'), alpha=.6, dfh0) +
+	geom_density(aes(x, fill='true H1 (Normal)'), alpha=.6, dfh1) +
+	scale_fill_manual(values=c('red','blue'), name='Distributions')
+@
+
+\newpage
+\subsubsection{Сложная гипотеза}
+
+<<complex-h1-h0-kol-dens, fig.cap=caption, fig.height=2, warning=FALSE>>=
+caption <- 'Условные плотности распределений статистики Колмогорова 
+при проверке \\emph{сложной} гипотезы при справедливости гипотез $H_0$ и $H_1$.'
+dfh0 <- read.table('data/kolm/kolh0c.dat', skip=2, col.names='x')
+dfh1 <- read.table('data/kolm/kolh1c.dat', skip=2, col.names='x')
+ggplot() +
+	geom_density(aes(x, fill='true H0 (Cauchy)'), alpha=.6, dfh0) +
+	geom_density(aes(x, fill='true H1 (Normal)'), alpha=.6, dfh1) +
+	scale_fill_manual(values=c('red','blue'), name='Distributions')
+@
+
+<<complex-h1-h0-smirn-dens, fig.cap=caption, fig.height=2, warning=FALSE>>=
+caption <- 'Условные плотности распределений статистики Смирнова 
+при проверке \\emph{сложной} гипотезы при справедливости гипотез $H_0$ и $H_1$.'
+dfh0 <- read.table('data/smirn/smirh0c.dat', skip=2, col.names='x')
+dfh1 <- read.table('data/smirn/smirh1c.dat', skip=2, col.names='x')
+ggplot() +
+	geom_density(aes(x, fill='true H0 (Cauchy)'), alpha=.6, dfh0) +
+	geom_density(aes(x, fill='true H1 (Normal)'), alpha=.6, dfh1) +
+	scale_fill_manual(values=c('red','blue'), name='Distributions')
+@
+
+<<complex-h1-h0-cvm-dens, fig.cap=caption, fig.height=2, warning=FALSE>>=
+caption <- 'Условные плотности распределений статистики Крамера-Мизеса-Смирнова 
+при проверке \\emph{сложной} гипотезы при справедливости гипотез $H_0$ и $H_1$.'
+dfh0 <- read.table('data/cvm/omsh0c.dat', skip=2, col.names='x')
+dfh1 <- read.table('data/cvm/omsh1c.dat', skip=2, col.names='x')
+ggplot() +
+	geom_density(aes(x, fill='true H0 (Cauchy)'), alpha=.6, dfh0) +
+	geom_density(aes(x, fill='true H1 (Normal)'), alpha=.6, dfh1) +
+	scale_fill_manual(values=c('red','blue'), name='Distributions')
+@
+
+<<complex-h1-h0-ad-dens, fig.cap=caption, fig.height=2, warning=FALSE>>=
+caption <- 'Условные плотности распределений статистики Андерсона-Дарлинга 
+при проверке \\emph{сложной} гипотезы при справедливости гипотез $H_0$ и $H_1$.'
+dfh0 <- read.table('data/ad/ombh0c.dat', skip=2, col.names='x')
+dfh1 <- read.table('data/ad/ombh1c.dat', skip=2, col.names='x')
+ggplot() +
+	geom_density(aes(x, fill='true H0 (Cauchy)'), alpha=.6, dfh0) +
+	geom_density(aes(x, fill='true H1 (Normal)'), alpha=.6, dfh1) +
+	scale_fill_manual(values=c('red','blue'), name='Distributions')
+@
 
 	\item Построить оперативные характеристики критерия для простой и сложных
 		гипотез как функции вида $(1-\beta)(\alpha)$. Сравнить мощность
