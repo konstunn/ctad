@@ -375,6 +375,175 @@ ggplot() +
 		непараметрических критериев с мощностью критериев $\chi^2$ Пирсона и
 		Рао-Робсона-Никулина.
 
+<<stat-mod-src, code=readLines('../3/src/chisq.statmod.gof2cauchy.R')>>=
+@
+
+<<alpha-power-function>>=
+power <- function(dfin, alpha)
+{
+	dfnull <- subset(dfin, trueH=='cauchy')
+	dfalt <- subset(dfin, trueH=='norm')
+	q <- quantile(dfnull$x, probs=1-alpha)
+	F1 <- ecdf(dfalt$x)
+	percentile <- F1(q)
+	df <- data.frame(alpha=alpha, power=1-percentile)
+	return(df)
+}
+alpha <- seq(0, 0.05, 1e-4)
+@
+
+\subsubsection{Простая гипотеза}
+
+<<mod-simple-pears>>=
+dfpears <- chisq.statmod.gof2cauchy(n=100, N=16600, trueH='cauchy',
+																		Htype='simple', k=5)
+dft <- chisq.statmod.gof2cauchy(n=100, N=16600, trueH='norm',
+																		Htype='simple', k=5)
+dfpears <- merge(dfpears, dft, all=TRUE)
+@
+
+<<read-simple>>=
+dfnrr <- read.table('data/nik/simpleH/h0aog5.dat', skip=2, col.names='x')
+repH0 <- rep('cauchy', N)
+repH1 <- rep('norm', N)
+dfnrr$trueH <- repH0
+dft <- read.table('data/nik/simpleH/h1aog5.dat', skip=2, col.names='x')
+dft$trueH <- repH1
+dfnrr <- merge(dfnrr, dft, all=TRUE)
+
+dfkolm <- read.table('data/kolm/kolh0s.dat', skip=2, col.names='x')
+dfkolm$trueH <- repH0
+dft <- read.table('data/kolm/kolh1s.dat', skip=2, col.names='x')
+dft$trueH <- repH1
+dfkolm <- merge(dfkolm, dft, all=TRUE)
+
+dfsmir <- read.table('data/smirn/smirh0s.dat', skip=2, col.names='x')
+dfsmir$trueH <- repH0
+dft <- read.table('data/smirn/smirh1s.dat', skip=2, col.names='x')
+dft$trueH <- repH1
+dfsmir <- merge(dfsmir, dft, all=TRUE)
+
+dfcvm <- read.table('data/cvm/omsh0s.dat', skip=2, col.names='x')
+dfcvm$trueH <- repH0
+dft <- read.table('data/cvm/omsh1s.dat', skip=2, col.names='x')
+dft$trueH <- repH1
+dfcvm <- merge(dfcvm, dft, all=TRUE)
+
+dfad <- read.table('data/ad/ombh0s.dat', skip=2, col.names='x')
+dfad$trueH <- repH0
+dft <- read.table('data/ad/ombh1s.dat', skip=2, col.names='x')
+dft$trueH <- repH1
+dfad <- merge(dfad, dft, all=TRUE)
+@
+
+<<simple-power-calc>>=
+dfpears <- power(dfpears, alpha)
+dfnrr <- power(dfnrr, alpha)
+dfkolm <- power(dfkolm, alpha)
+dfsmir <- power(dfsmir, alpha)
+dfcvm <- power(dfcvm, alpha)
+dfad <- power(dfad, alpha)
+@
+
+<<simple-power-plot, fig.cap=caption, fig.height=3, warning=FALSE>>=
+caption <- 'Оперативные характеристики критериев при проверки простой
+гипотезы.'
+cbPalette <- c("#999999", "#E69F00", "#56B4E9", "#009E73", "#F0E442",
+								"#0072B2", "#D55E00", "#CC79A7")
+cbPalette <- rev(cbPalette)
+
+ggplot(mapping=aes(x=alpha, y=power)) +
+	geom_smooth(se=FALSE, data=dfpears, aes(linetype='Pearson, k=5',
+																					colour='Pearson, k=5')) +
+	geom_smooth(se=FALSE, data=dfnrr, aes(linetype='Nikulin, k=5',
+																				colour='Nikulin, k=5')) +
+	geom_smooth(se=FALSE, data=dfkolm, aes(linetype='Kolmogorov',
+																				 colour='Kolmogorov')) +
+	geom_smooth(se=FALSE, data=dfsmir, aes(linetype='Smirnov',
+																				 colour='Smirnov')) +
+	geom_smooth(se=FALSE, data=dfcvm, aes(linetype='CvM', colour='CvM')) +
+	geom_smooth(se=FALSE, data=dfad, aes(linetype='AD', colour='AD')) +
+	scale_linetype(name='Criterion') +
+	scale_colour_manual(name='Criterion', values=cbPalette)
+@
+
+\newpage
+\subsubsection{Сложная гипотеза}
+
+<<mod-complex-pears>>=
+dfpears <- chisq.statmod.gof2cauchy(n=100, N=16600, trueH='cauchy',
+																		Htype='complex', k=5)
+dft <- chisq.statmod.gof2cauchy(n=100, N=16600, trueH='norm',
+																		Htype='complex', k=5)
+dfpears <- merge(dfpears, dft, all=TRUE)
+@
+
+<<read-complex>>=
+dfnrr <- read.table('data/nik/complexH/h0aog5.dat', skip=2, col.names='x')
+repH0 <- rep('cauchy', N)
+repH1 <- rep('norm', N)
+dfnrr$trueH <- repH0
+dft <- read.table('data/nik/complexH/h1aog5.dat', skip=2, col.names='x')
+dft$trueH <- repH1
+dfnrr <- merge(dfnrr, dft, all=TRUE)
+
+dfkolm <- read.table('data/kolm/kolh0c.dat', skip=2, col.names='x')
+dfkolm$trueH <- repH0
+dft <- read.table('data/kolm/kolh1c.dat', skip=2, col.names='x')
+dft$trueH <- repH1
+dfkolm <- merge(dfkolm, dft, all=TRUE)
+
+dfsmir <- read.table('data/smirn/smirh0c.dat', skip=2, col.names='x')
+dfsmir$trueH <- repH0
+dft <- read.table('data/smirn/smirh1c.dat', skip=2, col.names='x')
+dft$trueH <- repH1
+dfsmir <- merge(dfsmir, dft, all=TRUE)
+
+dfcvm <- read.table('data/cvm/omsh0c.dat', skip=2, col.names='x')
+dfcvm$trueH <- repH0
+dft <- read.table('data/cvm/omsh1c.dat', skip=2, col.names='x')
+dft$trueH <- repH1
+dfcvm <- merge(dfcvm, dft, all=TRUE)
+
+dfad <- read.table('data/ad/ombh0c.dat', skip=2, col.names='x')
+dfad$trueH <- repH0
+dft <- read.table('data/ad/ombh1c.dat', skip=2, col.names='x')
+dft$trueH <- repH1
+dfad <- merge(dfad, dft, all=TRUE)
+@
+
+<<complex-power-calc>>=
+dfpears <- power(dfpears, alpha)
+dfnrr <- power(dfnrr, alpha)
+dfkolm <- power(dfkolm, alpha)
+dfsmir <- power(dfsmir, alpha)
+dfcvm <- power(dfcvm, alpha)
+dfad <- power(dfad, alpha)
+@
+
+<<complex-power-plot, fig.cap=caption, fig.height=3, warning=FALSE>>=
+caption <- 'Оперативные характеристики критериев при проверки сложной
+гипотезы.'
+cbPalette <- c("#999999", "#E69F00", "#56B4E9", "#009E73", "#F0E442",
+								"#0072B2", "#D55E00", "#CC79A7")
+cbPalette <- rev(cbPalette)
+
+ggplot(mapping=aes(x=alpha, y=power)) +
+	geom_smooth(se=FALSE, data=dfpears, aes(linetype='Pearson, k=5',
+																					colour='Pearson, k=5')) +
+	geom_smooth(se=FALSE, data=dfnrr, aes(linetype='Nikulin, k=5',
+																				colour='Nikulin, k=5')) +
+	geom_smooth(se=FALSE, data=dfkolm, aes(linetype='Kolmogorov',
+																				 colour='Kolmogorov')) +
+	geom_smooth(se=FALSE, data=dfsmir, aes(linetype='Smirnov',
+																				 colour='Smirnov')) +
+	geom_smooth(se=FALSE, data=dfcvm, aes(linetype='CvM', colour='CvM')) +
+	geom_smooth(se=FALSE, data=dfad, aes(linetype='AD', colour='AD')) +
+	scale_linetype(name='Criterion') +
+	scale_colour_manual(name='Criterion', values=cbPalette)
+@
+
+
 \end{enumerate}
 
 \begin{thebibliography}{9}
