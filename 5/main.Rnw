@@ -130,7 +130,7 @@ ggplot() +
 	scale_linetype('Distribution')
 @
 
-<<smirn-simple-prep, fig.cap=caption, warning=FALSE>>=
+<<smirn-simple-plot, fig.cap=caption, warning=FALSE>>=
 caption <- 'Эмпирическое и теоретическое распределения статистики Смирнова'
 dfh0s <- read.table('data/smirn/smirh0s.dat', skip=2, col.names='x')
 ggplot() +
@@ -172,14 +172,106 @@ ggplot() +
 	scale_colour_manual(name='Distribution', values=c('black', 'red'))
 @
 
-
 	\item Смоделировать распределение статистики S для этого же критерия
 		согласия при сложной гипотезе $H_0$. Попытаться идентифицировать полученное
 		эмпирическое распределение.
 
+\subsubsection{Колмогоров}
+
+<<kolm-complex-prep>>=
+dfh0c <- read.table('data/kolm/kolh0c.dat', skip=2, col.names='x')
+
+dft <- dfh0c
+dft$x <- sort(dft$x)
+dft$x <- dft$x / 10
+dft$y <- sapply(dft$x, function(x) pkolm(x, 100))
+dft$x <- dft$x * 10
+@
+
+<<kolm-complex-plot, warning=FALSE, fig.cap=caption>>=
+caption <- 'Эмпирическое распределение статистики Колмогорова при сложной
+гипотезе и теоретическое распределение Колмогорова.'
+ggplot() +
+	geom_line(data=dft, aes(x=x,y=y, linetype='Theoretical Kolmogorov'), size=1) +
+	stat_ecdf(data=dfh0c, aes(x=x, linetype='Empirical Kolmogorov')) +
+	xlim(0.4,1.5) +
+	scale_linetype('Distribution')
+@
+
+\begin{figure}[H]
+	\includegraphics[width=\maxwidth]{figure/kolmmaxwell}
+	\caption{Эмпирическое распределение Колмогорова при проверке сложной
+	гипотезы и распределение Максвелла.}
+\end{figure}
+
+\subsubsection{Смирнов}
+
+<<smirn-complex-plot, fig.cap=caption, warning=FALSE>>=
+caption <- 'Эмпирическое распределение статистики Смирнова при проверке
+сложной гипотезы и распределение $\\chi^2_2$.'
+dfh0c <- read.table('data/smirn/smirh0c.dat', skip=2, col.names='x')
+ggplot() +
+	stat_ecdf(data=dfh0c, mapping=aes(x=x, linetype='Empirical Smirnov',
+																		colour='Empirical Smirnov'), size=1) +
+	stat_function(data=dfh0c,
+								mapping=aes(x=x, linetype='Chi-Squared, df=2',
+														colour='Chi-Squared, df=2'),
+								fun=pchisq,
+								args=list(df=2)) +
+	scale_linetype('Distribution') +
+	scale_colour_manual(name='Distribution', values=c('black', 'red')) +
+	xlim(0, 10)
+@
+
+\begin{figure}[H]
+	\includegraphics[width=\maxwidth]{figure/smirnwei}
+	\caption{Эмпирическое распределение Смирнова при проверке сложной
+	гипотезы и распределение Вейбулла.}
+\end{figure}
+
+\subsubsection{Крамера-Мизеса-Смирнова}
+
+<<cvm-complex-plot, fig.cap=caption>>=
+library(codadiags)
+caption <-'Эмпирическое распределения статистики Крамера-Мизеса-Смирнова при
+проверке сложной гипотезы и теоретическое распределение.'
+dft <- read.table('data/cvm/omsh0c.dat', skip=2, col.names='x')
+ggplot() +
+	stat_ecdf(aes(x=x, linetype='Empirical CvM', colour='Empirical CvM'), dft) +
+	stat_function(data=dft, mapping=aes(x=x, linetype='Theoretical CvM',
+																			colour='Theoretical CvM'), size=1,
+								fun=cvm.cdf) +
+	scale_linetype('Distribution') +
+	scale_colour_manual(name='Distribution', values=c('black', 'red'))
+@
+
+\begin{figure}[H]
+	\includegraphics[width=\maxwidth]{figure/cvmgamma}
+	\caption{Эмпирическое распределение статистики Крамера-Мизеса-Смирнова
+	проверке сложной гипотезы и Гамма распределение.}
+\end{figure}
+
+\subsubsection{Андерсона-Дарлинга}
+
+<<ad-complex-plot, fig.cap=caption>>=
+library(goftest)
+caption <-'Эмпирическое распределение статистики Андерсона-Дарлинга при
+проверке сложной гипотезы и предельное распределения статистики
+Андерсона-Дарлинга при проверке простой гипотезы.'
+dft <- read.table('data/ad/ombh0c.dat', skip=2, col.names='x')
+ggplot() +
+	stat_ecdf(aes(x=x, linetype='Empirical AD', colour='Empirical AD'), dft) +
+	stat_function(data=dft, aes(x=x, linetype='Theoretical AD',
+															colour='Theoretical AD'), fun=pAD, size=1) +
+	scale_linetype('Distribution') +
+	scale_colour_manual(name='Distribution', values=c('black', 'red'))
+@
+
 	\item Смоделировать распределения статистики S исследуемого критерия
 		согласия при проверке простой и сложной гипотез $H_0$ при справедливой
 		гипотезе $H_1$.
+
+
 
 	\item Построить оперативные характеристики критерия для простой и сложных
 		гипотез как функции вида $(1-\beta)(\alpha)$. Сравнить мощность
