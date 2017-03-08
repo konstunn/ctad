@@ -110,7 +110,32 @@ n <- 100
 	Далее представлены сравнительные графики эмпирических и теоретических
 		распределений.
 
+<<coop-simple-plot, fig.cap=caption>>=
+dfa <- read.table('data/coop.dat', skip=2, col.names='x')
+dfe <- read.table('data/coop_s_h0.dat', skip=2, col.names='x')
 
+caption <- 'Эмпирическое и теоретическое распределения статистики Купера.'
+
+ggplot() +
+	stat_ecdf(aes(x=x, linetype='Theoretical Cooper'), dfa, size=1) +
+	stat_ecdf(aes(x=x, linetype='Empirical Cooper'), dfe) +
+	scale_linetype('Distribution')
+@
+
+<<wats-simple-plot, fig.cap=caption>>=
+dfa <- read.table('data/wats.dat', skip=2, col.names='x')
+dfe <- read.table('data/wat_s_h0.dat', skip=2, col.names='x')
+
+caption <- 'Эмпирическое и теоретическое распределения статистики Ватсона.'
+
+ggplot() +
+	stat_ecdf(aes(x=x, linetype='Theoretical Watson'), dfa, size=1) +
+	stat_ecdf(aes(x=x, linetype='Empirical Watson'), dfe) +
+	scale_linetype('Distribution')
+@
+
+	Для статистик Жанга предельного обобщенного теоретического закона не
+		существует \cite{lemeshko}.
 
 	\item Смоделировать распределение статистики S для этого же критерия
 		согласия при сложной гипотезе $H_0$. Попытаться идентифицировать полученное
