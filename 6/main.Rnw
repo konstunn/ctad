@@ -118,8 +118,8 @@ caption <- 'Эмпирическое и теоретическое распре�
 (простая гипотеза).'
 
 ggplot() +
-	stat_ecdf(aes(x=x, linetype='Theoretical Cooper'), dfa, size=1) +
-	stat_ecdf(aes(x=x, linetype='Empirical Cooper'), dfe) +
+	stat_ecdf(aes(x=x, linetype='Theoretical Kuiper'), dfa, size=1) +
+	stat_ecdf(aes(x=x, linetype='Empirical Kuiper'), dfe) +
 	scale_linetype('Distribution')
 @
 
