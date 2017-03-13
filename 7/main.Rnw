@@ -1,0 +1,129 @@
+
+\documentclass[a4paper,14pt]{extarticle}
+
+\usepackage{cmap}
+
+\usepackage[T2A]{fontenc}
+\usepackage[utf8x]{inputenc}
+\usepackage[russian]{babel}
+
+\usepackage[a4paper,margin=1.5cm,footskip=1cm,left=2cm,right=1.5cm,top=1.5cm
+	,bottom=2.0cm]{geometry}
+\usepackage{textcase}
+\usepackage{csquotes}
+\usepackage{enumitem}
+
+\usepackage[labelsep=period,justification=centering]{caption}
+
+\usepackage{amsmath}
+\usepackage{pgfplots}
+
+\usepackage{float}
+
+\usepackage{indentfirst}
+
+\setlist[description]{leftmargin=\parindent,labelindent=\parindent}
+
+\begin{document}
+
+\setcounter{secnumdepth}{0}
+
+\begin{titlepage}
+
+	\begin{center}
+		Новосибирский государственный технический университет
+		
+		Факультет прикладной математики и информатики
+		
+		Кафедра теоретической и прикладной информатики
+		
+		\vspace{250pt}
+		
+		\textbf{\LARGE{Лабораторная работа № 7}}
+		\medbreak
+		\large{<<Исследование критериев проверки отклонения от нормального
+			закона. Часть 1.>>} \\
+		\medbreak
+		\small{по дисциплине \\
+		\medbreak
+		<<Компьютерные технологии анализа данных и исследования 
+	статистических~закономерностей>>}
+		\vspace{100pt}
+	\end{center}
+
+	\begin{flushleft}
+		\begin{tabbing}
+			Группа:\qquad\qquad \= ПММ-61\\
+			Студент:            \> Горбунов К. К.\\
+			Преподаватель:      \> проф. Лемешко Б. Ю.\\
+			Вариант:            \> 12 \\
+		\end{tabbing}
+	\end{flushleft}
+
+	\begin{center}
+		\vspace{\fill}
+		Новосибирск, 2016 г.
+	\end{center}
+
+\end{titlepage}
+
+\newpage
+
+\renewenvironment{knitrout}{\setlength{\topsep}{0mm}}{}
+
+\section{Цель работы}
+
+Исследование распределений статистик критериев,
+используемых при проверке отклонения эмпирических распределений
+наблюдаемых величин от нормального закона (в том числе критериев проверки
+гипотез о симметричности и о значении эксцесса при различных наблюдаемых
+законах). Исследование распределений статистик критериев Шапиро–Уилка,
+Эппса–Палли, Д’Агостино. Исследование и сравнение мощности критериев
+относительно близких конкурирующих гипотез. \\
+
+\noindent Вариант 12: \\
+$H_0$: Коши \\
+$H_1$: Нормальное \\
+
+<<setup, cache=FALSE, echo=FALSE, message=FALSE, warning=FALSE>>=
+opts_chunk$set(autodep=TRUE, cache=TRUE, message=FALSE, echo=FALSE,
+							 fig.pos='H', fig.lp='fig:', fig.height=1.5)
+options(scipen=5)
+dep_auto()
+library(ggplot2)
+theme_set(theme_minimal())
+@
+
+<<statmod-params>>=
+N <- 16600
+n <- 100
+@
+
+\noindent Параметры моделирования: \\
+Количество выборок: \Sexpr{N} \\
+Объем выборок: \Sexpr{n}
+
+\section{Ход работы}
+
+\begin{enumerate}
+
+	\item пункт
+
+\end{enumerate}
+
+\begin{thebibliography}{9}
+
+\bibitem{lemeshko} Статистический анализ данных, моделирование и
+	исследование вероятностных закономерностей.
+		Компьютерный подход : монография / \mbox{Б.Ю. Лемешко}, С.Б. Лемешко,
+	\mbox{С.Н. Постовалов}, Е.В. Чимитова. --- \mbox{Новосибирск} : Изд-во НГТУ,
+		2011. --- 888 с. (серия <<\mbox{Монографии НГТУ}>>).
+
+\bibitem{knitr16} Yihui Xie (2016). knitr: A General-Purpose Package for Dynamic
+	Report Generation in R. R package version 1.15.1.
+
+\end{thebibliography}
+
+\end{document}
+
+# vim: ts=2 sw=2
