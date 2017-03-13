@@ -391,33 +391,11 @@ dft <- read.table('data/nik/simpleH/h1aog5.dat', skip=2, col.names='x')
 dft$trueH <- repH1
 dfnrr <- merge(dfnrr, dft, all=TRUE)
 
-# Kolm
-dfkolm <- read.table('data/kolm/kolh0s.dat', skip=2, col.names='x')
-dfkolm$trueH <- repH0
-dft <- read.table('data/kolm/kolh1s.dat', skip=2, col.names='x')
 dft$trueH <- repH1
-dfkolm <- merge(dfkolm, dft, all=TRUE)
 
-# Smir
-dfsmir <- read.table('data/smirn/smirh0s.dat', skip=2, col.names='x')
-dfsmir$trueH <- repH0
-dft <- read.table('data/smirn/smirh1s.dat', skip=2, col.names='x')
 dft$trueH <- repH1
-dfsmir <- merge(dfsmir, dft, all=TRUE)
 
-# CvM
-dfcvm <- read.table('data/cvm/omsh0s.dat', skip=2, col.names='x')
-dfcvm$trueH <- repH0
-dft <- read.table('data/cvm/omsh1s.dat', skip=2, col.names='x')
-dft$trueH <- repH1
-dfcvm <- merge(dfcvm, dft, all=TRUE)
 
-# AD
-dfad <- read.table('data/ad/ombh0s.dat', skip=2, col.names='x')
-dfad$trueH <- repH0
-dft <- read.table('data/ad/ombh1s.dat', skip=2, col.names='x')
-dft$trueH <- repH1
-dfad <- merge(dfad, dft, all=TRUE)
 @
 
 <<alpha-power-function>>=
@@ -437,10 +415,6 @@ alpha <- seq(0, 0.05, 1e-4)
 <<simple-power-calc>>=
 dfpears <- power(dfpears, alpha)
 dfnrr <- power(dfnrr, alpha)
-dfkolm <- power(dfkolm, alpha)
-dfsmir <- power(dfsmir, alpha)
-dfcvm <- power(dfcvm, alpha)
-dfad <- power(dfad, alpha)
 @
 
 <<simple-power-plot, fig.cap=caption, fig.height=3, warning=FALSE>>=
@@ -455,12 +429,6 @@ ggplot(mapping=aes(x=alpha, y=power)) +
 																					colour='Pearson, k=5')) +
 	geom_smooth(se=FALSE, data=dfnrr, aes(linetype='Nikulin, k=5',
 																				colour='Nikulin, k=5')) +
-	geom_smooth(se=FALSE, data=dfkolm, aes(linetype='Kolmogorov',
-																				 colour='Kolmogorov')) +
-	geom_smooth(se=FALSE, data=dfsmir, aes(linetype='Smirnov',
-																				 colour='Smirnov')) +
-	geom_smooth(se=FALSE, data=dfcvm, aes(linetype='CvM', colour='CvM')) +
-	geom_smooth(se=FALSE, data=dfad, aes(linetype='AD', colour='AD')) +
 	scale_linetype(name='Criterion') +
 	scale_colour_manual(name='Criterion', values=cbPalette)
 @
