@@ -461,6 +461,66 @@ ggplot(mapping=aes(x=alpha, y=power)) +
 	scale_x_log10()
 @
 
+\newpage
+\subsubsection{Сложная гипотеза}
+
+<<mod-complex-pears>>=
+dfpears <- chisq.statmod.gof2cauchy(n=100, N=16600, trueH='cauchy',
+																		Htype='complex', k=5)
+dft <- chisq.statmod.gof2cauchy(n=100, N=16600, trueH='norm',
+																Htype='complex', k=5)
+dfpears <- rbind(dfpears, dft)
+@
+
+<<read-complex>>=
+dfnrr <- read.samples('data/nik/complexH', 'h0aog5.dat', 'h1aog5.dat')
+
+dfcoop <- read.samples('data', 'coop_c_h0.dat', 'coop_c_h1.dat')
+
+dfwat <- read.samples('data', 'wat_c_h0.dat', 'wat_c_h1.dat')
+
+dfza <- read.samples('data', 'za_c_h0.dat', 'za_c_h1.dat')
+
+dfzc <- read.samples('data', 'zc_c_h0.dat', 'zc_c_h1.dat')
+
+dfzk <- read.samples('data', 'zk_c_h0.dat', 'zk_c_h1.dat')
+@
+
+<<complex-power-calc>>=
+dfpears <- power(dfpears, alpha)
+dfnrr <- power(dfnrr, alpha)
+dfcoop <- power(dfcoop, alpha)
+dfwat <- power(dfwat, alpha)
+dfza <- power(dfza, alpha)
+dfzc <- power(dfzc, alpha)
+dfzk <- power(dfzk, alpha)
+@
+
+<<complex-power-plot, fig.cap=caption, fig.height=3, warning=FALSE>>=
+caption <- 'Оперативные характеристики критериев при проверки сложной
+гипотезы.'
+cbPalette <- c("#999999", "#E69F00", "#56B4E9", "#009E73", "#F0E442",
+								"#0072B2", "#D55E00", "#CC79A7")
+cbPalette <- rev(cbPalette)
+
+ggplot(mapping=aes(x=alpha, y=power)) +
+	geom_smooth(se=FALSE, data=dfpears, aes(linetype='Pearson, k=5',
+																					colour='Pearson, k=5')) +
+	geom_smooth(se=FALSE, data=dfnrr, aes(linetype='Nikulin, k=5',
+																				colour='Nikulin, k=5')) +
+	geom_smooth(se=FALSE, data=dfcoop, aes(linetype='Kuiper', colour='Kuiper')) +
+	geom_smooth(se=FALSE, data=dfwat, aes(linetype='Watson', colour='Watson')) +
+	geom_smooth(se=FALSE, data=dfza, aes(linetype='Zhang Za',
+																				colour='Zhang Za')) +
+	geom_smooth(se=FALSE, data=dfzc, aes(linetype='Zhang Zc',
+																			 colour='Zhang Zc')) +
+	geom_smooth(se=FALSE, data=dfzk, aes(linetype='Zhang Zk',
+																			 colour='Zhang Zk')) +
+	scale_linetype(name='Criterion') +
+	scale_colour_manual(name='Criterion', values=cbPalette) +
+	scale_x_log10()
+@
+
 \end{enumerate}
 
 \begin{thebibliography}{9}
