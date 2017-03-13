@@ -457,7 +457,8 @@ ggplot(mapping=aes(x=alpha, y=power)) +
 	geom_smooth(se=FALSE, data=dfzk, aes(linetype='Zhang Zk',
 																			 colour='Zhang Zk')) +
 	scale_linetype(name='Criterion') +
-	scale_colour_manual(name='Criterion', values=cbPalette)
+	scale_colour_manual(name='Criterion', values=cbPalette) +
+	scale_x_log10()
 @
 
 \end{enumerate}
