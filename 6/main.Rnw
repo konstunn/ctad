@@ -381,6 +381,23 @@ dft <- chisq.statmod.gof2cauchy(n=100, N=16600, trueH='norm',
 dfpears <- merge(dfpears, dft, all=TRUE)
 @
 
+<<read-samples>>=
+read.samples <- function(dir, filename.h0, filename.h1)
+{
+	filename.h0 <- paste(dir, filename.h0, sep="/")
+	dfnrr <- read.table(filename.h0, skip=2, col.names='x')
+	N <- length(dfnrr)
+	dfnrr$trueH <- rep('cauchy', N)
+
+	filename.h1 <- paste(dir, filename.h1, sep="/")
+	dft <- read.table(filename.h1, skip=2, col.names='x')
+	dft$trueH <- rep('norm', N)
+
+	dfnrr <- rbind(dfnrr, dft)
+	return(dfnrr)
+}
+@
+
 <<read-simple>>=
 # NRR
 dfnrr <- read.table('data/nik/simpleH/h0aog5.dat', skip=2, col.names='x')
