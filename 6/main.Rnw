@@ -143,13 +143,190 @@ ggplot() +
 		согласия при сложной гипотезе $H_0$. Попытаться идентифицировать полученное
 		эмпирическое распределение.
 
+<<coop-complex-plot, fig.cap=caption>>=
+dfe <- read.table('data/coop_c_h0.dat', skip=2, col.names='x')
+dfa <- read.table('data/coop.dat', skip=2, col.names='x')
 
+caption <- 'Эмпирическое распределения статистики Купера при сложной гипотезе.'
+
+ggplot() +
+	stat_ecdf(aes(x=x, linetype='Theoretical Kuiper (simple H0)'), dfa,
+						size=1) +
+	stat_ecdf(aes(x=x, linetype='Empirical Kuiper (composite H0)'), dfe) +
+	scale_linetype('Distribution')
+@
+
+<<wats-complex-plot, fig.cap=caption>>=
+dfe <- read.table('data/wat_c_h0.dat', skip=2, col.names='x')
+dfa <- read.table('data/wats.dat', skip=2, col.names='x')
+
+caption <- 'Эмпирическое распределения статистики Ватсона при сложной гипотезе.'
+
+ggplot() +
+	stat_ecdf(aes(x=x, linetype='Theoretical Watson (simple H0)'), dfa,
+						size=1) +
+	stat_ecdf(aes(x=x, linetype='Empirical Watson (composite H0)'), dfe) +
+	scale_linetype('Distribution')
+@
+
+Эмпирические распределения статистик при проверке сложной гипотезы отличаются
+	от предельных распределений статистик при проверке простой гипотезы.
+
+\graphicspath{{./figure/}}
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=\textwidth, height=4in]{coop_c_h0_logistic}
+	\caption{Распределение статистики Купера при проверки сложной гипотезы
+	и логистическое распределение.}
+\end{figure}
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=\textwidth, height=4in]{wat_c_h0_maxwell}
+	\caption{Распределение статистики Ватсона при проверки сложной гипотезы
+	и близкая модель.}
+\end{figure}
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=\textwidth, height=4in]{za_c_h0_absnorm}
+	\caption{Распределение статистики Жанга $Z_A$ при проверки сложной гипотезы
+	и близкая модель.}
+\end{figure}
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=\textwidth, height=4in]{zc_c_h0_lognorm}
+	\caption{Распределение статистики Жанга $Z_C$ при проверки сложной гипотезы
+	и близкая модель.}
+\end{figure}
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=\textwidth, height=4in]{zk_c_h0_lognorm}
+	\caption{Распределение статистики Жанга $Z_K$ при проверки сложной гипотезы
+	и близкая модель.}
+\end{figure}
 
 	\item Смоделировать распределения статистики S исследуемого критерия
 		согласия при проверке простой и сложной гипотез $H_0$ при справедливой
 		гипотезе $H_1$.
 
+\subsubsection{Простая гипотеза}
 
+<<simple-h1-h0-coop-dens, fig.cap=caption, warning=FALSE>>=
+caption <- 'Условные плотности распределений статистики Купера при
+проверке \\emph{простой} гипотезы при справедливости гипотез $H_0$ и $H_1$.'
+dfh0 <- read.table('data/coop_s_h0.dat', skip=2, col.names='x')
+dfh1 <- read.table('data/coop_s_h1.dat', skip=2, col.names='x')
+ggplot() +
+	geom_density(aes(x, fill='true H0 (Cauchy)'), alpha=.6, dfh0) +
+	geom_density(aes(x, fill='true H1 (Normal)'), alpha=.6, dfh1) +
+	scale_fill_manual(values=c('red','blue'), name='Distributions')
+@
+
+<<simple-h1-h0-wat-dens, fig.cap=caption, warning=FALSE>>=
+caption <- 'Условные плотности распределений статистики Ватсона при
+проверке \\emph{простой} гипотезы при справедливости гипотез $H_0$ и $H_1$.'
+dfh0 <- read.table('data/wat_s_h0.dat', skip=2, col.names='x')
+dfh1 <- read.table('data/wat_s_h1.dat', skip=2, col.names='x')
+ggplot() +
+	geom_density(aes(x, fill='true H0 (Cauchy)'), alpha=.6, dfh0) +
+	geom_density(aes(x, fill='true H1 (Normal)'), alpha=.6, dfh1) +
+	scale_fill_manual(values=c('red','blue'), name='Distributions')
+@
+
+<<simple-h1-h0-za-dens, fig.cap=caption, warning=FALSE>>=
+caption <- 'Условные плотности распределений статистики Жанга $Z_A$ при
+проверке \\emph{простой} гипотезы при справедливости гипотез $H_0$ и $H_1$.'
+dfh0 <- read.table('data/za_s_h0.dat', skip=2, col.names='x')
+dfh1 <- read.table('data/za_s_h1.dat', skip=2, col.names='x')
+ggplot() +
+	geom_density(aes(x, fill='true H0 (Cauchy)'), alpha=.6, dfh0) +
+	geom_density(aes(x, fill='true H1 (Normal)'), alpha=.6, dfh1) +
+	scale_fill_manual(values=c('red','blue'), name='Distributions')
+@
+
+<<simple-h1-h0-zc-dens, fig.cap=caption, warning=FALSE>>=
+caption <- 'Условные плотности распределений статистики Жанга $Z_C$ при
+проверке \\emph{простой} гипотезы при справедливости гипотез $H_0$ и $H_1$.'
+dfh0 <- read.table('data/zc_s_h0.dat', skip=2, col.names='x')
+dfh1 <- read.table('data/zc_s_h1.dat', skip=2, col.names='x')
+ggplot() +
+	geom_density(aes(x, fill='true H0 (Cauchy)'), alpha=.6, dfh0) +
+	geom_density(aes(x, fill='true H1 (Normal)'), alpha=.6, dfh1) +
+	scale_fill_manual(values=c('red','blue'), name='Distributions')
+@
+
+<<simple-h1-h0-zk-dens, fig.cap=caption, warning=FALSE>>=
+caption <- 'Условные плотности распределений статистики Жанга $Z_K$ при
+проверке \\emph{простой} гипотезы при справедливости гипотез $H_0$ и $H_1$.'
+dfh0 <- read.table('data/zk_s_h0.dat', skip=2, col.names='x')
+dfh1 <- read.table('data/zk_s_h1.dat', skip=2, col.names='x')
+ggplot() +
+	geom_density(aes(x, fill='true H0 (Cauchy)'), alpha=.6, dfh0) +
+	geom_density(aes(x, fill='true H1 (Normal)'), alpha=.6, dfh1) +
+	scale_fill_manual(values=c('red','blue'), name='Distributions')
+@
+
+\newpage
+\subsubsection{Сложная гипотеза}
+
+<<complex-h1-h0-coop-dens, fig.cap=caption, warning=FALSE>>=
+caption <- 'Условные плотности распределений статистики Купера при
+проверке \\emph{сложной} гипотезы при справедливости гипотез $H_0$ и $H_1$.'
+dfh0 <- read.table('data/coop_c_h0.dat', skip=2, col.names='x')
+dfh1 <- read.table('data/coop_c_h1.dat', skip=2, col.names='x')
+ggplot() +
+	geom_density(aes(x, fill='true H0 (Cauchy)'), alpha=.6, dfh0) +
+	geom_density(aes(x, fill='true H1 (Normal)'), alpha=.6, dfh1) +
+	scale_fill_manual(values=c('red','blue'), name='Distributions')
+@
+
+<<complex-h1-h0-wat-dens, fig.cap=caption, warning=FALSE>>=
+caption <- 'Условные плотности распределений статистики Ватсона при
+проверке \\emph{сложной} гипотезы при справедливости гипотез $H_0$ и $H_1$.'
+dfh0 <- read.table('data/wat_c_h0.dat', skip=2, col.names='x')
+dfh1 <- read.table('data/wat_c_h1.dat', skip=2, col.names='x')
+ggplot() +
+	geom_density(aes(x, fill='true H0 (Cauchy)'), alpha=.6, dfh0) +
+	geom_density(aes(x, fill='true H1 (Normal)'), alpha=.6, dfh1) +
+	scale_fill_manual(values=c('red','blue'), name='Distributions')
+@
+
+<<complex-h1-h0-za-dens, fig.cap=caption, warning=FALSE>>=
+caption <- 'Условные плотности распределений статистики Жанга $Z_A$ при
+проверке \\emph{сложной} гипотезы при справедливости гипотез $H_0$ и $H_1$.'
+dfh0 <- read.table('data/za_c_h0.dat', skip=2, col.names='x')
+dfh1 <- read.table('data/za_c_h1.dat', skip=2, col.names='x')
+ggplot() +
+	geom_density(aes(x, fill='true H0 (Cauchy)'), alpha=.6, dfh0) +
+	geom_density(aes(x, fill='true H1 (Normal)'), alpha=.6, dfh1) +
+	scale_fill_manual(values=c('red','blue'), name='Distributions')
+@
+
+<<complex-h1-h0-zc-dens, fig.cap=caption, warning=FALSE>>=
+caption <- 'Условные плотности распределений статистики Жанга $Z_C$ при
+проверке \\emph{сложной} гипотезы при справедливости гипотез $H_0$ и $H_1$.'
+dfh0 <- read.table('data/zc_c_h0.dat', skip=2, col.names='x')
+dfh1 <- read.table('data/zc_c_h1.dat', skip=2, col.names='x')
+ggplot() +
+	geom_density(aes(x, fill='true H0 (Cauchy)'), alpha=.6, dfh0) +
+	geom_density(aes(x, fill='true H1 (Normal)'), alpha=.6, dfh1) +
+	scale_fill_manual(values=c('red','blue'), name='Distributions')
+@
+
+<<complex-h1-h0-zk-dens, fig.cap=caption, warning=FALSE>>=
+caption <- 'Условные плотности распределений статистики Жанга $Z_K$ при
+проверке \\emph{сложной} гипотезы при справедливости гипотез $H_0$ и $H_1$.'
+dfh0 <- read.table('data/zk_c_h0.dat', skip=2, col.names='x')
+dfh1 <- read.table('data/zk_c_h1.dat', skip=2, col.names='x')
+ggplot() +
+	geom_density(aes(x, fill='true H0 (Cauchy)'), alpha=.6, dfh0) +
+	geom_density(aes(x, fill='true H1 (Normal)'), alpha=.6, dfh1) +
+	scale_fill_manual(values=c('red','blue'), name='Distributions')
+@
 
 	\item Построить оперативные характеристики критерия для простой и сложных
 		гипотез как функции вида $(1-\beta)(\alpha)$. Сравнить мощность
