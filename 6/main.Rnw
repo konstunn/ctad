@@ -169,6 +169,24 @@ ggplot() +
 	scale_linetype('Distribution')
 @
 
+<<plot2ecdfs-function>>=
+plot2ecdfs <- function(filename1, filename2, fig.cap, cap1, cap2)
+{
+	dfe <- read.table(filename1, skip=2, col.names='x')
+	dfa <- read.table(filename2, skip=2, col.names='x')
+
+	assign('caption', fig.cap, envir = .GlobalEnv)
+
+	p <- ggplot() +
+		stat_ecdf(aes(x=x, linetype=cap1), dfa,
+							size=1) +
+		stat_ecdf(aes(x=x, linetype=cap2), dfe) +
+		scale_linetype('Distribution')
+
+	print(p)
+}
+@
+
 Эмпирические распределения статистик при проверке сложной гипотезы отличаются
 	от предельных распределений статистик при проверке простой гипотезы.
 
