@@ -399,20 +399,17 @@ read.samples <- function(dir, filename.h0, filename.h1)
 @
 
 <<read-simple>>=
-# NRR
-dfnrr <- read.table('data/nik/simpleH/h0aog5.dat', skip=2, col.names='x')
-repH0 <- rep('cauchy', N)
-repH1 <- rep('norm', N)
-dfnrr$trueH <- repH0
-dft <- read.table('data/nik/simpleH/h1aog5.dat', skip=2, col.names='x')
-dft$trueH <- repH1
-dfnrr <- merge(dfnrr, dft, all=TRUE)
+dfnrr <- read.samples('data/nik/simpleH', 'h0aog5.dat', 'h1aog5.dat')
 
-dft$trueH <- repH1
+dfcoop <- read.samples('data', 'coop_s_h0.dat', 'coop_s_h1.dat')
 
-dft$trueH <- repH1
+dfwat <- read.samples('data', 'wat_s_h0.dat', 'wat_s_h1.dat')
 
+dfza <- read.samples('data', 'za_s_h0.dat', 'za_s_h1.dat')
 
+dfzc <- read.samples('data', 'zc_s_h0.dat', 'zc_s_h1.dat')
+
+dfzk <- read.samples('data', 'zk_s_h0.dat', 'zk_s_h1.dat')
 @
 
 <<alpha-power-function>>=
