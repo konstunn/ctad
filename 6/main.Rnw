@@ -429,6 +429,11 @@ alpha <- seq(0, 0.05, 1e-4)
 <<simple-power-calc>>=
 dfpears <- power(dfpears, alpha)
 dfnrr <- power(dfnrr, alpha)
+dfcoop <- power(dfcoop, alpha)
+dfwat <- power(dfwat, alpha)
+dfza <- power(dfza, alpha)
+dfzc <- power(dfzc, alpha)
+dfzk <- power(dfzk, alpha)
 @
 
 <<simple-power-plot, fig.cap=caption, fig.height=3, warning=FALSE>>=
@@ -443,6 +448,14 @@ ggplot(mapping=aes(x=alpha, y=power)) +
 																					colour='Pearson, k=5')) +
 	geom_smooth(se=FALSE, data=dfnrr, aes(linetype='Nikulin, k=5',
 																				colour='Nikulin, k=5')) +
+	geom_smooth(se=FALSE, data=dfcoop, aes(linetype='Kuiper', colour='Kuiper')) +
+	geom_smooth(se=FALSE, data=dfwat, aes(linetype='Watson', colour='Watson')) +
+	geom_smooth(se=FALSE, data=dfza, aes(linetype='Zhang Za',
+																				colour='Zhang Za')) +
+	geom_smooth(se=FALSE, data=dfzc, aes(linetype='Zhang Zc',
+																			 colour='Zhang Zc')) +
+	geom_smooth(se=FALSE, data=dfzk, aes(linetype='Zhang Zk',
+																			 colour='Zhang Zk')) +
 	scale_linetype(name='Criterion') +
 	scale_colour_manual(name='Criterion', values=cbPalette)
 @
