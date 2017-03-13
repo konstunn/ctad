@@ -371,16 +371,6 @@ plot2pdfs <- function(filename1, filename2, fig.cap, cap1, cap2)
 <<chisq-pears-mod-src, code=readLines('src/chisq.statmod.gof2cauchy.R')>>=
 @
 
-\subsubsection{Простая гипотеза}
-
-<<mod-simple-pears>>=
-dfpears <- chisq.statmod.gof2cauchy(n=100, N=16600, trueH='cauchy',
-																		Htype='simple', k=5)
-dft <- chisq.statmod.gof2cauchy(n=100, N=16600, trueH='norm',
-																		Htype='simple', k=5)
-dfpears <- merge(dfpears, dft, all=TRUE)
-@
-
 <<read-samples>>=
 read.samples <- function(dir, filename.h0, filename.h1)
 {
@@ -398,20 +388,6 @@ read.samples <- function(dir, filename.h0, filename.h1)
 }
 @
 
-<<read-simple>>=
-dfnrr <- read.samples('data/nik/simpleH', 'h0aog5.dat', 'h1aog5.dat')
-
-dfcoop <- read.samples('data', 'coop_s_h0.dat', 'coop_s_h1.dat')
-
-dfwat <- read.samples('data', 'wat_s_h0.dat', 'wat_s_h1.dat')
-
-dfza <- read.samples('data', 'za_s_h0.dat', 'za_s_h1.dat')
-
-dfzc <- read.samples('data', 'zc_s_h0.dat', 'zc_s_h1.dat')
-
-dfzk <- read.samples('data', 'zk_s_h0.dat', 'zk_s_h1.dat')
-@
-
 <<alpha-power-function>>=
 power <- function(dfin, alpha)
 {
@@ -424,6 +400,30 @@ power <- function(dfin, alpha)
 	return(df)
 }
 alpha <- seq(0, 0.05, 1e-4)
+@
+
+\subsubsection{Простая гипотеза}
+
+<<mod-simple-pears>>=
+dfpears <- chisq.statmod.gof2cauchy(n=100, N=16600, trueH='cauchy',
+																		Htype='simple', k=5)
+dft <- chisq.statmod.gof2cauchy(n=100, N=16600, trueH='norm',
+																Htype='simple', k=5)
+dfpears <- rbind(dfpears, dft)
+@
+
+<<read-simple>>=
+dfnrr <- read.samples('data/nik/simpleH', 'h0aog5.dat', 'h1aog5.dat')
+
+dfcoop <- read.samples('data', 'coop_s_h0.dat', 'coop_s_h1.dat')
+
+dfwat <- read.samples('data', 'wat_s_h0.dat', 'wat_s_h1.dat')
+
+dfza <- read.samples('data', 'za_s_h0.dat', 'za_s_h1.dat')
+
+dfzc <- read.samples('data', 'zc_s_h0.dat', 'zc_s_h1.dat')
+
+dfzk <- read.samples('data', 'zk_s_h0.dat', 'zk_s_h1.dat')
 @
 
 <<simple-power-calc>>=
