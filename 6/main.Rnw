@@ -346,6 +346,23 @@ ggplot() +
 	scale_fill_manual(values=c('red','blue'), name='Distributions')
 @
 
+<<plot2pdfs-function>>=
+plot2pdfs <- function(filename1, filename2, fig.cap, cap1, cap2)
+{
+	assign('caption', fig.cap, envir=.GlobalEnv)
+
+	dfh0 <- read.table(filename1, skip=2, col.names='x')
+	dfh1 <- read.table(filename2, skip=2, col.names='x')
+
+	p <- ggplot() +
+		geom_density(aes(x, fill=cap1), alpha=.6, dfh0) +
+		geom_density(aes(x, fill=cap2), alpha=.6, dfh1) +
+		scale_fill_manual(values=c('red','blue'), name='Distributions')
+
+	print(p)
+}
+@
+
 	\item Построить оперативные характеристики критерия для простой и сложных
 		гипотез как функции вида $(1-\beta)(\alpha)$. Сравнить мощность
 		непараметрических критериев с мощностью критериев $\chi^2$ Пирсона и
