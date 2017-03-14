@@ -310,6 +310,71 @@ ggplot(dft, aes(x=x, linetype=h0, colour=n)) +
 	равном 4÷7. Сравнить с ситуацией, соответствующей справедливой
 	проверяемой гипотезе о нормальном законе. Оценить мощность критерия.
 
+<<shapiro>>=
+shapiro <- function(x)
+{
+	rez <- shapiro.test(x)$statistic
+	return(rez)
+}
+@
+
+<<shapiro-mod-norm>>=
+df <- NULL
+
+for (n in c(10, 50, 200, 1000)) {
+	dft <- statmod('shapiro', n, N, 'norm')
+	df <- rbind(df, dft)
+}
+@
+
+<<shapiro-norm-ecdf-plot, fig.cap=caption, warning=F>>=
+caption <- 'Эмпирические распределения статистики Шапиро-Уилка при различных
+объемах выборки.'
+
+library(ggplot2)
+
+ggplot(df, aes(x=x, colour=n)) +
+	stat_ecdf() +
+	xlim(c(0.8,1))
+@
+
+<<shapiro-percentiles, warning=F, fig.height=4, fig.cap=caption>>=
+caption <- 'Сравнение эмпирических распределений статистики Шапиро-Уилка с
+процентными точками теоретического предельного закона.'
+
+df10 <- data.frame(y=c(0.01,0.05), x=c(0.781,0.818))
+df50 <- data.frame(y=c(0.01,0.05), x=c(0.93,0.947))
+
+df <- subset(df, n=='10' | n=='50')
+
+ggplot(df, aes(x=x, colour=n)) +
+	stat_ecdf() +
+	geom_point(aes(x=x, y=y, colour='10'), df10) +
+	geom_point(aes(x=x, y=y, colour='50'), df50) +
+	xlim(c(0.75,1))
+@
+
+<<shapiro-norm-pgnorm, warning=F, fig.cap=caption>>=
+caption <- 'Эмпирические распределение статистики Шапиро-Уилка при нормальном и
+обобщенном нормальном наблюдаемых законах.'
+
+# override default parameters values
+rpgnorm <- function(n, p=5) pgnorm::rpgnorm(n, p)
+
+dft <- statmod('shapiro', 10, N, 'pgnorm')
+df <- rbind(df, dft)
+
+dft <- subset(df, stat=='shapiro' & n=='10' & (h0=='pgnorm' | h0=='norm'))
+
+ggplot(data=dft, mapping=aes(x=x, linetype=h0)) +
+	stat_ecdf() +
+	xlim(c(0.8,1))
+@
+
+<<>>=
+# analyze shapiro power distincting norm and pgnorm
+@
+
 \item Аналогично предыдущему пункту исследовать распределения статистики
 	критерия Эппса-Палли.
 
