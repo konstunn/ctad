@@ -77,17 +77,17 @@
 используемых при проверке отклонения эмпирических распределений
 наблюдаемых величин от нормального закона (в том числе критериев проверки
 гипотез о симметричности и о значении эксцесса при различных наблюдаемых
-законах). Исследование распределений статистик критериев Шапиро–Уилка,
-Эппса–Палли, Д’Агостино. Исследование и сравнение мощности критериев
+законах). Исследование распределений статистик критериев Шапиро--Уилка,
+Эппса--Палли, Д’Агостино. Исследование и сравнение мощности критериев
 относительно близких конкурирующих гипотез. \\
 
 \noindent Вариант 12: \\
-$H_0$: Коши \\
-$H_1$: Нормальное \\
+$H_0$: Нормальное \\
+$H_1$: Коши \\
 
 <<setup, cache=FALSE, echo=FALSE, message=FALSE, warning=FALSE>>=
 opts_chunk$set(autodep=TRUE, cache=TRUE, message=FALSE, echo=FALSE,
-							 fig.pos='H', fig.lp='fig:', fig.height=1.5)
+							 fig.pos='H', fig.lp='fig:', fig.height=2)
 options(scipen=5)
 dep_auto()
 library(ggplot2)
@@ -96,18 +96,210 @@ theme_set(theme_minimal())
 
 <<statmod-params>>=
 N <- 16600
-n <- 100
 @
 
 \noindent Параметры моделирования: \\
 Количество выборок: \Sexpr{N} \\
-Объем выборок: \Sexpr{n}
 
 \section{Ход работы}
 
 \begin{enumerate}
 
-	\item пункт
+	\item Исследовать зависимость распределений статистик коэффициентов
+		симметричности и эксцесса от объема выборок в случае принадлежности
+		наблюдений нормальному закону. При некотором объеме выборок смоделировать
+		эмпирические распределения этих же статистик при законе, отличающимся
+		от нормального. Сравнить распределения статистик со случаем нормальности
+		наблюдаемого закона.
+
+<<statmod-function>>=
+statmod <- function(stat, n, N, h0)
+{
+	h0 <- paste('r', h0, sep='')
+
+	X <- do.call(h0, args=list(n=n*N))
+	X <- split(X, ceiling(seq_along(X)/n))
+	X <- lapply(X, stat)
+	X <- as.numeric(X)
+
+	h0 <- substr(h0, 2, nchar(h0))
+
+	df <- data.frame(x=X,
+									 n=rep(as.factor(n),N),
+									 N=rep(as.factor(N),N),
+									 h0=rep(h0,N),
+									 stat=rep(stat,N))
+	return(df)
+}
+@
+
+<<stat-mod-skew>>=
+library(moments)
+
+df <- NULL
+
+for (n in c(10, 50, 200, 1000)) {
+	dft <- statmod('skewness', n, N, 'norm')
+	df <- rbind(df, dft)
+}
+@
+
+\subsubsection{Коэффициент асимметрии при наблюдаемом нормальном законе}
+
+<<skew-norm-ecdf-plot, fig.cap=caption>>=
+caption <- 'Эмпирические распределения статистики коэффициента асимметрии при
+различных объемах выборки $n$ при наблюдаемом нормальном законе.'
+
+cbPalette <- c("#999999", "#E69F00", "#56B4E9", "#009E73", "#F0E442",
+								"#0072B2", "#D55E00", "#CC79A7")
+cbPalette <- rev(cbPalette)
+
+ggplot(df, aes(x=x, colour=n)) +
+	stat_ecdf()
+@
+
+<<skew-norm-pdf-plot, fig.cap=caption>>=
+caption <- 'Ядерные оценки плотностей эмпирических распределений статистики
+коэффициента асимметрии при различных объемах выборки $n$ при наблюдаемом
+нормальном законе.'
+
+cbPalette <- c("#999999", "#E69F00", "#56B4E9", "#009E73", "#F0E442",
+								"#0072B2", "#D55E00", "#CC79A7")
+cbPalette <- rev(cbPalette)
+
+ggplot(df, aes(x=x, colour=n)) +
+	geom_density()
+@
+
+\subsubsection{Коэффициент эксцесса при наблюдаемом нормальном законе}
+
+<<stat-mod-kurt>>=
+library(moments)
+
+for (n in c(10, 50, 200, 1000)) {
+	dft <- statmod('kurtosis', n, N, 'norm')
+	df <- rbind(df, dft)
+}
+@
+
+<<kurt-norm-ecdf-plot, fig.cap=caption>>=
+caption <- 'Эмпирические распределения статистики коэффициента эксцесса при
+различных объемах выборки $n$ при наблюдаемом нормальном законе.'
+
+dft <- subset(df, stat=='kurtosis')
+
+ggplot(dft, aes(x=x, colour=n)) +
+	stat_ecdf()
+@
+
+<<kurt-norm-pdf-plot, fig.cap=caption>>=
+caption <- 'Ядерные оценки плотности эмпирических распределений статистики
+коэффициента эксцесса при различных объемах выборки $n$ при наблюдаемом
+нормальном законе.'
+
+dft <- subset(df, stat=='kurtosis')
+
+ggplot(dft, aes(x=x, colour=n)) +
+	geom_density()
+@
+
+<<stat-mod-skew-cauchy>>=
+library(moments)
+
+for (n in c(10, 50, 200, 1000)) {
+	dft <- statmod('skewness', n, N, 'cauchy')
+	df <- rbind(df, dft)
+}
+@
+
+\newpage
+\subsubsection{Коэффициент асимметрии при наблюдаемом законе Коши}
+
+<<skew-cauchy-ecdf-plot, fig.cap=caption>>=
+caption <- 'Эмпирические распределения статистики коэффициента асимметрии при
+различных объемах выборки $n$ при наблюдаемом законе Коши.'
+
+dft <- subset(df, stat=='skewness' & h0=='cauchy')
+
+ggplot(dft, aes(x=x, colour=n)) +
+	stat_ecdf()
+@
+
+<<skew-cauchy-pdf-plot, fig.cap=caption>>=
+caption <- 'Ядерные оценки плотности эмпирических распределений статистики
+коэффициента асимметрии при различных объемах выборки $n$ при наблюдаемом
+законе Коши.'
+
+dft <- subset(df, stat=='skewness' & h0=='cauchy')
+
+ggplot(dft, aes(x=x, colour=n)) +
+	geom_density()
+@
+
+\subsubsection{Коэффициент асимметрии при наблюдаемых законах: нормальный, Коши}
+
+<<skew-norm-cauchy-plot1000, fig.cap=caption>>=
+caption <- 'Сравнение распределений статистики коэффициента асимметрии при
+наблюдаемом нормальном законе и законе Коши.'
+
+dft <- subset(df, stat=='skewness' & n=='1000')
+
+ggplot(dft, aes(x=x, linetype=h0, colour=n)) +
+	stat_ecdf()
+@
+
+<<skew-norm-cauchy-plot10, fig.cap=caption>>=
+caption <- 'Сравнение распределений статистики коэффициента асимметрии при
+наблюдаемом нормальном законе и законе Коши.'
+
+dft <- subset(df, stat=='skewness' & n=='10')
+
+ggplot(dft, aes(x=x, linetype=h0, colour=n)) +
+	stat_ecdf()
+@
+
+\subsubsection{Коэффициент эксцесса при наблюдаемом законе Коши}
+
+<<stat-mod-kurt-cauchy>>=
+library(moments)
+
+for (n in c(10, 50, 200, 1000)) {
+	dft <- statmod('kurtosis', n, N, 'cauchy')
+	df <- rbind(df, dft)
+}
+@
+
+<<kurt-cauchy-ecdf-plot, fig.cap=caption>>=
+caption <- 'Эмпирические распределения статистики коэффициента эксцесса при
+наблюдаемом законе Коши.'
+
+dft <- subset(df, stat=='kurtosis' & h0=='cauchy')
+
+ggplot(dft, aes(x=x, colour=n)) +
+	stat_ecdf()
+@
+
+\subsubsection{Коэффициент эксцесса при наблюдаемых законах: нормальный, Коши}
+
+<<kurt-norm-cauchy-ecdf-plot1000, fig.cap=caption>>=
+caption <- 'Сравнение распределений статистики коэффициента эксцесса при
+наблюдаемом нормальном законе и законе Коши.'
+
+dft <- subset(df, stat=='kurtosis' & n=='1000')
+
+ggplot(dft, aes(x=x, linetype=h0, colour=n)) +
+	stat_ecdf()
+@
+
+<<kurt-norm-cauchy-ecdf-plot10, fig.cap=caption>>=
+caption <- 'Сравнение распределений статистики коэффициента эксцесса при
+наблюдаемом нормальном законе и законе Коши.'
+
+dft <- subset(df, stat=='kurtosis' & n=='10')
+
+ggplot(dft, aes(x=x, linetype=h0, colour=n)) +
+	stat_ecdf()
+@
 
 \end{enumerate}
 
