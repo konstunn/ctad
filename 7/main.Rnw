@@ -115,11 +115,13 @@ N <- 16600
 <<statmod-function>>=
 statmod <- function(stat, n, N, h0)
 {
+	sink(stderr())
+	message(deparse(sys.calls()[[sys.nframe()]]))
 	h0 <- paste('r', h0, sep='')
 
 	X <- do.call(h0, args=list(n=n*N))
 	X <- split(X, ceiling(seq_along(X)/n))
-	X <- lapply(X, stat)
+	X <- plyr::llply(X, stat, .progress='text')
 	X <- as.numeric(X)
 
 	h0 <- substr(h0, 2, nchar(h0))
@@ -129,6 +131,7 @@ statmod <- function(stat, n, N, h0)
 									 N=rep(as.factor(N),N),
 									 h0=rep(h0,N),
 									 stat=rep(stat,N))
+	sink()
 	return(df)
 }
 @
