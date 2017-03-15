@@ -371,8 +371,29 @@ ggplot(data=dft, mapping=aes(x=x, linetype=h0)) +
 	xlim(c(0.8,1))
 @
 
-<<>>=
-# analyze shapiro power distincting norm and pgnorm
+<<alpha-power-function>>=
+power <- function(dfin, alpha)
+{
+	dfnull <- subset(dfin, h0=='pgnorm')
+	dfalt <- subset(dfin, h0=='norm')
+
+	q <- quantile(dfnull$x, probs=1-alpha)
+	F1 <- ecdf(dfalt$x)
+	percentile <- F1(q)
+	df <- data.frame(alpha=alpha, power=1-percentile)
+	return(df)
+}
+alpha <- seq(0, 0.1, 1e-4)
+@
+
+<<shapiro-norm-pgnorm-power, fig.cap=caption>>=
+caption <- 'Оперативная характеристика критерия Шапиро-Уилка при различении
+нормального и обобщенного нормального закона.'
+
+dfp <- power(dft, alpha)
+
+ggplot() +
+	geom_line(data=dfp, mapping=aes(x=alpha, y=power))
 @
 
 \item Аналогично предыдущему пункту исследовать распределения статистики
