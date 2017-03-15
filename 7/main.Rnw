@@ -310,12 +310,8 @@ ggplot(dft, aes(x=x, linetype=h0, colour=n)) +
 	равном 4÷7. Сравнить с ситуацией, соответствующей справедливой
 	проверяемой гипотезе о нормальном законе. Оценить мощность критерия.
 
-<<shapiro>>=
-shapiro <- function(x)
-{
-	rez <- shapiro.test(x)$statistic
-	return(rez)
-}
+<<shapiro-function>>=
+shapiro <- function(x) shapiro.test(x)$statistic
 @
 
 <<shapiro-mod-norm>>=
