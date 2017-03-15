@@ -398,6 +398,103 @@ ggplot() +
 \item Аналогично предыдущему пункту исследовать распределения статистики
 	критерия Эппса-Палли.
 
+<<epps-pulley-norm-ecdf-plot, fig.cap=caption, warning=F>>=
+caption <- 'Эмпирические распределения статистики Эппса-Палли при различных
+объемах выборки.'
+
+x <- read.table('data/eppspulley10.dat', skip=2, col.names='x')
+df <- data.frame(x=x, n='10')
+
+x <- read.table('data/eppspulley50.dat', skip=2, col.names='x')
+dft <- data.frame(x=x, n='50')
+
+df <- rbind(df, dft)
+
+x <- read.table('data/eppspulley200.dat', skip=2, col.names='x')
+dft <- data.frame(x=x, n='200')
+
+df <- rbind(df, dft)
+
+ggplot(df, aes(x=x, colour=n)) +
+	stat_ecdf()
+@
+
+<<eps-pulley-percentiles>>=
+# theoretical percentiles
+y <- c(0.9, 0.95, 0.975, 0.99)
+
+df10 <- data.frame(x=c(0.279, 0.357, 0.437, 0.545), y=y)
+df50 <- data.frame(x=c(0.29, 0.374, 0.463, 0.574), y=y)
+df200 <- data.frame(x=c(0.29, 0.379, 0.467, 0.590), y=y)
+@
+
+<<epps-pulley-percentiles-plot10, fig.cap=caption>>=
+caption <- 'Эмпирическое распределение статистики Эппса-Палли при наблюдаемом
+нормальном законе, объем выборки $n=10$, и процентные точки <<теоретического>>
+закона.'
+
+dft <- subset(df, n=='10')
+
+ggplot()  +
+	stat_ecdf(aes(x=x), data=dft) +
+	geom_point(aes(x=x, y=y), data=df10)
+@
+
+<<epps-pulley-percentiles-plot50, fig.cap=caption>>=
+caption <- 'Эмпирическое распределение статистики Эппса-Палли при наблюдаемом
+нормальном законе, объем выборки $n=50$, и процентные точки <<теоретического>>
+закона.'
+
+dft <- subset(df, n=='50')
+
+ggplot()  +
+	stat_ecdf(aes(x=x), data=dft) +
+	geom_point(aes(x=x, y=y), data=df50)
+@
+
+<<epps-pulley-percentiles-plot200, fig.cap=caption>>=
+caption <- 'Эмпирическое распределение статистики Эппса-Палли при наблюдаемом
+нормальном законе, объем выборки $n=200$, и процентные точки <<теоретического>>
+закона.'
+
+dft <- subset(df, n=='200')
+
+ggplot()  +
+	stat_ecdf(aes(x=x), data=dft) +
+	geom_point(aes(x=x, y=y), data=df200)
+@
+
+<<epps-pulley-norm-pgnorm, fig.cap=caption>>=
+caption <- 'Эмпирические распределения статистики Эппса-Палли при нормальном и
+обобщенным нормальном наблюдаемых законах.'
+
+dfn <- subset(df, n='10')
+dfn$n <- NULL
+
+x <- read.table('data/eppspulley_pgnorm.dat', skip=2, col.names='x')
+dfpgn <- data.frame(x=x)
+
+ggplot() +
+	stat_ecdf(aes(x=x, linetype='Normal'), dfn) +
+	stat_ecdf(aes(x=x, linetype='Double exponential'), dfpgn) +
+	scale_linetype('H0')
+@
+
+<<epps-pulley-power-norm-pgnorm, fig.cap=caption>>=
+caption <- 'Оперативная характеристика критерия Эппса-Палли при различении
+нормального и обобщенного нормального законов.'
+
+dfn$h0 <- rep('norm', length(dfn$x))
+dfpgn$h0 <- rep('pgnorm', length(dfpgn$x))
+
+dfin <- rbind(dfn, dfpgn)
+
+dfin <- power(dfin, alpha)
+
+ggplot() +
+	geom_line(mapping=aes(x=alpha, y=power), data=dfin)
+@
+
 \item Исследовать распределения статистики $z_1$. Проверить близость
 	эмпирических распределений статистики стандартному нормальному закону.
 
