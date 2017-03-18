@@ -157,7 +157,7 @@ cbPalette <- c("#999999", "#E69F00", "#56B4E9", "#009E73", "#F0E442",
 								"#0072B2", "#D55E00", "#CC79A7")
 cbPalette <- rev(cbPalette)
 
-ggplot(df, aes(x=x, colour=n)) +
+ggplot(df, aes(x=x, linetype=n)) +
 	stat_ecdf()
 @
 
@@ -170,7 +170,7 @@ cbPalette <- c("#999999", "#E69F00", "#56B4E9", "#009E73", "#F0E442",
 								"#0072B2", "#D55E00", "#CC79A7")
 cbPalette <- rev(cbPalette)
 
-ggplot(df, aes(x=x, colour=n)) +
+ggplot(df, aes(x=x, linetype=n)) +
 	geom_density()
 @
 
@@ -191,7 +191,7 @@ caption <- 'Эмпирические распределения статисти
 
 dft <- subset(df, stat=='kurtosis')
 
-ggplot(dft, aes(x=x, colour=n)) +
+ggplot(dft, aes(x=x, linetype=n)) +
 	stat_ecdf()
 @
 
@@ -202,7 +202,7 @@ caption <- 'Ядерные оценки плотности эмпирическ�
 
 dft <- subset(df, stat=='kurtosis')
 
-ggplot(dft, aes(x=x, colour=n)) +
+ggplot(dft, aes(x=x, linetype=n)) +
 	geom_density()
 @
 
@@ -224,7 +224,7 @@ caption <- 'Эмпирические распределения статисти
 
 dft <- subset(df, stat=='skewness' & h0=='cauchy')
 
-ggplot(dft, aes(x=x, colour=n)) +
+ggplot(dft, aes(x=x, linetype=n)) +
 	stat_ecdf()
 @
 
@@ -235,7 +235,7 @@ caption <- 'Ядерные оценки плотности эмпирическ�
 
 dft <- subset(df, stat=='skewness' & h0=='cauchy')
 
-ggplot(dft, aes(x=x, colour=n)) +
+ggplot(dft, aes(x=x, linetype=n)) +
 	geom_density()
 @
 
@@ -243,21 +243,21 @@ ggplot(dft, aes(x=x, colour=n)) +
 
 <<skew-norm-cauchy-plot1000, fig.cap=caption>>=
 caption <- 'Сравнение распределений статистики коэффициента асимметрии при
-наблюдаемом нормальном законе и законе Коши.'
+наблюдаемом нормальном законе и законе Коши, объем выборки $n = 1000$.'
 
 dft <- subset(df, stat=='skewness' & n=='1000')
 
-ggplot(dft, aes(x=x, linetype=h0, colour=n)) +
+ggplot(dft, aes(x=x, linetype=h0)) +
 	stat_ecdf()
 @
 
 <<skew-norm-cauchy-plot10, fig.cap=caption>>=
 caption <- 'Сравнение распределений статистики коэффициента асимметрии при
-наблюдаемом нормальном законе и законе Коши.'
+наблюдаемом нормальном законе и законе Коши, объем выборки $n = 10$.'
 
 dft <- subset(df, stat=='skewness' & n=='10')
 
-ggplot(dft, aes(x=x, linetype=h0, colour=n)) +
+ggplot(dft, aes(x=x, linetype=h0)) +
 	stat_ecdf()
 @
 
@@ -278,7 +278,7 @@ caption <- 'Эмпирические распределения статисти
 
 dft <- subset(df, stat=='kurtosis' & h0=='cauchy')
 
-ggplot(dft, aes(x=x, colour=n)) +
+ggplot(dft, aes(x=x, linetype=n)) +
 	stat_ecdf()
 @
 
@@ -286,21 +286,21 @@ ggplot(dft, aes(x=x, colour=n)) +
 
 <<kurt-norm-cauchy-ecdf-plot1000, fig.cap=caption>>=
 caption <- 'Сравнение распределений статистики коэффициента эксцесса при
-наблюдаемом нормальном законе и законе Коши.'
+наблюдаемом нормальном законе и законе Коши, объем выборки $n = 1000$.'
 
 dft <- subset(df, stat=='kurtosis' & n=='1000')
 
-ggplot(dft, aes(x=x, linetype=h0, colour=n)) +
+ggplot(dft, aes(x=x, linetype=h0)) +
 	stat_ecdf()
 @
 
 <<kurt-norm-cauchy-ecdf-plot10, fig.cap=caption>>=
 caption <- 'Сравнение распределений статистики коэффициента эксцесса при
-наблюдаемом нормальном законе и законе Коши.'
+наблюдаемом нормальном законе и законе Коши, объем выборки $n = 10$.'
 
 dft <- subset(df, stat=='kurtosis' & n=='10')
 
-ggplot(dft, aes(x=x, linetype=h0, colour=n)) +
+ggplot(dft, aes(x=x, linetype=h0)) +
 	stat_ecdf()
 @
 
@@ -332,7 +332,7 @@ caption <- 'Эмпирические распределения статисти
 
 library(ggplot2)
 
-ggplot(df, aes(x=x, colour=n)) +
+ggplot(df, aes(x=x, linetype=n)) +
 	stat_ecdf() +
 	xlim(c(0.8,1))
 @
@@ -344,13 +344,17 @@ caption <- 'Сравнение эмпирических распределени
 df10 <- data.frame(y=c(0.01,0.05), x=c(0.781,0.818))
 df50 <- data.frame(y=c(0.01,0.05), x=c(0.93,0.947))
 
-df <- subset(df, n=='10' | n=='50')
+df10cdf <- subset(df, n == '10')
+df50cdf <- subset(df, n == '50')
 
-ggplot(df, aes(x=x, colour=n)) +
-	stat_ecdf() +
-	geom_point(aes(x=x, y=y, colour='10'), df10) +
-	geom_point(aes(x=x, y=y, colour='50'), df50) +
-	xlim(c(0.75,1))
+ggplot() +
+	stat_ecdf(data=df10cdf, mapping=aes(x=x, linetype=n)) +
+	stat_ecdf(data=df50cdf, mapping=aes(x=x, linetype=n)) +
+	geom_point(aes(x=x, y=y, shape='10'), df10) +
+	geom_point(aes(x=x, y=y, shape='50'), df50) +
+	xlim(c(0.75,1)) +
+	scale_linetype('ecdf, n =') +
+	scale_shape('Percentiles, n = ')
 @
 
 <<shapiro-norm-pgnorm, warning=F, fig.cap=caption>>=
@@ -415,9 +419,11 @@ dft <- data.frame(x=x, n='200')
 
 df <- rbind(df, dft)
 
-ggplot(df, aes(x=x, colour=n)) +
+ggplot(df, aes(x=x, linetype=n)) +
 	stat_ecdf()
 @
+
+Распределение статистики практически не зависит от объема выборки.
 
 <<eps-pulley-percentiles>>=
 # theoretical percentiles
