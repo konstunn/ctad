@@ -504,11 +504,39 @@ ggplot() +
 \item Исследовать распределения статистики $z_1$. Проверить близость
 	эмпирических распределений статистики стандартному нормальному закону.
 
+<<z1-norm-pdf-plot, fig.cap=caption>>=
+caption <- 'Эмпирическое распределение статистики $z_1$ и стандартный
+нормальный закон распределения.'
+
+x <- read.table('data/z1.dat', skip=2, col.names='x')
+dfz1 <- data.frame(x=x)
+
+ggplot() +
+	stat_ecdf(aes(x=x, linetype='Empirical z1'), dfz1) +
+	stat_function(aes(x=x, linetype='Normal'), dfz1, fun=pnorm, size=1) +
+	scale_linetype('Distribution')
+@
+
 \item Исследовать распределения статистики $z_2$. Проверить близость
 	эмпирических распределений статистики стандартному нормальному закону.
 
-\item Оценить мощность критериев со статистиками (\ldots) относительно
-	заданной альтернативы.
+<<z2-norm-pdf-plot, fig.cap=caption>>=
+caption <- 'Эмпирическое распределение статистики $z_2$ и стандартный
+нормальный закон распределения.'
+
+x <- read.table('data/z2.dat', skip=2, col.names='x')
+dfz2 <- data.frame(x=x)
+
+ggplot() +
+	stat_ecdf(aes(x=x, linetype='Empirical z2'), dfz2) +
+	stat_function(aes(x=x, linetype='Normal'), dfz2, fun=pnorm, size=1) +
+	scale_linetype('Distribution')
+@
+
+\item Оценить мощность критериев Шапиро-Уилка, Эппса-Палли, Д'Агостино
+	относительно заданной альтернативы.
+
+
 
 \end{enumerate}
 
