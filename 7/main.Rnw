@@ -390,6 +390,10 @@ power <- function(dfin, alpha, h, side='right')
 	else if (side == 'right') {
 		Sa <- quantile(dfnull$x, probs=1-alpha)
 		beta <- F1(Sa)
+	} else if (side == 'both') {
+		Sl <- quantile(dfnull$x, probs=alpha/2)
+		Sr <- quantile(dfnull$x, probs=1-alpha/2)
+		beta <- F1(Sr) - F1(Sl)
 	}
 
 	df <- data.frame(alpha=alpha, power=1-beta)
@@ -613,7 +617,7 @@ df <- rbind(df, dft)
 @
 
 <<z1-cauchy-norm-power-calc>>=
-df <- power(df, alpha, h=c('norm', 'cauchy'))
+df <- power(df, alpha, h=c('norm', 'cauchy'), side='both')
 @
 
 <<z1-cauchy-norm-power-plot, fig.cap=caption>>=
@@ -640,7 +644,7 @@ df <- rbind(df, dft)
 @
 
 <<z2-cauchy-norm-power-calc>>=
-df <- power(df, alpha, h=c('norm', 'cauchy'))
+df <- power(df, alpha, h=c('norm', 'cauchy'), side='both')
 @
 
 <<z2-cauchy-norm-power-plot, fig.cap=caption>>=
