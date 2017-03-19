@@ -11,9 +11,8 @@ power <- function(dfin, alpha)
 
 	F1 <- ecdf(dfalt$x)
 	# F1 is function
-	percentile <- F1(q)
+	beta <- F1(q)
 
-	df <- data.frame(alpha=alpha, power=1-percentile)
+	df <- data.frame(alpha=alpha, power=1-beta)
 	return(df)
 }
-
