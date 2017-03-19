@@ -377,8 +377,8 @@ ggplot(data=dft, mapping=aes(x=x, linetype=h0)) +
 <<alpha-power-function>>=
 power <- function(dfin, alpha)
 {
-	dfnull <- subset(dfin, h0=='pgnorm')
-	dfalt <- subset(dfin, h0=='norm')
+	dfnull <- subset(dfin, h0=='norm')
+	dfalt <- subset(dfin, h0=='pgnorm')
 
 	q <- quantile(dfnull$x, probs=1-alpha)
 	F1 <- ecdf(dfalt$x)
