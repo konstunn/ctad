@@ -536,7 +536,133 @@ ggplot() +
 \item Оценить мощность критериев со статистиками Шапиро-Уилка, Эппса-Палли,
 	двумя статистиками Д'Агостино относительно заданной альтернативы.
 
+<<alpha-power-function-norm-cauchy>>=
+# TODO: add for left sided (Shapiro) and two sided (Agostino)
+power <- function(dfin, alpha, side='right')
+{
+	dfnull <- subset(dfin, h0=='norm')
+	dfalt <- subset(dfin, h0=='cauchy')
 
+	if (side == 'left')
+		Sa <- quantile(dfnull$x, probs=alpha)
+	else if (side == 'right')
+		Sa <- quantile(dfnull$x, probs=1-alpha)
+
+	F1 <- ecdf(dfalt$x)
+
+	beta <- F1(Sa)
+
+	df <- data.frame(alpha=alpha, power=1-beta)
+	return(df)
+}
+alpha <- seq(0, .1, 1e-4)
+@
+
+% shapiro
+<<shapiro-cauchy-norm-power-read>>=
+x <- read.table('data/shapiro_cauchy50.dat', skip=2, col.names='x')
+
+n <- 50
+h0 <- 'cauchy'
+stat <- 'shapiro'
+
+df <- data.frame(x=x,
+								 n=rep(as.factor(n),N),
+								 N=rep(as.factor(N),N),
+								 h0=rep(h0,N),
+								 stat=rep(stat,N))
+
+dft <- statmod('shapiro', n, N, 'norm')
+
+df <- rbind(df, dft)
+@
+
+<<shapiro-cauchy-norm-power-calc>>=
+df <- power(df, alpha, side='left')
+@
+
+<<shapiro-cauchy-norm-power-plot, fig.cap=caption>>=
+caption <- 'Оперативная характеристика критерия Шапиро-Уилка.'
+ggplot() +
+	geom_line(data=df, mapping=aes(x=alpha, y=power))
+@
+
+% epps pulley
+<<epps-pulley-norm-cauchy-power-read>>=
+x <- read.table('data/eppspulley_cauchy50.dat', skip=2, col.names='x')
+df <- data.frame(x=x, h0=rep(h0,N))
+
+h0 <- 'norm'
+
+x <- read.table('data/eppspulley50.dat', skip=2, col.names='x')
+dft <- data.frame(x=x, h0=rep(h0,N))
+
+df <- rbind(df, dft)
+@
+
+<<eppspulley-cauchy-norm-power-calc>>=
+df <- power(df, alpha)
+@
+
+<<epps-pulley-cauchy-norm-power-plot, fig.cap=caption>>=
+caption <- 'Оперативная характеристика критерия Эппса-Палли.'
+ggplot() +
+	geom_line(data=df, mapping=aes(x=alpha, y=power))
+@
+
+% z1
+<<z1-cauchy-norm-power-read>>=
+h0 <- 'cauchy'
+
+x <- read.table('data/z1_cauchy50.dat', skip=2, col.names='x')
+df <- data.frame(x=x, h0=rep(h0,N))
+
+h0 <- 'norm'
+
+x <- read.table('data/z1.dat', skip=2, col.names='x')
+dft <- data.frame(x=x, h0=rep(h0,N))
+
+df <- rbind(df, dft)
+@
+
+<<z1-cauchy-norm-power-calc>>=
+df <- power(df, alpha)
+@
+
+<<z1-cauchy-norm-power-plot, fig.cap=caption>>=
+caption <- 'Оперативная характеристика критерия Д\'Агостино со статистикой
+$z_1$.'
+
+ggplot() +
+	geom_line(data=df, mapping=aes(x=alpha, y=power))
+@
+
+% z2
+<<z2-cauchy-norm-power-read>>=
+h0 <- 'cauchy'
+
+x <- read.table('data/z2_cauchy50.dat', skip=2, col.names='x')
+df <- data.frame(x=x, h0=rep(h0,N))
+
+h0 <- 'norm'
+
+x <- read.table('data/z2.dat', skip=2, col.names='x')
+dft <- data.frame(x=x, h0=rep(h0,N))
+
+df <- rbind(df, dft)
+@
+
+<<z2-cauchy-norm-power-calc>>=
+df <- power(df, alpha)
+@
+
+<<z2-cauchy-norm-power-plot, fig.cap=caption>>=
+caption <- 'Оперативная характеристика критерия Д\'Агостино со статистикой
+$z_2$.'
+
+ggplot() +
+	geom_line(data=df, mapping=aes(x=alpha, y=power))
+@
 
 \end{enumerate}
 
