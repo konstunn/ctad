@@ -398,7 +398,7 @@ power <- function(dfin, alpha, h, side='right')
 	df <- data.frame(alpha=alpha, power=1-beta)
 	return(df)
 }
-alpha <- seq(0, 1, 1e-4)
+alpha <- seq(0, .1, 1e-4)
 @
 
 <<shapiro-norm-pgnorm-power, fig.cap=caption>>=
