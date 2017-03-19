@@ -1,17 +1,18 @@
-power <- function(dfin, alpha)
+power <- function(dfin, alpha, h, side='right')
 {
-	# H0
-	dfnull <- subset(dfin, H=='norm')
-
-	# H1
-	dfalt <- subset(dfin, H=='pgnorm')
-
-	# empirical quantiles
-	q <- quantile(dfnull$x, probs=1-alpha)
+	dfnull <- subset(dfin, h0 == h[1])
+	dfalt <- subset(dfin, h0 == h[2])
 
 	F1 <- ecdf(dfalt$x)
-	# F1 is function
-	beta <- F1(q)
+
+	if (side == 'left') {
+		Sa <- quantile(dfnull$x, probs=alpha)
+		beta <- 1 - F1(Sa)
+	}
+	else if (side == 'right') {
+		Sa <- quantile(dfnull$x, probs=1-alpha)
+		beta <- F1(Sa)
+	}
 
 	df <- data.frame(alpha=alpha, power=1-beta)
 	return(df)

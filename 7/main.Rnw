@@ -375,25 +375,34 @@ ggplot(data=dft, mapping=aes(x=x, linetype=h0)) +
 @
 
 <<alpha-power-function>>=
-power <- function(dfin, alpha)
+# TODO: add for left sided (Shapiro) and two sided (Agostino)
+power <- function(dfin, alpha, h, side='right')
 {
-	dfnull <- subset(dfin, h0=='norm')
-	dfalt <- subset(dfin, h0=='pgnorm')
+	dfnull <- subset(dfin, h0 == h[1])
+	dfalt <- subset(dfin, h0 == h[2])
 
-	q <- quantile(dfnull$x, probs=1-alpha)
 	F1 <- ecdf(dfalt$x)
-	percentile <- F1(q)
-	df <- data.frame(alpha=alpha, power=1-percentile)
+
+	if (side == 'left') {
+		Sa <- quantile(dfnull$x, probs=alpha)
+		beta <- 1 - F1(Sa)
+	}
+	else if (side == 'right') {
+		Sa <- quantile(dfnull$x, probs=1-alpha)
+		beta <- F1(Sa)
+	}
+
+	df <- data.frame(alpha=alpha, power=1-beta)
 	return(df)
 }
-alpha <- seq(0, 0.1, 1e-4)
+alpha <- seq(0, 1, 1e-4)
 @
 
 <<shapiro-norm-pgnorm-power, fig.cap=caption>>=
 caption <- 'Оперативная характеристика критерия Шапиро-Уилка при различении
 нормального и обобщенного нормального закона.'
 
-dfp <- power(dft, alpha)
+dfp <- power(dft, alpha, h=c('norm', 'pgnorm'), side='left')
 
 ggplot() +
 	geom_line(data=dfp, mapping=aes(x=alpha, y=power))
@@ -474,7 +483,7 @@ ggplot()  +
 caption <- 'Эмпирические распределения статистики Эппса-Палли при нормальном и
 обобщенным нормальном наблюдаемых законах.'
 
-dfn <- subset(df, n='10')
+dfn <- subset(df, n=='10')
 dfn$n <- NULL
 
 x <- read.table('data/eppspulley_pgnorm.dat', skip=2, col.names='x')
@@ -495,7 +504,7 @@ dfpgn$h0 <- rep('pgnorm', length(dfpgn$x))
 
 dfin <- rbind(dfn, dfpgn)
 
-dfin <- power(dfin, alpha)
+dfin <- power(dfin, alpha, h=c('norm', 'pgnorm'))
 
 ggplot() +
 	geom_line(mapping=aes(x=alpha, y=power), data=dfin)
@@ -536,28 +545,6 @@ ggplot() +
 \item Оценить мощность критериев со статистиками Шапиро-Уилка, Эппса-Палли,
 	двумя статистиками Д'Агостино относительно заданной альтернативы.
 
-<<alpha-power-function-norm-cauchy>>=
-# TODO: add for left sided (Shapiro) and two sided (Agostino)
-power <- function(dfin, alpha, side='right')
-{
-	dfnull <- subset(dfin, h0=='norm')
-	dfalt <- subset(dfin, h0=='cauchy')
-
-	if (side == 'left')
-		Sa <- quantile(dfnull$x, probs=alpha)
-	else if (side == 'right')
-		Sa <- quantile(dfnull$x, probs=1-alpha)
-
-	F1 <- ecdf(dfalt$x)
-
-	beta <- F1(Sa)
-
-	df <- data.frame(alpha=alpha, power=1-beta)
-	return(df)
-}
-alpha <- seq(0, .1, 1e-4)
-@
-
 % shapiro
 <<shapiro-cauchy-norm-power-read>>=
 x <- read.table('data/shapiro_cauchy50.dat', skip=2, col.names='x')
@@ -578,7 +565,7 @@ df <- rbind(df, dft)
 @
 
 <<shapiro-cauchy-norm-power-calc>>=
-df <- power(df, alpha, side='left')
+df <- power(df, alpha, h=c('norm', 'cauchy'), side='left')
 @
 
 <<shapiro-cauchy-norm-power-plot, fig.cap=caption>>=
@@ -601,7 +588,7 @@ df <- rbind(df, dft)
 @
 
 <<eppspulley-cauchy-norm-power-calc>>=
-df <- power(df, alpha)
+df <- power(df, alpha, h=c('norm', 'cauchy'))
 @
 
 <<epps-pulley-cauchy-norm-power-plot, fig.cap=caption>>=
@@ -626,7 +613,7 @@ df <- rbind(df, dft)
 @
 
 <<z1-cauchy-norm-power-calc>>=
-df <- power(df, alpha)
+df <- power(df, alpha, h=c('norm', 'cauchy'))
 @
 
 <<z1-cauchy-norm-power-plot, fig.cap=caption>>=
@@ -653,7 +640,7 @@ df <- rbind(df, dft)
 @
 
 <<z2-cauchy-norm-power-calc>>=
-df <- power(df, alpha)
+df <- power(df, alpha, h=c('norm', 'cauchy'))
 @
 
 <<z2-cauchy-norm-power-plot, fig.cap=caption>>=
