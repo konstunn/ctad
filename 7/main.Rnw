@@ -572,7 +572,8 @@ df <- power(df, alpha, h=c('norm', 'cauchy'), side='left')
 @
 
 <<shapiro-cauchy-norm-power-plot, fig.cap=caption>>=
-caption <- 'Оперативная характеристика критерия Шапиро-Уилка.'
+caption <- 'Оперативная характеристика критерия Шапиро-Уилка при различении
+нормального закона и закона Коши.'
 ggplot() +
 	geom_line(data=df, mapping=aes(x=alpha, y=power))
 @
@@ -595,7 +596,8 @@ df <- power(df, alpha, h=c('norm', 'cauchy'))
 @
 
 <<epps-pulley-cauchy-norm-power-plot, fig.cap=caption>>=
-caption <- 'Оперативная характеристика критерия Эппса-Палли.'
+caption <- 'Оперативная характеристика критерия Эппса-Палли при различении
+нормального закона и закона Коши.'
 ggplot() +
 	geom_line(data=df, mapping=aes(x=alpha, y=power))
 @
@@ -634,7 +636,7 @@ df <- power(df, alpha, h=c('norm', 'cauchy'), side='both')
 
 <<z1-cauchy-norm-power-plot, fig.cap=caption>>=
 caption <- 'Оперативная характеристика критерия Д\'Агостино со статистикой
-$z_1$.'
+$z_1$ при различении нормального закона и закона Коши.'
 
 ggplot() +
 	geom_line(data=df, mapping=aes(x=alpha, y=power))
@@ -674,7 +676,7 @@ df <- power(df, alpha, h=c('norm', 'cauchy'), side='both')
 
 <<z2-cauchy-norm-power-plot, fig.cap=caption>>=
 caption <- 'Оперативная характеристика критерия Д\'Агостино со статистикой
-$z_2$.'
+$z_2$ при различении нормального закона и закона Коши.'
 
 ggplot() +
 	geom_line(data=df, mapping=aes(x=alpha, y=power))
