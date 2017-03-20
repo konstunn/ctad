@@ -1,0 +1,19 @@
+#!/bin/bash
+
+# rename interactively all files which names are encoded in cp1251
+
+IFS=$(echo -en "\n\b")
+
+for f in `ls`
+do
+	echo ""
+
+	fe=`echo "$f" | iconv -f cp1251 -t utf8`
+	echo -e "Renaming file \"$fe\"\n"
+
+	read -p "Enter new filename: " fn
+
+	mv "$f" "$fn"
+
+	echo ""
+done
