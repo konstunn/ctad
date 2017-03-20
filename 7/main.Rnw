@@ -320,7 +320,7 @@ shapiro <- function(x) shapiro.test(x)$statistic
 <<shapiro-mod-norm>>=
 df <- NULL
 
-for (n in c(10, 50, 200, 1000)) {
+for (n in c(10, 25, 50)) {
 	dft <- statmod('shapiro', n, N, 'norm')
 	df <- rbind(df, dft)
 }
