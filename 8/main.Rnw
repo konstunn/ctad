@@ -389,6 +389,31 @@ ggplot() +
 	\item Оценить близость получаемых эмпирических распределений статистик (4) и
 		(7) к стандартному нормальному закону.
 
+<<giri-vs-stdnorm, fig.cap>>=
+caption <- 'Эмпирическое распределение статистики Гири ($n = 1000$) и
+стандартный нормальный закон.'
+
+df <- read.data(stat='giri', h='norm', n=1000)
+
+ggplot() +
+	stat_ecdf(mapping=aes(x=x, linetype='Empirical Giri'), data=df) +
+	stat_function(aes(x=x, linetype='Standard Normal'), df, fun=pnorm,
+								xlim=c(-2.5, 2.5)) +
+	scale_linetype('Distribution')
+@
+
+<<royston-vs-stdnorm>>=
+caption <- 'Эмпирическое распределение статистики Ройстона и стандартный
+нормальный закон.'
+
+df <- read.data(stat='royston', h='norm', n=50)
+
+ggplot() +
+	stat_ecdf(mapping=aes(x=x, linetype='Empirical Royston'), data=df) +
+	stat_function(aes(x=x, linetype='Standard Normal'), df, fun=pnorm, size=1) +
+	scale_linetype('Distribution')
+@
+
 	\item При некотором объеме выборок ($n=10$) смоделировать распределения
 		статистик критериев при обобщенном нормальном законе (двустороннее
 		экспоненциальное распределение) при параметре формы, равном 4-7. Сравнить
