@@ -389,7 +389,7 @@ ggplot() +
 	\item Оценить близость получаемых эмпирических распределений статистик (4) и
 		(7) к стандартному нормальному закону.
 
-<<giri-vs-stdnorm, fig.cap>>=
+<<giri-vs-stdnorm, fig.cap=caption>>=
 caption <- 'Эмпирическое распределение статистики Гири ($n = 1000$) и
 стандартный нормальный закон.'
 
@@ -402,7 +402,7 @@ ggplot() +
 	scale_linetype('Distribution')
 @
 
-<<royston-vs-stdnorm>>=
+<<royston-vs-stdnorm, fig.cap=caption>>=
 caption <- 'Эмпирическое распределение статистики Ройстона и стандартный
 нормальный закон.'
 
