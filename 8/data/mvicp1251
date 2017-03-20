@@ -6,6 +6,10 @@ IFS=$(echo -en "\n\b")
 
 for f in `ls`
 do
+	if [[ "$f" == "`dirname $0`" ]] ; then
+		continue
+	fi
+
 	echo ""
 
 	fe=`echo "$f" | iconv -f cp1251 -t utf8`
