@@ -418,9 +418,55 @@ ggplot() +
 		статистик критериев при обобщенном нормальном законе (двустороннее
 		экспоненциальное распределение) при параметре формы, равном 4-7. Сравнить
 		с ситуацией, соответствующей справедливой проверяемой гипотезе о
-		нормальном законе. Оценить мощность критериев со статистиками (1)-(7)
-		относительно заданной альтернативы. Сравнить с мощностью критериев,
-		рассмотренных в предшествующей работе.
+		нормальном законе.
+
+<<norm-vs-dexp-plot-function>>=
+plot.dexp.vs.norm <- function(stat, stat.cap)
+{
+	df <- read.data(stat=stat, h='norm', n=10)
+	dft <- read.data(stat=stat, h='dexp', n=10)
+	df <- rbind(df, dft)
+
+	cap <- sprintf('Эмпирическое распределение статистики %s при нормальном
+		и двустороннем экспоненциальном законах.', stat.cap)
+
+	assign('caption', cap, envir=.GlobalEnv)
+
+	p <- ggplot() +
+		stat_ecdf(mapping=aes(x=x, linetype=factor(h)), data=df) +
+		scale_linetype('true H')
+
+	print(p)
+}
+@
+
+<<frosini-dexp-norm-plot, fig.cap=caption>>=
+plot.dexp.vs.norm('frosini', 'Фросини')
+@
+
+<<t1-dexp-vs-norm-plot, fig.cap=caption>>=
+plot.dexp.vs.norm('t1', 'Хегази-Грина $T_1$')
+@
+
+<<t2-dexp-vs-norm-plot, fig.cap=caption>>=
+plot.dexp.vs.norm('t2', 'Хегази-Грина $T_2$')
+@
+
+<<giri-dexp-vs-norm-plot, fig.cap=caption>>=
+plot.dexp.vs.norm('giri', 'Гири')
+@
+
+<<dhp-dexp-vs-norm-plot, fig.cap=caption>>=
+plot.dexp.vs.norm('dhp', 'Дэвида-Хартли-Пирсона')
+@
+
+<<spiegel-dexp-vs-norm-plot, fig.cap=caption>>=
+plot.dexp.vs.norm('spiegel', 'Шпигельхальтера')
+@
+
+<<royston-dexp-vs-norm-plot, fig.cap=caption>>=
+plot.dexp.vs.norm('royston', 'Ройстона')
+@
 
 	\item Оценить мощность критериев со статистиками (1)-(7) относительно
 		заданной альтернативы. Сравнить с мощностью критериев, рассмотренных в
