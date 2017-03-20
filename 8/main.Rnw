@@ -154,7 +154,94 @@ N <- 16600
 		от объема выборок в случае принадлежности наблюдений нормальному
 		закону.
 
+<<read-data-function>>=
+read.data <- function(stat, h, nc=c(10,50,200,1000))
+{
+	df <- NULL
+	for (n in nc)
+	{
+		path <- sprintf('data/%s_%s_%d.dat', stat, h, n)
+		x <- read.table(path, skip=2, col.names='x')
+		len <- length(x)
+		dft <- data.frame(x=x, n=rep(n, len, stat=rep(stat, len), h=rep(h, len)))
+		df <- rbind(df, dft)
+	}
+	return(df)
+}
+@
 
+<<read-data-frosini-norm>>=
+df <- read.data(stat='frosini', h='norm')
+@
+
+<<plot-ecdf-n-function>>=
+plot.ecdf <- function(df, stat.cap)
+{
+	cap <- sprintf('Эмпирические распределения статистики %s в
+		зависимости от объема выборки $n$ при наблюдаемом нормальном законе.',
+		stat.cap)
+
+	assign('caption', cap, envir=.GlobalEnv)
+
+	p <- ggplot(mapping=aes(x=x, linetype=factor(n)), data=df) +
+		stat_ecdf() +
+		scale_linetype('n')
+
+	print(p)
+}
+@
+
+<<frosini-ecdf-n-plot, fig.cap=caption>>=
+plot.ecdf(df, stat.cap='Фросини')
+@
+
+<<read-data-t1>>=
+df <- read.data(stat='t1', h='norm')
+@
+
+<<t1-ecdf-n-plot, fig.cap=caption>>=
+plot.ecdf(df, stat.cap='Хегази-Грина $T_1$')
+@
+
+<<read-data-t2>>>=
+df <- read.data(stat='t2', h='norm')
+@
+
+<<t2-ecdf-n-plot, fig.cap=caption>>=
+plot.ecdf(df, stat.cap='Хегази-Грина $T_2$')
+@
+
+<<read-data-spiegel>>=
+df <- read.data(stat='spiegel', h='norm')
+@
+
+<<spiegel-ecdf-n-plot, fig.cap=caption>>=
+plot.ecdf(df, stat.cap='Шпигельхальтера')
+@
+
+<<read-data-giri, fig.cap=caption>>=
+df <- read.data(stat='giri', h='norm')
+@
+
+<<giri-ecdf-n-plot, fig.cap=caption>>=
+plot.ecdf(df, stat.cap='Гири')
+@
+
+<<read-data-dhp, fig.cap=caption>>=
+df <- read.data(stat='dhp', h='norm')
+@
+
+<<dhp-ecdf-n-plot, fig.cap=caption>>=
+plot.ecdf(df, stat.cap='Дэвида-Хартли-Пирсона')
+@
+
+<<read-data-royston, fig.cap=caption>>=
+df <- read.data(stat='royston', h='norm', n=c(10,20,40,50))
+@
+
+<<royston-ecdf-n-plot, fig.cap=caption>>=
+plot.ecdf(df, stat.cap='Ройстона')
+@
 
 	\item Оценить близость получаемых эмпирических распределений статистик
 		(1)-(3) и (5)-(6) к <<теоретическим>> по процентным точкам таблиц,
