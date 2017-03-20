@@ -6,7 +6,7 @@ IFS=$(echo -en "\n\b")
 
 for f in `ls`
 do
-	if [[ "$f" == "`dirname $0`" ]] ; then
+	if [[ "$f" == "`basename $0`" ]] ; then
 		continue
 	fi
 
