@@ -105,7 +105,8 @@ N <- 16600
 Статистика критерия Фросини имеет вид:
 
 \begin{equation}
-	B_n = \frac{1}{\sqrt{n}} \sum\limits_{i=1}^{n} \left| \Phi(z_i) - \frac{i - 0.5}{n} \right|.
+	B_n = \frac{1}{\sqrt{n}} \sum\limits_{i=1}^{n} \left| \Phi(z_i) -
+		\frac{i - 0.5}{n} \right|.
 \end{equation}
 
 В критериях Хегази и Грина используются статистики:
