@@ -163,7 +163,7 @@ read.data <- function(stat, h, nc=c(10,50,200,1000))
 		path <- sprintf('data/%s_%s_%d.dat', stat, h, n)
 		x <- read.table(path, skip=2, col.names='x')
 		len <- length(x)
-		dft <- data.frame(x=x, n=rep(n, len, stat=rep(stat, len), h=rep(h, len)))
+		dft <- data.frame(x=x, n=rep(n, len), stat=rep(stat, len), h=rep(h, len))
 		df <- rbind(df, dft)
 	}
 	return(df)
