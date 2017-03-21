@@ -472,6 +472,74 @@ plot.dexp.vs.norm('royston', 'Ройстона')
 		заданной альтернативы. Сравнить с мощностью критериев, рассмотренных в
 		предшествующей работе.
 
+<<statmod-function>>=
+statmod <- function(stat, n, N, h0)
+{
+	sink(stderr())
+	message(deparse(sys.calls()[[sys.nframe()]]))
+	h0 <- paste('r', h0, sep='')
+
+	X <- do.call(h0, args=list(n=n*N))
+	X <- split(X, ceiling(seq_along(X)/n))
+	X <- plyr::llply(X, stat, .progress='text')
+	X <- as.numeric(X)
+
+	h0 <- substr(h0, 2, nchar(h0))
+
+	df <- data.frame(x=X,
+									 n=rep(n,N),
+									 N=rep(as.factor(N),N),
+									 h=rep(h0,N),
+									 stat=rep(stat,N))
+	sink()
+	return(df)
+}
+@
+
+<<shapiro-function>>=
+shapiro <- function(x) shapiro.test(x)$statistic
+@
+
+<<read-data-for-power>>=
+df <- NULL
+
+stats <- c('frosini', 't1', 't2', 'giri', 'spiegel', 'dhp', 'royston',
+					 'eppspulley')
+
+hs <- c('norm', 'cauchy')
+
+n <- 50
+
+for (stat in stats) {
+	for (h in hs) {
+		dft <- read.data(stat, h, n)
+		df <- rbind(df, dft)
+	}
+}
+@
+
+<<agostino-functions>>=
+library(PoweR)
+z1 <- function(x) statcompute(24, x)$statistic
+z2 <- function(x) statcompute(6, x)$statistic
+@
+
+<<mod-data-for-power>>=
+library(moments)
+
+stats <- c('skewness', 'kurtosis', 'shapiro', 'z1', 'z2')
+
+N <- 16600
+
+for (stat in stats) {
+	for (h in hs) {
+		dft <- statmod(stat, n, N, h)
+		dft$N <- NULL
+		df <- rbind(df, dft)
+	}
+}
+@
+
 \end{enumerate}
 
 \begin{thebibliography}{9}
