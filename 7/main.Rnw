@@ -668,6 +668,17 @@ ggplot() +
 	geom_density(aes(x=x, fill='true H1 (Cauchy)'), alpha=.6, dfh1) +
 	geom_density(aes(x, fill='true H0 (Normal)'), alpha=.6, dfh0) +
 	scale_fill_manual(values=c('red','blue'), name='Distributions')
+
+@
+
+<<z2-ecdf, fig.cap=caption>>=
+caption <- ' распределений статистики $z_2$
+при справедливости гипотез $H_0$ и $H_1$.'
+
+ggplot() +
+	stat_ecdf(aes(x=x, linetype='true H1 (Cauchy)'), alpha=.6, dfh1) +
+	stat_ecdf(aes(x, linetype='true H0 (Normal)'), alpha=.6, dfh0) +
+	scale_linetype('Distributions')
 @
 
 <<z2-cauchy-norm-power-calc>>=
