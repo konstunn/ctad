@@ -1,0 +1,127 @@
+
+\documentclass[a4paper,14pt]{extarticle}
+
+\usepackage{cmap}
+
+\usepackage[T2A]{fontenc}
+\usepackage[utf8x]{inputenc}
+\usepackage[russian]{babel}
+
+\usepackage[a4paper,margin=1.5cm,footskip=1cm,left=2cm,right=1.5cm,top=1.5cm
+	,bottom=2.0cm]{geometry}
+\usepackage{textcase}
+\usepackage{csquotes}
+\usepackage{enumitem}
+
+\usepackage[labelsep=period,justification=centering]{caption}
+
+\usepackage{amsmath}
+\usepackage{pgfplots}
+
+\usepackage{float}
+
+\usepackage{indentfirst}
+
+\setlist[description]{leftmargin=\parindent,labelindent=\parindent}
+
+\begin{document}
+
+\setcounter{secnumdepth}{0}
+
+\begin{titlepage}
+
+	\begin{center}
+		Новосибирский государственный технический университет
+		
+		Факультет прикладной математики и информатики
+		
+		Кафедра теоретической и прикладной информатики
+		
+		\vspace{250pt}
+		
+		\textbf{\LARGE{Лабораторная работа № 1}}
+		\medbreak
+		\large{<<Исследование распределений статистик критериев однородности
+			выборок>>} \\
+		\medbreak
+		\small{по дисциплине \\
+		\medbreak
+		<<Компьютерные технологии анализа данных и исследования 
+	статистических~закономерностей>>}
+		\vspace{75pt}
+	\end{center}
+
+	\begin{flushleft}
+		\begin{tabbing}
+			Факультет:\qquad\qquad    \= ФПМИ\\
+			Группа:										\> ПММ-61\\
+			Студент:            			\> Горбунов К. К.\\
+			Преподаватели:      			\> проф. Лемешко Б. Ю.\\
+																\> проф. Постовалов С. Н.\\
+			Вариант:            			\>  \\
+		\end{tabbing}
+	\end{flushleft}
+
+	\begin{center}
+		\vspace{\fill}
+		Новосибирск, 2017 г.
+	\end{center}
+
+\end{titlepage}
+
+\newpage
+
+\section{Цель работы}
+
+Исследовать распределения статистик критериев однородности Смирнова и
+Лемана-Розеблатта. Исследовать и проанализировать мощность критериев.
+
+\section{Ход работы}
+
+\begin{enumerate}
+
+\renewenvironment{knitrout}{\setlength{\topsep}{0mm}}{}
+
+<<setup, cache=FALSE, echo=FALSE, message=FALSE>>=
+opts_chunk$set(autodep=TRUE, cache=TRUE, message=FALSE, echo=FALSE,
+							 fig.pos='H', fig.lp='fig:', fig.height=2.5)
+options(scipen=5)
+dep_auto()
+library(ggplot2)
+theme_set(theme_minimal())
+@
+
+	\item Исследовать сходимость к предельным распределениям, для чего
+		смоделировать распределения статистик критериев при различных объемах
+		выборок ($n_i = 10, 20, 50, 100)\ [H_0: F(x) = G(x) = F(x, \theta)]$ при
+		$m_i = n_i$. Объем выборок статистик 5000-10000 наблюдений. Оценить
+		близость к предельным распределениям визуально (по графикам) и по критериям
+		согласия. Провести данные исследования отдельно для критерия Смирнова и
+		критерия Лемана-Розенблатта. Для критерия Смирнова исследовать влияние на
+		распределение статистки выбора различных объемов выборок $m_i \ne n_i$.
+
+	\item Оценить мощность критериев относительно заданной альтернативы $[H_1:
+		F(x) = F(x, \theta); G(x) = F_1(x, \theta)]$ при различных объемах выборок.
+
+	\item Исследовать сходимость к предельным распределениям распределений
+		статистики $T_{kn}$ k-выборочного критерия Андерсона-Дарлинга при заданном
+		$k$. При $k=2$ сравнить мощность критерия с двухвыборочными.
+
+\end{enumerate}
+
+\begin{thebibliography}{9}
+
+\bibitem{lemeshko} Статистический анализ данных, моделирование и
+	исследование вероятностных закономерностей.
+		Компьютерный подход : монография / \mbox{Б.Ю. Лемешко}, С.Б. Лемешко,
+	\mbox{С.Н. Постовалов}, Е.В Чимитова. --- \mbox{Новосибирск} : Изд-во НГТУ,
+		2011. --- 888 с. (серия <<\mbox{Монографии НГТУ}>>).
+
+\bibitem{knitr16} Yihui Xie (2016). knitr: A General-Purpose Package for Dynamic
+	Report Generation in R. R package version 1.15.1.
+
+\end{thebibliography}
+
+\end{document}
+
+# vim: ts=2 sw=2
