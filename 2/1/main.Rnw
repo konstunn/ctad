@@ -101,6 +101,55 @@ library(ggplot2)
 theme_set(theme_minimal())
 @
 
+<<statmod>>=
+# NOTE: replicate() can be used instead?
+statmod <- function(m=100, n=100, N=5000, H0, H1, stat)
+{
+	sink(stderr())
+	# TODO: print input arguments values
+	message("")
+	message(deparse(sys.calls()[[sys.nframe()]]))
+
+	# prepend with r prefix
+	H0 <- paste('r', H0, sep='')
+	H1 <- paste('r', H1, sep='')
+
+	message("Random number samples generating...")
+
+	# FIXME: set seed
+	set.seed(100)
+
+	# Generate samples
+	message("Generating big sample...")
+	X1 <- do.call(H0, args=list(n=m*N))
+	message("Splitting big sample into list of samples...")
+	X1 <- split(X1, ceiling(seq_along(X1)/m))
+
+	# FIXME: set different seed
+	set.seed(101)
+
+	message("Generating big sample...")
+	X2 <- do.call(H1, args=list(n=n*N))
+	message("Splitting big sample into list of samples...")
+	X2 <- split(X2, ceiling(seq_along(X2)/n))
+
+	# calculate test statistic values
+	message("Calculating test statistic array...")
+
+	# TODO: add progress bar
+	x <- Map(stat, X1, X2)
+	x <- unlist(x)
+
+	# back without r prefix
+	H0 <- substr(H0, 2, nchar(H0))
+	H1 <- substr(H1, 2, nchar(H1))
+
+	sink()
+	return(data.frame(x=x, m=factor(rep(m,N)), n=factor(rep(n,N)),
+										N=factor(rep(N,N)), H0=rep(H0,N), H1=rep(H1,N)))
+}
+@
+
 	\item Исследовать сходимость к предельным распределениям, для чего
 		смоделировать распределения статистик критериев при различных объемах
 		выборок ($n_i = 10, 20, 50, 100)\ [H_0: F(x) = G(x) = F(x, \theta)]$ при
@@ -109,6 +158,45 @@ theme_set(theme_minimal())
 		согласия. Провести данные исследования отдельно для критерия Смирнова и
 		критерия Лемана-Розенблатта. Для критерия Смирнова исследовать влияние на
 		распределение статистки выбора различных объемов выборок $m_i \ne n_i$.
+
+<<ks-mod>>=
+stat <- function(x, y) ks.test(x, y)$statistic * sqrt(length(x))
+
+H <- 'norm'
+N <- 5000
+
+df <- NULL
+for (n in c(10, 20, 50, 100, 200, 400)) {
+	dft <- statmod(n, n, N, H, H, stat)
+	df <- rbind(df, dft)
+}
+@
+
+% TODO: plot pkolm
+<<plot, fig.cap=caption>>=
+caption <- 'Эмпирическая функция распределения статистики критерия однородности
+Смирнова, объем выборки $n = 100$.'
+
+library(kolmim)
+
+#dft <- data.frame(subset(df, n==100)$x)
+
+#dft$y <- sapply(subset(df, n==100)$x, function(x) pkolm(x, 50))
+
+#df[which(df$n=='100'),]$x <- subset(df, n=='100')$x * 5
+
+ggplot(data=df, mapping=aes(x=x, colour=n)) +
+	stat_ecdf()
+@
+
+<<chunk>>=
+# cramer::cramer.test
+# goftest::pCvM
+
+# kSamples::ad.test
+# goftest::pAD - two samples
+# rnorm - k samples
+@
 
 	\item Оценить мощность критериев относительно заданной альтернативы $[H_1:
 		F(x) = F(x, \theta); G(x) = F_1(x, \theta)]$ при различных объемах выборок.
