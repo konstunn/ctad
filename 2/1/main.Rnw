@@ -166,7 +166,7 @@ H <- 'norm'
 N <- 5000
 
 df <- NULL
-for (n in c(10, 20, 50, 100, 200, 400)) {
+for (n in c(200, 400, 800)) {
 	dft <- statmod(n, n, N, H, H, stat)
 	df <- rbind(df, dft)
 }
@@ -179,14 +179,14 @@ caption <- 'Эмпирическая функция распределения �
 
 library(kolmim)
 
-#dft <- data.frame(subset(df, n==100)$x)
+dft <- data.frame(x=subset(df, n==400)$x)
+dft$x <- dft$x / sqrt(400)
+dft$y <- sapply(dft$x, function(x) pkolm(x, 400/2))
+dft$x <- dft$x * sqrt(400)
 
-#dft$y <- sapply(subset(df, n==100)$x, function(x) pkolm(x, 50))
-
-#df[which(df$n=='100'),]$x <- subset(df, n=='100')$x * 5
-
-ggplot(data=df, mapping=aes(x=x, colour=n)) +
-	stat_ecdf()
+ggplot(data=df, mapping=aes(x=x, colour=factor(n))) +
+	stat_ecdf() +
+	geom_line(data=dft, mapping=aes(x=x, y=y), colour='black')
 @
 
 <<chunk>>=
