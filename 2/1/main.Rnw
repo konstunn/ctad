@@ -157,7 +157,7 @@ statmod <- function(m=100, n=100, N=5000, H0, H1, stat)
 		близость к предельным распределениям визуально (по графикам) и по критериям
 		согласия. Провести данные исследования отдельно для критерия Смирнова и
 		критерия Лемана-Розенблатта. Для критерия Смирнова исследовать влияние на
-		распределение статистки выбора различных объемов выборок $m_i \ne n_i$.
+		распределение статистики выбора различных объемов выборок $m_i \ne n_i$.
 
 <<ks-mod>>=
 stat <- function(x, y) ks.test(x, y)$statistic * sqrt(length(x))
@@ -166,27 +166,34 @@ H <- 'norm'
 N <- 5000
 
 df <- NULL
-for (n in c(200, 400, 800)) {
+for (n in c(10, 20, 50, 100)) {
 	dft <- statmod(n, n, N, H, H, stat)
 	df <- rbind(df, dft)
 }
 @
 
 % TODO: plot pkolm
-<<plot, fig.cap=caption>>=
+<<plot, fig.cap=caption, warning=F>>=
 caption <- 'Эмпирическая функция распределения статистики критерия однородности
-Смирнова, объем выборки $n = 100$.'
+Смирнова при различных объемах выборки $n$.'
 
 library(kolmim)
 
-dft <- data.frame(x=subset(df, n==400)$x)
-dft$x <- dft$x / sqrt(400)
-dft$y <- sapply(dft$x, function(x) pkolm(x, 400/2))
-dft$x <- dft$x * sqrt(400)
+# compute theoretical
+n <- 400
+dft <- data.frame(x=subset(df, n==n)$x)
+dft$x <- dft$x / sqrt(n)
+dft$y <- sapply(dft$x, function(x) pkolm(x, n/2))
+dft$x <- dft$x * sqrt(n)
+
+cbPalette <- c("#999999", "#E69F00", "#56B4E9", "#009E73", "#F0E442",
+								"#0072B2", "#D55E00", "#CC79A7")
 
 ggplot(data=df, mapping=aes(x=x, colour=factor(n))) +
 	stat_ecdf() +
-	geom_line(data=dft, mapping=aes(x=x, y=y), colour='black')
+	geom_line(data=dft, mapping=aes(x=x, y=y), colour='black') +
+	scale_colour_manual(name='Sample size, n', values=cbPalette) +
+	xlim(c(0.5,2))
 @
 
 <<chunk>>=
