@@ -14,6 +14,9 @@ main.tex: main.Rnw
 view: main.pdf
 	xdg-open $< > /dev/null 2>&1 &
 
+view-guide: ../MU_KTAD_semestr_2.pdf
+	xdg-open $< > /dev/null 2>&1 &
+
 clean:
 	latexmk -f -C main.pdf
 	rm -f main.tex
