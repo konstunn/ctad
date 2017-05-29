@@ -71,7 +71,7 @@
 
 \section{Цель работы}
 
-Знакомство с современными тенденциями развития аппарата
+Ознакомление с современными тенденциями развития аппарата
 прикладной математической статистики и состоянием программного обеспечения
 задач статистического анализа. Освоение методов статистического моделирования
 как средства исследования и развития аппарата прикладной математической
@@ -82,7 +82,7 @@
 
 <<setup, cache=FALSE, echo=FALSE, message=FALSE>>=
 opts_chunk$set(autodep=TRUE, cache=TRUE, message=FALSE, echo=FALSE,
-							 fig.pos='H', fig.lp='fig:', fig.height=2.5)
+							 fig.pos='H', fig.lp='fig:', fig.height=2.5, purl=F)
 options(scipen=5)
 dep_auto()
 library(ggplot2)
@@ -96,6 +96,65 @@ theme_set(theme_minimal())
 \section{Аналитический обзор}
 
 \section{Результаты исследований}
+
+<<purl=T>>=
+EPstat <- function(x)
+{
+	n <- length(x)
+	x_ <- mean(x)
+	d <- x - x_
+	mu2 <- t(d) %*% d / n
+
+	t1 <- as.vector(combn(x, 2, diff))
+	t1 <- sum(exp(-t1*t1 / (2 * c(mu2)))) * 2 / n
+
+	t2 <- sqrt(2) * sum(exp(-d*d / (4 * c(mu2))))
+
+	1 + n / sqrt(3) + t1 - t2
+}
+@
+
+<<statmod-function>>=
+statmod <- function(stat, n, N, h0)
+{
+	sink(stderr())
+	message(deparse(sys.calls()[[sys.nframe()]]))
+	h0 <- paste('r', h0, sep='')
+
+	X <- do.call(h0, args=list(n=n*N))
+	X <- split(X, ceiling(seq_along(X)/n))
+	X <- plyr::llply(X, stat, .progress='text')
+	X <- as.numeric(X)
+
+	h0 <- substr(h0, 2, nchar(h0))
+
+	df <- data.frame(x=X,
+									 n=rep(as.factor(n),N),
+									 N=rep(as.factor(N),N),
+									 h0=rep(h0,N),
+									 stat=rep(stat,N))
+	sink()
+	return(df)
+}
+@
+
+<<>>=
+library(ggplot2)
+library(PoweR)
+
+ep <- function(x) statcompute(31, x)$statistic
+dfp <- statmod('ep', 200, 16600, 'norm')
+
+x <- read.table('data/eppspulley200.dat', skip=2, col.names='x')
+dfi <- data.frame(x=x, n='200')
+dfi$x <- -log(dfi$x)
+@
+
+<<warning=F>>=
+ggplot(dfi, aes(x=x, linetype='ISW')) +
+	stat_ecdf() +
+	stat_ecdf(data=dfp, mapping=aes(x=x, linetype='PoweR'))
+@
 
 \section{Выводы}
 
