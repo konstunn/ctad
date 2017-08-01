@@ -14,7 +14,7 @@ main.tex: main.Rnw
 view: main.pdf
 	xdg-open $< > /dev/null 2>&1 &
 
-view-guide: ktad_kp1_2013.pdf
+view-guide: doc/ktad_kp1_2013.pdf
 	xdg-open $< > /dev/null 2>&1 &
 
 clean:
