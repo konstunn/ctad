@@ -88,16 +88,21 @@
 
 \renewenvironment{knitrout}{\setlength{\topsep}{0mm}}{}
 
-<<setup, cache=FALSE, echo=FALSE, message=FALSE>>=
-opts_chunk$set(autodep=TRUE, cache=TRUE, message=FALSE, echo=FALSE,
+<<setup, cache=FALSE, echo=FALSE, message=FALSE, purl=F>>=
+opts_chunk$set(autodep=TRUE, cache=T, message=FALSE, echo=FALSE,
 							 fig.pos='H', fig.lp='fig:', fig.height=2.5, purl=F)
 options(scipen=5, digits=6, width=55)
 dep_auto()
+@
+
+<<libraries, purl=T>>=
 library(ggplot2)
-library(PoweR)
-library(pbapply)
-library(plyr)
 theme_set(theme_minimal())
+library(PoweR)
+library(plyr)
+library(pgnorm)
+library(xtable)
+library(rmutil)
 @
 
 \section*{Введение}
@@ -317,33 +322,28 @@ $\bar{X} = n^{-1} \sum X_j$ и $S^2 = n^{-1} \sum(X_j - \bar{X})^2$.
 	(1 + 2\alpha^{-2})^{-\frac{1}{2}} . \tag{3} \label{eq:3}
 \end{multline}
 
+В \cite{lemeshko} по умолчанию $\alpha = 1$. Значение этого параметра несколько
+влияет на мощность критерия относительно различных альтернатив. Это
+может быть полезно при наличии априорных знаний о некоторых свойствах
+наблюдаемого закона \cite{ep}.
+
 \section{Результаты исследований}
 
-% use PoweR::statcompute, compare MonteCarlo and statmod
-
-<<TepR, purl=T>>=
-TepR <- function(x)
+<<mypvalMC, purl=T>>=
+# FIXME:
+mypvalMC <- function(X, N, law.index=2, law.pars=NULL, Rlaw=NULL)
 {
-	n <- length(x)
-	d <- x - mean(x)
-	mu2 <- t(d) %*% d / n
-
-	t1 <- as.vector(combn(x, 2, FUN=base::diff))
-	t1 <- sum(exp(-t1*t1 / (2 * c(mu2)))) * 2 / n
-
-	t2 <- sqrt(2) * sum(exp(-d*d / (4 * c(mu2))))
-
-	return(1 + n / sqrt(3) + t1 - t2)
+	S <- TepMC(length(X), law.index, 31, M=N, law.pars=law.pars, Rlaw=Rlaw)
+	m <- length(S[which(S > Tep(X))])
+	m / N
 }
-
-pvalR <- function() NULL
 @
 
 <<Tep, purl=T>>=
-Tep <- function(x) {
+Tep <- function(X) {
     exp(-(.C(dontCheck('stat31'),
-             as.double(x),
-             as.integer(length(x)),
+             as.double(X),
+             as.integer(length(X)),
              as.double(c(0.05,0.1)),
              as.integer(2),
              rep(" ", 50), 0L, statistic=0, pvalcomp=1L, pvalue=0,
@@ -358,11 +358,13 @@ Tep <- function(x) {
 }
 @
 
-<<TepM, purl=T>>=
-TepMC <- function(n, N) {
-	compquant(n, 2, 31, M=N)
+<<TepMC, purl=T>>=
+TepMC <- function(...) {
+	exp(-(compquant(...)$stat))
 }
 @
+
+% TODO: add function to write data to file
 
 <<statmod-fun, purl=T>>=
 statmod <- function(stat, n, N, h0)
@@ -377,7 +379,7 @@ statmod <- function(stat, n, N, h0)
 
 	foo <- function(n) {
 		x <- do.call(h0, args=list(n=n))
-		do.call(stat, args=list(x=x))
+		do.call(stat, args=list(X=x))
 	}
 
 	X <- aaply(as.matrix(n_grid), c(1), foo, .progress='text')
@@ -394,39 +396,51 @@ statmod <- function(stat, n, N, h0)
 }
 @
 
-<<parmod>>=
+<<parmod, purl=T>>=
 N <- 16600
+@
+
+Параметры моделирования:\\
+\indent --- Число повторений Монте-Карло $N = \Sexpr{N}$.
+
+\subsection{Моделирование распределения статистики}
+
+Было проведено моделирование распределения статистики при верной основной
+гипотезе (стандартный нормальный закон) при разных объемах выборок $n$ в 
+системе статистического анализа одномерных наблюдений ISW \cite{isw} и в среде
+программирования и статистического анализа R \cite{R} с использованием пакета
+PoweR \cite{PoweR}. Построены сравнительные графики эмпирических функций
+распределений статистики.
+
+<<ecdf-plot-func, purl=T>>=
+plot.ecdfs <- function(dfp, dfi)
+{
+	cap <- sprintf('Эмпирическая функция распределения статистики
+											Эппса-Палли, объем выборки $n = %s$, число повторений
+											Монте-Карло $N = %s$.', dfp$n[1], dfp$N[1])
+
+	assign('caption', cap, envir = .GlobalEnv) 
+
+	ggplot(dfi, aes(x=x, linetype='ISW')) +
+		stat_ecdf(size=0.5) +
+		stat_ecdf(data=dfp, mapping=aes(x=x, linetype='PoweR'), size=1) +
+		scale_linetype(name='Package')
+}
+@
+
+<<mod10, eval=T, purl=F>>=
 n <- 10
-@
-
-<<bench, echo=T>>=
-system.time(X <- compquant(n=n, law.index=2, stat.index=31, M=N))
-system.time(statmod('Tep', n, N, 'norm'))
-X <- exp(-X$stat)
-@
-
-<<mod, eval=T, purl=F>>=
 dfp <- statmod('Tep', n, N, 'norm')
 
 x <- read.table(file.path('data', 'eppspulley10.dat'), skip=2, col.names='x')
 dfi <- data.frame(x=x, n=n)
 @
 
-<<plot, warning=F, fig.cap=caption, purl=F>>=
-caption <- sprintf('Эмпирическая функция распределения статистики Эппса-Палли,
-									 объем выборки $n = %d$,
-									 число испытаний Монте-Карло $N = %d$.', n, N)
-
-ggplot(dfi, aes(x=x, linetype='ISW')) +
-	stat_ecdf(size=0.1) +
-	stat_ecdf(data=dfp, mapping=aes(x=x, linetype='my+PoweR'), size=0.1) +
-	stat_ecdf(data=data.frame(x=X), mapping=aes(x=x, linetype='PoweR::compquant'),
-						size=0.1) +
-	xlim(c(0, 0.6)) +
-	scale_linetype(name='Package')
+<<plot10, warning=T, fig.cap=caption, purl=F>>=
+plot.ecdfs(dfp, dfi)
 @
 
-<<purl=F>>=
+<<mod50, purl=F>>=
 n <- 50
 dfp <- statmod('Tep', n, N, 'norm')
 
@@ -435,36 +449,100 @@ dfi <- data.frame(x=x, n=n)
 @
 
 <<plot50, warning=F, fig.cap=caption, purl=F>>=
-caption <- sprintf('Эмпирическая функция распределения статистики Эппса-Палли,
-									 объем выборки $n = %d$,
-									 число испытаний Монте-Карло $N = %d$.', n, N)
-
-ggplot(dfi, aes(x=x, linetype='ISW')) +
-	stat_ecdf(size=0.1) +
-	stat_ecdf(data=dfp, mapping=aes(x=x, linetype='PoweR'), size=0.5) +
-	xlim(c(0, 0.6)) +
-	scale_linetype(name='Package')
+plot.ecdfs(dfp, dfi)
 @
 
-<<purl=F>>=
+<<mod200, purl=F>>=
 n <- 200
 dfp <- statmod('Tep', n, N, 'norm')
 
-x <- read.table(file.path('data', 'eppspulley50.dat'), skip=2, col.names='x')
+x <- read.table(file.path('data', 'eppspulley200.dat'), skip=2, col.names='x')
 dfi <- data.frame(x=x, n=n)
 @
 
 <<plot200, warning=F, fig.cap=caption, purl=F>>=
-caption <- sprintf('Эмпирическая функция распределения статистики Эппса-Палли,
-									 объем выборки $n = %d$,
-									 число испытаний Монте-Карло $N = %d$.', n, N)
-
-ggplot(dfi, aes(x=x, linetype='ISW')) +
-	stat_ecdf(size=0.1) +
-	stat_ecdf(data=dfp, mapping=aes(x=x, linetype='PoweR'), size=0.5) +
-	xlim(c(0, 0.6)) +
-	scale_linetype(name='Package')
+plot.ecdfs(dfp, dfi)
 @
+
+\subsection{Проверка гипотезы о нормальности}
+
+Были проведены процедуры проверки гипотез о нормальности выборок,
+сгенерированных по различным законам распределения, т.е. при справедливости
+различных основных (нулевых) гипотезах.
+
+<<testnorm>>=
+N <- 16600
+n <- 200
+
+X <- gensample(2, n)$sample
+S <- Tep(X)
+pval <- mypvalMC(X, N, 2)
+law <- sprintf('Нормальный(0,1)')
+
+dfp <- data.frame(n=n, law=law, S=S, pval=pval)
+@
+
+<<testlaplace>>=
+X <- gensample(1, n)$sample
+S <- Tep(X)
+pval <- mypvalMC(X, N, 2)
+law <- sprintf('Лапласа(0,1)')
+
+dfa <- data.frame(n=n, law=law, S=S, pval=pval)
+dfp <- rbind(dfp, dfa)
+@
+
+<<testlogistic>>=
+X <- gensample(4, n)$sample
+S <- Tep(X)
+pval <- mypvalMC(X, N, 2) 
+law <- sprintf('Логистический(0,1)')
+
+dfa <- data.frame(n=n, law=law, S=S, pval=pval)
+dfp <- rbind(dfp, dfa)
+@
+
+<<testpgnorm>>=
+X <- rpgnorm(n)
+S <- Tep(X)
+pval <- mypvalMC(X, N, 2)
+law <- sprintf('Обобщенный нормальный(4,0,1)')
+
+dfa <- data.frame(n=n, law=law, S=S, pval=pval)
+dfp <- rbind(dfp, dfa)
+@
+
+<<table, results='asis'>>=
+caption <- 'Уровни значимости и значения статистики $T_{EP}$.'
+dfp$n <- as.integer(dfp$n)
+colnames(dfp) <- c('$n$', 'Закон распределения', 'Значение статистики',
+									 'p-value')
+print(xtable(dfp, digits=3, caption=caption), include.rownames=F,
+			sanitize.text.function=function(x){x}, caption.placement='top')
+@
+% TODO: print latex table
+
+%\vspace{50pt}
+
+<<pdfsplots, fig.cap=caption>>=
+caption <- 'Теоретические плотности рассматриваемых законов распределений.'
+
+ggplot() +
+stat_function(aes(x, colour='norm(0,1)'), data=data.frame(x=rnorm(n)),
+								fun=dnorm) +
+stat_function(aes(x, colour='pgnorm(4,0,1)'), data=data.frame(x=rpgnorm(n)),
+							fun=function(x) dpgnorm(x, 4, 0, 1)) +
+stat_function(aes(x, colour='logis'), data=data.frame(x=rlogis(n)),
+							fun=function(x) dlogis(x)) +
+stat_function(aes(x, colour='laplace(0,1)'), data=data.frame(x=rlaplace(n)),
+							fun=function(x) dlaplace(x)) +
+labs(colour='Law') + xlim(c(-5,5))
+@
+
+
+\subsection{Проверка нормальности реальных наблюдений}
+
+
 
 \section{Заключение}
 
@@ -481,6 +559,20 @@ ggplot(dfi, aes(x=x, linetype='ISW')) +
 \bibitem{ep} Epps T. W. A test for normality based on the empirical
 	characteristic function / T. W. Epps, L. B. Pulley // Biometrika. – 1983. –
 	Vol. 70. – P. 723–726.
+
+\bibitem{isw} Лемешко Б.Ю., Постовалов С.Н. Система статистического анализа
+	наблюдений и исследования статистических закономерностей // Материалы
+	международной НТК "Информатика и проблемы телекоммуникаций". ---
+	\mbox{Новосибирск}, 2001. --- С. 80 -- 81. 
+
+\bibitem{R} R Core Team (2017). R: A language and environment for statistical
+	computing. R Foundation for Statistical Computing, Vienna, Austria.\\
+	URL https://www.R-project.org/.
+
+\bibitem{PoweR} Pierre Lafaye de Micheaux, Viet Anh Tran (2016). PoweR: A
+	Reproducible Research Tool to Ease Monte Carlo Power Simulation
+	Studies for Goodness-of-fit Tests in R. Journal of Statistical
+	Software, 69(3), 1-42. doi:10.18637/jss.v069.i03
 
 \bibitem{knitr16} Yihui Xie (2016). knitr: A General-Purpose Package for Dynamic
 	Report Generation in R. R package version 1.15.1.
@@ -501,11 +593,7 @@ ggplot(dfi, aes(x=x, linetype='ISW')) +
 
 \subsection{Фрагмент исходных текстов}
 
-<<echo=T>>=
-<<TepR>>
-@
-
-<<echo=T>>=
+<<appendix1, echo=T>>=
 <<Tep>>
 @
 
@@ -514,4 +602,4 @@ ggplot(dfi, aes(x=x, linetype='ISW')) +
 
 \end{document}
 
-# vim: ts=2 sw=2
+% vim: ts=2 sw=2
