@@ -20,3 +20,5 @@ view-guide: doc/ktad_kp1_2013.pdf
 clean:
 	latexmk -f -C main.pdf
 	rm -f main.tex
+	rm cache/*.{RData,rdb,rdx}
+	rm figure/*
