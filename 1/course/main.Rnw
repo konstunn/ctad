@@ -553,17 +553,65 @@ labs(colour='Law') + xlim(c(-5,5))
 
 \subsubsection{Результаты}
 
-<<usa, include=T>>=
+Приведены результаты при различном числе испытаний Монте-Карло $N$.
+
+<<usa1, include=T>>=
+N <- 100
 usa <- USArrests
 X <- usa$UrbanPop
 S <- Tep(X)
 pval <- mypvalMC(X, N, 2)
 @
 
+\smallbreak
+
+\indent Значение статистики $T_{EP} = \Sexpr{S}$ \\
+\indent Количество повторений Монте-Карло $N = \Sexpr{N}$
 \begin{itemize}
-		\item Значение статистики $T_{EP} = \Sexpr{S}$
 		\item Значение p-value: $\Sexpr{pval}$
-		\item Количество повторений Монте-Карло $N = \Sexpr{N}$
+\end{itemize}
+
+<<usa2, include=T>>=
+N <- 8400 
+usa <- USArrests
+X <- usa$UrbanPop
+S <- Tep(X)
+pval <- mypvalMC(X, N, 2)
+@
+
+\smallbreak
+
+Количество повторений Монте-Карло $N = \Sexpr{N}$
+\begin{itemize}
+		\item Значение p-value: $\Sexpr{pval}$
+\end{itemize}
+
+<<usa3, include=T>>=
+N <- 16600 
+usa <- USArrests
+X <- usa$UrbanPop
+S <- Tep(X)
+pval <- mypvalMC(X, N, 2)
+@
+
+\smallbreak
+
+Количество повторений Монте-Карло $N = \Sexpr{N}$
+\begin{itemize}
+		\item Значение p-value: $\Sexpr{pval}$
+\end{itemize}
+
+<<usa4, include=T>>=
+N <- 33200
+usa <- USArrests
+X <- usa$UrbanPop
+S <- Tep(X)
+pval <- mypvalMC(X, N, 2)
+@
+
+Количество повторений Монте-Карло $N = \Sexpr{N}$
+\begin{itemize}
+		\item Значение p-value: $\Sexpr{pval}$
 \end{itemize}
 
 <<usahist, fig.cap=caption, fig.height=4>>=
