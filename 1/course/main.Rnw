@@ -648,7 +648,7 @@ plot(density(X))
 
 \subsection{Фрагменты исходных текстов}
 
-<<appendix1, echo=T, eval=F, tidy=T>>=
+<<appendix1, echo=T, eval=F, tidy=T, size='small'>>=
 <<Tep>>
 <<mypvalMC>>
 <<TepMC>>
