@@ -98,7 +98,7 @@ theme_set(theme_minimal())
 set.seed(42)
 @
 
-<<libraries, purl=T>>=
+<<libraries, purl=T, cache=FALSE>>=
 library(PoweR)
 library(plyr)
 library(pgnorm)
@@ -412,7 +412,8 @@ N <- 16600
 Параметры моделирования:\\
 \indent --- Число повторений Монте-Карло $N = \Sexpr{N}$.
 
-\subsection{Моделирование распределения статистики} \label{ecdfs-mod}
+\subsection{Моделирование распределения статистики}
+\label{ecdfs-mod}
 
 Было проведено моделирование распределения статистики при верной основной
 гипотезе (стандартный нормальный закон) при разных объемах выборок $n$ в 
@@ -475,20 +476,23 @@ plot.ecdfs(dfp, dfi)
 
 \subsection{Проверка гипотезы о нормальности} \label{simultest}
 
+<<params>>=
+n <- 200
+N <- 16600
+@
+
 Были проведены процедуры проверки гипотез о нормальности выборок,
 сгенерированных по различным законам распределения, т.е. при справедливости
-различных основных (нулевых) гипотезах.
+различных альтернативных гипотезах. Объем выборки $n = \Sexpr{n}$,
+число испытаний Монте-Карло при вычислении p-value $N = \Sexpr{N}$.
 
 <<testnorm>>=
-N <- 16600
-n <- 200
-
 X <- gensample(2, n)$sample
 S <- Tep(X)
 pval <- mypvalMC(X, N, 2)
 law <- sprintf('Нормальный(0,1)')
 
-dfp <- data.frame(n=n, law=law, S=S, pval=pval)
+dfp <- data.frame(law=law, S=S, pval=pval)
 @
 
 <<catnorm, cache=FALSE>>=
@@ -501,7 +505,7 @@ S <- Tep(X)
 pval <- mypvalMC(X, N, 2)
 law <- sprintf('Лапласа(0,1)')
 
-dfa <- data.frame(n=n, law=law, S=S, pval=pval)
+dfa <- data.frame(law=law, S=S, pval=pval)
 dfp <- rbind(dfp, dfa)
 @
 
@@ -516,7 +520,7 @@ S <- Tep(X)
 pval <- mypvalMC(X, N, 2) 
 law <- sprintf('Логистический(0,1)')
 
-dfa <- data.frame(n=n, law=law, S=S, pval=pval)
+dfa <- data.frame(law=law, S=S, pval=pval)
 dfp <- rbind(dfp, dfa)
 @
 
@@ -525,12 +529,12 @@ cat2isw(X, 'logis200', 'data/logis200.dat')
 @
 
 <<testpgnorm>>=
-X <- rpgnorm(n)
+X <- rpgnorm(n, 4, 0, 1)
 S <- Tep(X)
 pval <- mypvalMC(X, N, 2)
-law <- sprintf('Обобщенный нормальный(4,0,1)')
+law <- sprintf('Обобщ. нормальный(4,0,1)')
 
-dfa <- data.frame(n=n, law=law, S=S, pval=pval)
+dfa <- data.frame(law=law, S=S, pval=pval)
 dfp <- rbind(dfp, dfa)
 @
 
@@ -538,23 +542,68 @@ dfp <- rbind(dfp, dfa)
 cat2isw(X, 'pgnorm200', 'data/pgnorm200.dat')
 @
 
-<<table, results='asis'>>=
-caption <- 'Уровни значимости и значения статистики $T_{EP}$.'
-dfp$n <- as.integer(dfp$n)
-colnames(dfp) <- c('$n$', 'Закон распределения', 'Значение статистики',
+<<pwrtable, results='asis', cache=FALSE>>=
+caption <- 'Результаты проверки нормальности с помощью PoweR.'
+
+colnames(dfp) <- c('Закон распределения', 'Значение статистики',
 									 'p-value')
-print(xtable(dfp, digits=3, caption=caption), include.rownames=F,
+print(xtable(dfp, digits=7, caption=caption), include.rownames=F,
+			sanitize.text.function=function(x){x}, caption.placement='top')
+@
+
+<<readiswrez>>=
+# FIXME: don't repeat yourself
+law <- sprintf('Нормальный(0,1)')
+df <- read.table('data/norm200.rez')
+S <- df[2,1]
+pval <- df[1,1]
+dfp <- data.frame(law=law, S=S, pval=pval)
+
+law <- sprintf('Лапласа(0,1)')
+df <- read.table('data/laplace200.rez')
+S <- df[2,1]
+pval <- df[1,1]
+dfa <- data.frame(law=law, S=S, pval=pval)
+dfp <- rbind(dfp, dfa)
+
+law <- sprintf('Логистический(0,1)')
+df <- read.table('data/logis200.rez')
+S <- df[2,1]
+pval <- df[1,1]
+dfa <- data.frame(law=law, S=S, pval=pval)
+dfp <- rbind(dfp, dfa)
+
+law <- sprintf('Обобщ. нормальный(4,0,1)')
+df <- read.table('data/pgnorm200.rez')
+S <- df[2,1]
+pval <- df[1,1]
+dfa <- data.frame(law=law, S=S, pval=pval)
+dfp <- rbind(dfp, dfa)
+
+dfp$S <- as.character(dfp$S)
+dfp$S <- as.numeric(dfp$S)
+dfp$pval <- as.character(dfp$pval)
+dfp$pval <- as.numeric(dfp$pval)
+@
+
+<<iswtable, results='asis', cache=FALSE>>=
+caption <- 'Результаты проверки нормальности с помощью ISW.'
+
+colnames(dfp) <- c('Закон распределения', 'Значение статистики',
+									 'p-value')
+print(xtable(dfp, digits=7, caption=caption), include.rownames=F,
 			sanitize.text.function=function(x){x}, caption.placement='top')
 @
 
 
-<<pdfsplots, fig.cap=caption>>=
+<<pdfsplots, fig.cap=caption, cache=FALSE>>=
 caption <- 'Теоретические плотности рассматриваемых законов распределений.'
 
 ggplot() +
 stat_function(aes(x, colour='norm(0,1)'), data=data.frame(x=rnorm(n)),
 								fun=dnorm) +
-stat_function(aes(x, colour='pgnorm(4,0,1)'), data=data.frame(x=rpgnorm(n)),
+								 stat_function(aes(x, colour='pgnorm(4,0,1)'),
+															 data=data.frame(x=rpgnorm(n, 4, 0, 1)),
 							fun=function(x) dpgnorm(x, 4, 0, 1)) +
 stat_function(aes(x, colour='logis'), data=data.frame(x=rlogis(n)),
 							fun=function(x) dlogis(x)) +
@@ -666,6 +715,8 @@ cat2isw(X, 'USArrests UrbanPop', 'data/USArrests_UrbanPop.dat')
 @
 
 \section{Заключение}
+
+% FIXME
 
 В подразделе \ref{ecdfs-mod} представлены результаты моделирования эмпирического
 распределения статистики с помощью R (PoweR) и ISW. Оба результата хорошо
