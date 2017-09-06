@@ -95,6 +95,7 @@ options(scipen=5, digits=6, width=55)
 dep_auto()
 library(ggplot2)
 theme_set(theme_minimal())
+set.seed(42)
 @
 
 <<libraries, purl=T>>=
@@ -333,8 +334,8 @@ $\bar{X} = n^{-1} \sum X_j$ и $S^2 = n^{-1} \sum(X_j - \bar{X})^2$.
 cat2isw <- function(x, hdr='Default sample name', filename='')
 {
 	n <- length(x)
-	hdr1 <- paste('0 ', n)
-	cat(hdr, hdr1, x, sep='\n')
+	hdr1 <- paste(0, n, sep=' ')
+	cat(hdr, hdr1, x, sep='\n', file=filename)
 }
 @
 
@@ -490,6 +491,10 @@ law <- sprintf('Нормальный(0,1)')
 dfp <- data.frame(n=n, law=law, S=S, pval=pval)
 @
 
+<<catnorm, cache=FALSE>>=
+cat2isw(X, 'norm200', 'data/norm200.dat')
+@
+
 <<testlaplace>>=
 X <- gensample(1, n)$sample
 S <- Tep(X)
@@ -500,14 +505,23 @@ dfa <- data.frame(n=n, law=law, S=S, pval=pval)
 dfp <- rbind(dfp, dfa)
 @
 
+<<catlaplace, cache=F>>=
+cat2isw(X, 'laplace200', 'data/laplace200.dat')
+@
+
 <<testlogistic>>=
 X <- gensample(4, n)$sample
+cat2isw(X, 'logis200', 'data/logis200.dat')
 S <- Tep(X)
 pval <- mypvalMC(X, N, 2) 
 law <- sprintf('Логистический(0,1)')
 
 dfa <- data.frame(n=n, law=law, S=S, pval=pval)
 dfp <- rbind(dfp, dfa)
+@
+
+<<catlogis, cache=F>>=
+cat2isw(X, 'logis200', 'data/logis200.dat')
 @
 
 <<testpgnorm>>=
@@ -518,6 +532,10 @@ law <- sprintf('Обобщенный нормальный(4,0,1)')
 
 dfa <- data.frame(n=n, law=law, S=S, pval=pval)
 dfp <- rbind(dfp, dfa)
+@
+
+<<catpgnorm, cache=F>>=
+cat2isw(X, 'pgnorm200', 'data/pgnorm200.dat')
 @
 
 <<table, results='asis'>>=
@@ -637,8 +655,8 @@ caption <- 'Ядерная оценка плотности распределе�
 plot(density(X))
 @
 
-<<usa2isw>>=
-cat2isw(X, 'USArrests UrbanPop', filename='data/USArrests_UrbanPop.dat')
+<<usa2isw, cache=F>>=
+cat2isw(X, 'USArrests UrbanPop', 'data/USArrests_UrbanPop.dat')
 @
 
 \subsubsection{Результаты проверки гипотезы в ISW}
