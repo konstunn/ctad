@@ -505,7 +505,7 @@ dfa <- data.frame(n=n, law=law, S=S, pval=pval)
 dfp <- rbind(dfp, dfa)
 @
 
-<<catlaplace, cache=F>>=
+<<catlaplace, cache=FALSE>>=
 cat2isw(X, 'laplace200', 'data/laplace200.dat')
 @
 
@@ -520,7 +520,7 @@ dfa <- data.frame(n=n, law=law, S=S, pval=pval)
 dfp <- rbind(dfp, dfa)
 @
 
-<<catlogis, cache=F>>=
+<<catlogis, cache=FALSE>>=
 cat2isw(X, 'logis200', 'data/logis200.dat')
 @
 
@@ -534,7 +534,7 @@ dfa <- data.frame(n=n, law=law, S=S, pval=pval)
 dfp <- rbind(dfp, dfa)
 @
 
-<<catpgnorm, cache=F>>=
+<<catpgnorm, cache=FALSE>>=
 cat2isw(X, 'pgnorm200', 'data/pgnorm200.dat')
 @
 
@@ -655,7 +655,7 @@ caption <- 'Ядерная оценка плотности распределе�
 plot(density(X))
 @
 
-<<usa2isw, cache=F>>=
+<<usa2isw, cache=FALSE>>=
 cat2isw(X, 'USArrests UrbanPop', 'data/USArrests_UrbanPop.dat')
 @
 
