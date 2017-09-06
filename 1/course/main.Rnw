@@ -551,7 +551,7 @@ print(xtable(dfp, digits=7, caption=caption), include.rownames=F,
 			sanitize.text.function=function(x){x}, caption.placement='top')
 @
 
-<<readiswrez>>=
+<<readiswrez, cache=FALSE>>=
 # FIXME: don't repeat yourself
 law <- sprintf('Нормальный(0,1)')
 df <- read.table('data/norm200.rez')
@@ -726,7 +726,7 @@ cat2isw(X, 'USArrests UrbanPop', 'data/USArrests_UrbanPop.dat')
 В подразделе \ref{ecdfs-mod} представлены результаты моделирования эмпирического
 распределения статистики с помощью R (PoweR) и ISW. Результаты хорошо
 согласуются. В связи с этим предполагается считать, что соответствующие
-алгоритмы вычисления статистики эквивалентны.
+алгоритмы реализованы корректно.
 
 По результатам проверки нормальности с помощью ISW видно, что p-value
 вычисляется по таблице квантилей эмпирического распределения статистики.
