@@ -528,7 +528,7 @@ dfp <- rbind(dfp, dfa)
 cat2isw(X, 'logis200', 'data/logis200.dat')
 @
 
-<<testpgnorm>>=
+<<testpgnorm, cache=FALSE>>=
 X <- rpgnorm(n, 4, 0, 1)
 S <- Tep(X)
 pval <- mypvalMC(X, N, 2)
@@ -605,7 +605,7 @@ stat_function(aes(x, colour='norm(0,1)'), data=data.frame(x=rnorm(n)),
 								 stat_function(aes(x, colour='pgnorm(4,0,1)'),
 															 data=data.frame(x=rpgnorm(n, 4, 0, 1)),
 							fun=function(x) dpgnorm(x, 4, 0, 1)) +
-stat_function(aes(x, colour='logis'), data=data.frame(x=rlogis(n)),
+stat_function(aes(x, colour='logis(0,1)'), data=data.frame(x=rlogis(n)),
 							fun=function(x) dlogis(x)) +
 stat_function(aes(x, colour='laplace(0,1)'), data=data.frame(x=rlaplace(n)),
 							fun=function(x) dlaplace(x)) +
@@ -719,9 +719,12 @@ cat2isw(X, 'USArrests UrbanPop', 'data/USArrests_UrbanPop.dat')
 % FIXME
 
 В подразделе \ref{ecdfs-mod} представлены результаты моделирования эмпирического
-распределения статистики с помощью R (PoweR) и ISW. Оба результата хорошо
+распределения статистики с помощью R (PoweR) и ISW. Результаты хорошо
 согласуются. В связи с этим предполагается считать, что соответствующие
 алгоритмы вычисления статистики эквивалентны.
+
+По результатам проверки нормальности с помощью ISW видно, что p-value
+вычисляется по таблице квантилей эмпирического распределения статистики.
 
 В подразделе \ref{simultest} проведено моделирование достигаемого уровня
 значимости при проверки гипотезы о нормальности при справливости различных
@@ -732,12 +735,6 @@ cat2isw(X, 'USArrests UrbanPop', 'data/USArrests_UrbanPop.dat')
 т.к. статистика критерия является мерой расстояния между эмпирической и
 характеристической функциями распределений, а значит и между законами
 распределений --- тоже.
-
-Однако исключением является обобщенный нормальный закон, при котором значение
-статистики, меньше, чем, например, при нормальном законе, но уровень значимости
-оказался больше. Следует предположить, что это является проявлением известного
-недостатка данного критерия, либо это проявление погрешности моделирования при
-относительно невысоком числе повторений Монте-Карло.
 
 \begin{thebibliography}{9}
 
