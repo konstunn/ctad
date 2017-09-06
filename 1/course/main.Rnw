@@ -528,7 +528,7 @@ dfp <- rbind(dfp, dfa)
 cat2isw(X, 'logis200', 'data/logis200.dat')
 @
 
-<<testpgnorm, cache=FALSE>>=
+<<testpgnorm>>=
 X <- rpgnorm(n, 4, 0, 1)
 S <- Tep(X)
 pval <- mypvalMC(X, N, 2)
@@ -615,7 +615,7 @@ labs(colour='Law') + xlim(c(-5,5))
 
 \subsection{Проверка нормальности реальных наблюдений}
 
-\subsubsection{Описание массива данных}
+\subsubsection{Описание набора данных}
 
 Была проведена процедура проверки нормальности реальных наблюдений из набора
 данных ''US Arrests'' --- число арестов в различных штатах США за различные
@@ -690,6 +690,17 @@ pval <- mypvalMC(X, N, 2)
 		\item Значение p-value: $\Sexpr{pval}$
 \end{itemize}
 
+\subsubsection{Результаты проверки гипотезы в ISW}
+
+<<iswrezusa>>=
+df <- read.table('data/usa.rez')
+S <- df[2,1]
+pval <- df[1,1]
+@
+
+Значение статистики: \Sexpr{S} \\
+\indent p-value: \Sexpr{pval}
+
 <<usahist, fig.cap=caption, fig.height=4>>=
 caption <- 'Частотная гистограмма относительного количества городского
 населения в различных штатах США.'
@@ -706,12 +717,6 @@ plot(density(X))
 
 <<usa2isw, cache=FALSE>>=
 cat2isw(X, 'USArrests UrbanPop', 'data/USArrests_UrbanPop.dat')
-@
-
-\subsubsection{Результаты проверки гипотезы в ISW}
-
-<<readrez>>=
-# TODO: read isw rez
 @
 
 \section{Заключение}
