@@ -386,12 +386,25 @@ statmod <- function(stat, n, N, h0)
 
 	n_grid <- rep(n, N)
 
-	foo <- function(n) {
+	foo <- function(n) { # NOTE:
 		x <- do.call(h0, args=list(n=n))
 		do.call(stat, args=list(X=x))
 	}
 
-	X <- aaply(as.matrix(n_grid), c(1), foo, .progress='text')
+	library(parallel)
+	cores <- detectCores()
+	n_grid <- split(n_grid, 1:length(n_grid)%%cores)
+	jobs <- list()
+	for (i in 2:cores-1) {
+		job <- mcparallel(aaply(as.matrix(n_grid[[i]]), c(1), foo))
+		jobs <- c(jobs, list(job))
+	}
+	i <- length(n_grid)
+	job <- mcparallel(aaply(as.matrix(n_grid[[i]]), c(1), foo,
+													.progress='text'))
+	jobs <- c(jobs, list(job))
+	rez <- mccollect(jobs)
+	X <- unlist(rez, use.names=F)
 
 	h0 <- substr(h0, 2, nchar(h0))
 
@@ -486,7 +499,7 @@ N <- 16600
 различных альтернативных гипотезах. Объем выборки $n = \Sexpr{n}$,
 число испытаний Монте-Карло при вычислении p-value $N = \Sexpr{N}$.
 
-<<testnorm>>=
+<<testnorm, purl=F>>=
 X <- gensample(2, n)$sample
 S <- Tep(X)
 pval <- mypvalMC(X, N, 2)
@@ -495,11 +508,11 @@ law <- sprintf('Нормальный(0,1)')
 dfp <- data.frame(law=law, S=S, pval=pval)
 @
 
-<<catnorm, cache=FALSE>>=
+<<catnorm, cache=FALSE, purl=F>>=
 cat2isw(X, 'norm200', 'data/norm200.dat')
 @
 
-<<testlaplace>>=
+<<testlaplace, purl=F>>=
 X <- gensample(1, n)$sample
 S <- Tep(X)
 pval <- mypvalMC(X, N, 2)
@@ -513,7 +526,7 @@ dfp <- rbind(dfp, dfa)
 cat2isw(X, 'laplace200', 'data/laplace200.dat')
 @
 
-<<testlogistic>>=
+<<testlogistic, purl=F>>=
 X <- gensample(4, n)$sample
 cat2isw(X, 'logis200', 'data/logis200.dat')
 S <- Tep(X)
@@ -524,11 +537,11 @@ dfa <- data.frame(law=law, S=S, pval=pval)
 dfp <- rbind(dfp, dfa)
 @
 
-<<catlogis, cache=FALSE>>=
+<<catlogis, cache=FALSE, purl=F>>=
 cat2isw(X, 'logis200', 'data/logis200.dat')
 @
 
-<<testpgnorm>>=
+<<testpgnorm, purl=F>>=
 X <- rpgnorm(n, 4, 0, 1)
 S <- Tep(X)
 pval <- mypvalMC(X, N, 2)
@@ -542,7 +555,7 @@ dfp <- rbind(dfp, dfa)
 cat2isw(X, 'pgnorm200', 'data/pgnorm200.dat')
 @
 
-<<pwrtable, results='asis', cache=FALSE>>=
+<<pwrtable, results='asis', cache=FALSE, purl=F>>=
 caption <- 'Результаты проверки нормальности с помощью PoweR.'
 
 colnames(dfp) <- c('Закон распределения', 'Значение статистики',
@@ -551,7 +564,7 @@ print(xtable(dfp, digits=7, caption=caption), include.rownames=F,
 			sanitize.text.function=function(x){x}, caption.placement='top')
 @
 
-<<readiswrez, cache=FALSE>>=
+<<readiswrez, cache=FALSE, purl=F>>=
 # FIXME: don't repeat yourself
 law <- sprintf('Нормальный(0,1)')
 df <- read.table('data/norm200.rez')
@@ -586,7 +599,7 @@ dfp$pval <- as.character(dfp$pval)
 dfp$pval <- as.numeric(dfp$pval)
 @
 
-<<iswtable, results='asis', cache=FALSE>>=
+<<iswtable, results='asis', cache=FALSE, purl=F>>=
 caption <- 'Результаты проверки нормальности с помощью ISW.'
 
 colnames(dfp) <- c('Закон распределения', 'Значение статистики',
@@ -596,7 +609,7 @@ print(xtable(dfp, digits=7, caption=caption), include.rownames=F,
 @
 
 
-<<pdfsplots, fig.cap=caption, cache=FALSE>>=
+<<pdfsplots, fig.cap=caption, cache=FALSE, purl=F>>=
 caption <- 'Теоретические плотности рассматриваемых законов распределений.'
 
 ggplot() +
@@ -701,14 +714,14 @@ pval <- df[1,1]
 Значение статистики: \Sexpr{S} \\
 \indent p-value: \Sexpr{pval}
 
-<<usahist, fig.cap=caption, fig.height=4>>=
+<<usahist, fig.cap=caption, fig.height=4, purl=F>>=
 caption <- 'Частотная гистограмма относительного количества городского
 населения в различных штатах США.'
 
 hist(X, 8)
 @
 
-<<usadensity, fig.cap=caption, fig.height=4>>=
+<<usadensity, fig.cap=caption, fig.height=4, purl=F>>=
 caption <- 'Ядерная оценка плотности распределения относительного количества
 городского населения в различных штатах США.'
 
