@@ -16,6 +16,8 @@
 \usepackage{csquotes}
 \usepackage{enumitem}
 
+\usepackage{comment}
+
 \usepackage[labelsep=period,justification=centering]{caption}
 
 \usepackage{amsmath}
@@ -305,14 +307,6 @@ $n^{*}$ в п.1.6 моделируется выборка статистик о�
 эксцесса) и теоретическими значениями параметров формы $b_1^* = 0,\ b_2^*= 3$,
 соответствующими нормальному закону распределения.
 
-<<cat2isw, purl=T>>=
-cat2isw <- function(x, hdr='Default sample name', filename='')
-{
-	n <- length(x)
-	hdr1 <- paste(0, n, sep=' ')
-	cat(hdr, hdr1, x, sep='\n', file=filename)
-}
-@
 Асимптотически статистика подчиняется закону распределения хи-квадрат с двумя
 степенями свободы $\chi^2_2$ \cite{lemeshko}. Конкретных данных о скорости
 сходимости к предельному закону найти не удалось. Известно только то, что
@@ -447,45 +441,49 @@ n <- 400
 df400 <- statmod('JB', n, N, 'norm')
 @
 
-<<mod800>>=
+<<mod800, purl=F>>=
 n <- 800
 df800 <- statmod('JB', n, N, 'norm')
 @
 
-<<mod1600>>=
+<<mod1600, purl=F>>=
 n <- 1600
 df1600 <- statmod('JB', n, N, 'norm')
 @
 
-<<mod3200>>=
+<<mod3200, purl=F>>=
 n <- 3200
 df3200 <- statmod('JB', n, N, 'norm')
 @
 
-<<mod6400>>=
+<<mod6400, purl=F>>=
 n <- 6400
 df6400 <- statmod('JB', n, N, 'norm')
 @
 
 % do not plot many points
-<<plot>>=
-dfp100 <- head(df100, 10000)
-dfp400  <- head(df400, 10000)
-dfp200 <- head(df200, 10000)
-dfp800 <- head(df800, 10000)
-dfp1600 <- head(df1600, 10000)
-dfp3200 <- head(df3200, 10000)
-dfp6400 <- head(df6400, 10000)
-ggplot(data=dfp400, size=1) +
-	stat_ecdf(mapping=aes(x=x, color='400')) +
-	stat_ecdf(data=dfp200, mapping=aes(x=x, color='200')) +
-	stat_ecdf(data=dfp100, mapping=aes(x=x, color='100')) +
-	stat_ecdf(data=dfp800, mapping=aes(x=x, color='800')) +
-	stat_ecdf(data=dfp1600, mapping=aes(x=x, color='1600')) +
-	stat_ecdf(data=dfp3200, mapping=aes(x=x, color='3200')) +
-	stat_ecdf(data=dfp6400, mapping=aes(x=x, color='6400')) +
-	stat_function(fun=pchisq, args=list(df=2), mapping=aes(x=x, color='chisq2'))+
-	xlim(c(0,7))
+<<plot, warning=F, fig.cap=caption, purl=F>>=
+caption <- 'Эмпирические функции распределения статистики критерия при
+различных объемах выборки $n$ и предельный закон $\\chi_2^2$.'
+
+nn <- 10000
+dfp100 <- head(df100, nn)
+dfp400  <- head(df400, nn)
+dfp200 <- head(df200, nn)
+dfp800 <- head(df800, nn)
+dfp1600 <- head(df1600, nn)
+dfp3200 <- head(df3200, nn)
+dfp6400 <- head(df6400, nn)
+
+dfp <- rbind(dfp100, dfp200, dfp800, dfp6400)
+
+ggplot(data=dfp, size=.5, mapping=aes(x=x, linetype=n)) +
+	stat_ecdf() +
+	stat_function(data=dfp6400, fun=pchisq, args=list(df=2),
+								mapping=aes(x=x, color='chisq2'), linetype='solid') +
+	xlim(c(0.0, 7.5)) +
+	scale_linetype(name='n') +
+	guides(color=guide_legend(title='Law'))
 @
 
 <<ks100>>=
@@ -532,28 +530,70 @@ Dn <- ks.test(df6400$x, pchisq, df=2)$stat
 D <- c(D, Dn)
 @
 
+<<table, results='asis'>>=
+library(xtable)
+df <- data.frame(as.integer(n), D)
+colnames(df) <- c("$n$", "$D_n$")
+print(xtable(df, caption='Расстояние Колмогорова от
+			 эмпирической функции распределения до предельного закона в зависимости
+			 от объема выборки $n$.', digits=c(0,0,6)), sanitize.text.function=function(x){x},
+			 include.rownames=FALSE)
+@
+
+\newpage
+\subsection{Аппроксимация расстояния до предельного закона степенной функцией}
+
 <<fit>>=
+fit <- lm(log(D) ~ log(n), data=df)
 @
 
-<<plotDn, fig.height=4>>=
-plot(n, D)
+<<plotDn, fig.height=4, fig.cap=caption>>=
+caption <- 'Данные зависимости расстояния Колмогорова $D$ от
+объема выборки $n$ и построенный по этим данным степенной тренд.'
+
+plot(n, D, type='p', ylim=c(0,0.1), lwd=1.5, axes=F)
+lines(seq(1,6400,10), exp(predict(fit, newdata=data.frame(n=seq(1,6400,10)))),
+			col='red')
+points(n, exp(predict(fit)), col='red')
+legend(4000, 0.1, c('data', 'trend', '(1426, 0.01)'),
+			 col=c('black', 'red', 'blue'), pch=rep(21, 3),
+			 lty=c(NA, 'solid', NULL))
+lines(y=c(0.01, 0.01), x=c(0, 6400), lty='dashed')
+lines(y=c(0, 0.1), x=c(1426, 1426), lty='dashed')
+axis(2, seq(0, 0.1, 0.01))
+axis(1, seq(0, 7000, 500))
+points(1426, 0.01, col='blue')
 @
 
-<<ecdf-plot-func, purl=T>>=
-plot.ecdfs <- function(dfp, dfi)
-{
-	cap <- sprintf('Эмпирическая функция распределения статистики
-                     Эппса-Палли, объем выборки $n = %s$, число повторений
-                     Монте-Карло $N = %s$.', dfp$n[1], dfp$N[1])
+Полученная модель:
+\[
+	D(n) = \Sexpr{fit$coefficients[1]}\ n^{\Sexpr{fit$coefficients[2]}}
+\]
 
-	assign('caption', cap, envir = .GlobalEnv) 
+Коэффициент детерминации $R^2 = \Sexpr{summary(fit)$r.squared}$.
 
-	ggplot(dfi, aes(x=x, linetype='ISW')) +
-		stat_ecdf(size=0.5) +
-		stat_ecdf(data=dfp, mapping=aes(x=x, linetype='PoweR'), size=1) +
-		scale_linetype(name='Package')
-}
+\subsection{Определение объема выборки $n$, начиная с которого расстояние до
+предельного закона распределения не превышает заданного $\varepsilon$}
+
+Необходимо решить уравнение $\varepsilon = a n^{-b}$ относительно $n$. Для
+этого прологарифмируем обе части уравнения. Воспользуемся десятичным
+логарифмом. Выразим $n$ из полученного уравнения, в итоге получим:
+
+<<varepsilon>>=
+eps <- 0.01
+a <- fit$coefficients[1]
+b <- fit$coefficients[2]
 @
+
+\[
+	n(\varepsilon) = \exp\left\{\frac{\log (\varepsilon) - \log a}{b}\right\}.
+\]
+
+\[
+	n(0.01) = \Sexpr{round(exp(((log(eps) - a) / b)))}
+\]
+
+\subsection{Контрольльный эксперимент}
 
 \section{Заключение}
 
@@ -566,11 +606,6 @@ plot.ecdfs <- function(dfp, dfi)
 	\mbox{С.Н. Постовалов}, Е.В Чимитова. --- \mbox{Новосибирск} : Изд-во НГТУ,
 		2011. --- 888 с. (серия <<\mbox{Монографии НГТУ}>>).
 
-\bibitem{isw} Лемешко Б.Ю., Постовалов С.Н. Система статистического анализа
-	наблюдений и исследования статистических закономерностей // Материалы
-	международной НТК "Информатика и проблемы телекоммуникаций". ---
-	\mbox{Новосибирск}, 2001. --- С. 80 -- 81. 
-
 \bibitem{jb} Jarque, C. M. and Bera, A. K. (1987): A test for normality of
 	observations and regression residuals.
 		— International Statistical Review, vol. 55, pp. 163–172.
@@ -582,10 +617,6 @@ plot.ecdfs <- function(dfp, dfi)
 \end{comment}
 
 \bibitem{normtest} Ilya Gavrilov and Ruslan Pusev (2014). normtest: Tests for
-	Normality.  R package version 1.1.
-		https://CRAN.R-project.org/package=normtest
-
-\bibitem{moments} Ilya Gavrilov and Ruslan Pusev (2014). normtest: Tests for
 	Normality.  R package version 1.1.
 		https://CRAN.R-project.org/package=normtest
 
@@ -617,17 +648,7 @@ plot.ecdfs <- function(dfp, dfi)
 \subsection{Фрагменты исходных текстов}
 
 <<appendix1, echo=T, eval=F, tidy=T, size='small'>>=
-<<mypvalMC>>
-<<TepMC>>
 <<statmod-fun>>
-<<mod10>>
-<<ecdf-plot-func>>
-<<plot10>>
-<<testnorm>>
-<<testlaplace>>
-<<table>>
-<<pdfplots>>
-<<usa>>
 @
 
 \end{appendices}
