@@ -587,7 +587,7 @@ n <- round(exp(((log(eps) - a) / b)))
 @
 
 \[
-	n(\varepsilon) = \exp\left\{\frac{\log (\varepsilon) - \log a}{b}\right\}.
+	n(\varepsilon) = \exp\left\{\frac{\ln (\varepsilon) - \ln a}{b}\right\}.
 \]
 
 \[
